@@ -1,5 +1,5 @@
 * About
-My literate Emacs configuration, embedded using [[http://orgmode.org/][~org-mode~]].
+My literate Emacs configuration, embedded using [[http://orgmode.org/][org-mode]].
 It's necessary to clone the latest `org-mode` into a directory named `src/org-mode` for this configuration to work:
 #+begin_example
 $ cd ~/.emacs.d
@@ -410,7 +410,7 @@ Enable spellchecking when composing a mesage
 (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
 #+end_src
 
-Make the `gnus-dired-mail-buffers' function also work on message-mode derived modes, such as mu4e-compose-mode, bound to C-c RET C-a
+Make the ~gnus-dired-mail-buffers~ function also work on message-mode derived modes, such as mu4e-compose-mode, bound to ~C-c  C-a~
 #+begin_src emacs-lisp
 (require 'gnus-dired)
 (defun gnus-dired-mail-buffers ()
