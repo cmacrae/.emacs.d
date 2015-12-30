@@ -1,6 +1,6 @@
 * About
 My literate Emacs configuration, embedded using [[http://orgmode.org/][org-mode]].
-It's necessary to clone the latest `org-mode` into a directory named `src/org-mode` for this configuration to work:
+It's necessary to clone the latest ~org-mode~ into a directory named ~src/org-mode~ for this configuration to work:
 #+begin_example
 $ cd ~/.emacs.d
 $ mkdir src
