@@ -1,0 +1,507 @@
+* About
+My literate Emacs configuration, embedded using [[http://orgmode.org/][~org-mode~]].
+It's necessary to clone the latest `org-mode` into a directory named `src/org-mode` for this configuration to work:
+#+begin_example
+$ cd ~/.emacs.d
+$ mkdir src
+$ git clone git://orgmode.org/org-mode.git src/org-mode
+#+end_example
+* Packages
+** Package archives
+#+begin_src emacs-lisp
+(require 'cl)
+(require 'package)
+
+(add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+#+end_src
+
+** Packages to install
+#+begin_src emacs-lisp
+(defvar my-packages '(
+                      ace-window
+                      ansible-doc
+                      color-theme-sanityinc-tomorrow
+                      diff-hl
+                      erc-hl-nicks
+                      exec-path-from-shell
+                      flycheck
+		      go-mode
+                      helm
+                      helm-projectile
+		      jinja2-mode
+                      magit
+                      markdown-mode
+		      multiple-cursors
+                      neotree
+                      openwith
+		      org-bullets
+                      org-page
+                      popwin
+                      rainbow-delimiters
+                      sauron
+                      smartparens
+                      yaml-mode
+                      )
+  "Packages to ensure are installed upon launch.")
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+#+end_src
+
+* Common
+** General
+Personal stuff
+#+begin_src emacs-lisp
+(setq user-full-name "Calum MacRae"
+      user-mail-address "calum0macrae@gmail.com")
+#+end_src
+
+Custom elisp file (don't really use this, just stuff to dump here)
+#+begin_src emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
+
+Set the scratch buffer string
+#+begin_src emacs-lisp
+(setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
+#+end_src
+
+Turn on ~global-flycheck-mode~ after init
+#+begin_src emacs-lisp
+(add-hook 'after-init-hook #'global-flycheck-mode)
+#+end_src
+
+Start the server
+#+begin_src emacs-lisp
+(server-start)
+#+end_src
+
+General settings
+#+begin_src emacs-lisp
+(ido-mode t)
+(winner-mode 1)
+(projectile-global-mode)
+(setq vc-follow-symlinks t)
+(global-diff-hl-mode 1)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(setq lpaste-author "cmacrae")
+(setq sauron-watch-nicks '("cmacrae"))
+(setq sauron-separate-frame nil)
+(setq sauron-hide-mode-line t)
+(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+(setq explicit-shell-file-name "/bin/zsh")
+#+end_src
+
+NeoTree
+#+begin_src emacs-lisp
+(require 'neotree)
+(global-set-key (kbd "C-;") 'neotree-toggle)
+(setq projectile-switch-project-action 'neotree-projectile-action)
+#+end_src
+
+Popwin
+#+begin_src emacs-lisp
+(require 'popwin)
+(popwin-mode 1)
+(global-set-key (kbd "C-z") popwin:keymap)
+(push '(term-mode :position :top :height 16 :stick t) popwin:special-display-config)
+(push '(" *grep*" :height 30 :position bottom) popwin:special-display-config)
+#+end_src
+
+Custom ~popwin-term~ function
+#+begin_src emacs-lisp
+(defun popwin-term:term ()
+  (interactive)
+  (popwin:display-buffer-1
+   (or (get-buffer "*terminal*")
+       (save-window-excursion
+         (call-interactively 'term)))
+   :default-config-keywords '(:position :top)))
+
+(provide 'popwin-term)
+(require 'popwin-term)
+(global-set-key (kbd "C-x t") 'popwin-term:term)
+#+end_src
+
+Kill term buffers upon exit
+#+begin_src emacs-lisp
+(defadvice term-handle-exit
+  (after term-kill-buffer-on-exit activate)
+(kill-buffer))
+#+end_src
+
+Activate ~ansible-doc~ when loading YAML files (bind to ~C-c h a~)
+#+begin_src emacs-lisp
+(eval-after-load 'yaml-mode
+  '(define-key yaml-mode-map (kbd "C-c h a") #'ansible-doc))
+#+end_src
+
+Calendar/Diary
+#+begin_src emacs-lisp
+(setq calendar-week-start-day 1)
+(setq diary-file "~/org/diary")
+(add-hook 'diary-list-entries-hook 'diary-sort-entries t)
+#+end_src
+
+Multiple-cursors
+#+begin_src emacs-lisp
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+#+end_src
+
+Openwith
+#+begin_src emacs-lisp
+(require 'openwith)
+(openwith-mode t)
+(setq openwith-associations '(("\\.avi\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+			      ("\\.mkv\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+			      ("\\.mp4\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+			      ("\\.pdf\\'" "/Applications/Preview.app/Contents/MacOS/Preview" (file))))
+#+end_src
+
+Set exec/man PATH from shell
+#+begin_src emacs-lisp
+(exec-path-from-shell-initialize)
+#+end_src
+
+** Deactivation
+#+begin_src emacs-lisp
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+(setq inhibit-startup-message t)
+(setq ring-bell-function 'ignore)
+#+end_src
+
+** Keybindings
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c m") 'magit-status)
+(global-set-key (kbd "C-c s") 'sauron-toggle-hide-show)
+(global-set-key (kbd "C-c t") 'sauron-clear)
+(global-set-key (kbd "C-c u") 'winner-undo)
+(global-set-key (kbd "C-c r") 'winner-redo)
+(global-set-key (kbd "C-x w") 'elfeed)
+(global-set-key (kbd "M-[") 'ace-window)
+(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+#+end_src
+
+** Custom functions
+*** Sort words
+#+begin_src emacs-lisp
+(defun sort-words (reverse beg end)
+  "Sort words in region alphabetically, in REVERSE if negative.
+    Prefixed with negative \\[universal-argument], sorts in reverse.
+  
+    The variable `sort-fold-case' determines whether alphabetic case
+    affects the sort order.
+  
+    See `sort-regexp-fields'."
+  (interactive "*P\nr")
+  (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+#+end_src
+
+*** Sensible beginning of line
+#+begin_src emacs-lisp
+(defun sensible-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
+
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+(global-set-key [remap move-beginning-of-line]
+                'sensible-move-beginning-of-line)
+#+end_src
+
+* Appearance
+** Hide stuff
+#+begin_src emacs-lisp
+(blink-cursor-mode 0)
+(when window-system
+  (tooltip-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1))
+#+end_src
+
+** Clock
+#+begin_src emacs-lisp
+(setq display-time-format "%H:%M %a %d %b ")
+(setq display-time-default-load-average nil)
+(display-time-mode 1)
+#+end_src
+
+** Current line highlighting
+#+begin_src emacs-lisp
+(global-hl-line-mode t)
+#+end_src
+
+Disable ~hl-line-mode~ for specific modes/buffers
+#+begin_src emacs-lisp
+(make-variable-buffer-local 'global-hl-line-mode)
+(add-hook 'shell-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(add-hook 'git-commit-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(add-hook 'mu4e-main-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(add-hook 'mu4e-view-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(add-hook 'mu4e-headers-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(add-hook 'term-mode-hook (lambda () (setq global-hl-line-mode nil)))
+#+end_src
+
+** Theme
+#+begin_src emacs-lisp
+(load-theme 'sanityinc-tomorrow-night t)
+#+end_src
+
+** Custom modeline
+#+begin_src emacs-lisp
+(defun shorten-directory (dir max-length)
+  "Show up to `max-length' characters of a directory name `dir'."
+  (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
+        (output ""))
+    (when (and path (equal "" (car path)))
+      (setq path (cdr path)))
+    (while (and path (< (length output) (- max-length 4)))
+      (setq output (concat (car path) "/" output))
+      (setq path (cdr path)))
+    (when path
+      (setq output (concat ".../" output)))
+    output))
+
+(setq-default mode-line-format
+              (quote
+               ("   "
+                ;; mode
+		(:propertize (:eval (shorten-directory default-directory 10))
+			     'face 'mode-line-folder-face)
+		(:propertize "%b"
+			     'face 'mode-line-filename-face)
+		" "
+                (:propertize mode-line-modified 'face 'mode-line-modified-face)
+		"  "
+		(vc-mode vc-mode)
+		"  "
+                ;; 'mode-name'
+                (:propertize "%m" 'face 'mode-line-mode-name)
+                " :: "
+                ;; line number
+                "Line %l, %p :: "
+	       (:propertize global-mode-string 'face 'mode-line-mode-string))))
+#+end_src
+
+* Helm Config
+#+begin_src emacs-lisp
+(require 'helm)
+(require 'helm-config)
+#+end_src
+
+Keybindings
+#+begin_src emacs-lisp
+(global-unset-key (kbd "C-x c"))
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x C-l") 'helm-locate)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(define-key helm-map (kbd "C-z")  'helm-select-action)
+#+end_src
+
+Misc settings
+#+begin_src emacs-lisp
+(setq helm-display-header-line nil)
+(setq helm-scroll-amount                    8
+      helm-autoresize-mode                  t
+      helm-split-window-in-side-p           t
+      helm-move-to-line-cycle-in-source     t
+      helm-M-x-fuzzy-match                  t
+      helm-buffers-fuzzy-matching           t
+      helm-recentf-fuzzy-match              t
+      helm-ff-search-library-in-sexp        t
+      helm-ff-file-name-history-use-recentf t)
+#+end_src
+
+Activate
+#+begin_src emacs-lisp
+(helm-mode 1)
+#+end_src
+
+* Misc Language Config
+** Go
+#+begin_src emacs-lisp
+(require 'go-mode)
+(add-to-list 'exec-path "~/code/go/bin")
+(add-hook 'before-save-hook 'gofmt-before-save)
+(setenv "GOPATH" "/Users/cmacrae/code/go")
+#+end_src
+
+** JavaScript
+#+begin_src emacs-lisp
+(add-hook 'js2-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'js2-mode-hook 'smartparens-mode)
+#+end_src
+
+** Markdown
+#+begin_src emacs-lisp
+(add-hook 'markdown-mode-hook 'flyspell-mode)
+#+end_src
+
+** File associations
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+#+end_src
+
+* Mail
+** mu4e
+General config
+#+begin_src emacs-lisp
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
+(setq
+ mail-user-agent                 'mu4e-user-agent
+ mu4e-mu-binary                  "/usr/local/bin/mu"
+ mu4e-maildir                    "~/.mail/gmail"
+ mu4e-html2text-command          "w3m -dump -T text/html"
+ mu4e-get-mail-command           "offlineimap -q"
+ mu4e-update-interval            300
+ mu4e-attachment-dir             "~/downloads"
+ mu4e-sent-messages-behavior     'delete
+ mu4e-view-show-images           t
+ mu4e-view-prefer-html           t
+ mu4e-use-fancy-chars            t
+ mu4e-headers-skip-duplicates    t
+ message-kill-buffer-on-exit     t
+ mu4e-hide-index-messages        t
+ mu4e-compose-signature
+ (concat
+  "Kind Regards,\n"
+  "Calum MacRae\n"))
+#+end_src
+
+Enable spellchecking when composing a mesage
+#+begin_src emacs-lisp
+(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+#+end_src
+
+Make the `gnus-dired-mail-buffers' function also work on message-mode derived modes, such as mu4e-compose-mode, bound to C-c RET C-a
+#+begin_src emacs-lisp
+(require 'gnus-dired)
+(defun gnus-dired-mail-buffers ()
+  "Return a list of active message buffers."
+  (let (buffers)
+    (save-current-buffer
+      (dolist (buffer (buffer-list t))
+	(set-buffer buffer)
+	(when (and (derived-mode-p 'message-mode)
+		(null message-sent-message-via))
+	  (push (buffer-name buffer) buffers))))
+    (nreverse buffers)))
+
+(setq gnus-dired-mail-mode 'mu4e-user-agent)
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+#+end_src
+
+"View in browser" action for mu4e
+#+begin_src emacs-lisp
+(defun mu4e-msgv-action-view-in-browser (msg)
+  "View the body of the message in a web browser."
+  (interactive)
+  (let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
+	(tmpfile (format "%s/%d.html" temporary-file-directory (random))))
+    (unless html (error "No html part for this message"))
+    (with-temp-file tmpfile
+      (insert
+       "<html>"
+       "<head><meta http-equiv=\"content-type\""
+       "content=\"text/html;charset=UTF-8\">"
+       html))
+    (browse-url (concat "file://" tmpfile))))
+(add-to-list 'mu4e-view-actions
+	     '("View in browser" . mu4e-msgv-action-view-in-browser) t)
+#+end_src
+** smtpmail
+#+begin_src emacs-lisp
+(require 'smtpmail)
+(require 'starttls)
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-stream-type 'starttls
+      smtpmail-smtp-service 587
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-user "calum0macrae@gmail.com")
+(setq starttls-extra-arguments '("--x509cafile" "/opt/pkg/share/ncat/ca-bundle.crt"))
+#+end_src
+
+** GPG
+#+begin_src emacs-lisp
+(add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+(add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
+#+end_src
+
+* Org Config
+** General
+#+begin_src emacs-lisp
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(setq org-return-follows-link t)
+(setq org-agenda-files '("~/org"))
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+	 "* TODO %^{Brief Description} %^g\n%?\tAdded: %U")
+	("r" "ToRead" entry (file+headline "~/org/gtd.org" "Tasks")
+	 "* TOREAD %^{Title} %^g\n%?\tLink: %c")
+	("p" "Project" entry (file+headline "~/org/gtd.org" "Projects")
+	 "* %^{Brief Description} %^g\n%?\tAdded: %U")
+	("m" "Maybe" entry (file+headline "~/org/gtd.org" "Maybe/Some Day")
+	 "* %^{Brief Description} %^g\n%?\tAdded: %U")))
+#+end_src
+
+** ~org-page~
+#+begin_src emacs-lisp
+(require 'org-page)
+(setq op/repository-directory "~/code/git/blog")
+(setq op/theme-root-directory "~/Documents/blog/themes")
+(setq op/theme 'cmacrae)
+(setq op/site-domain "http://cmacr.ae")
+(setq op/site-main-title "Calum MacRae")
+(setq op/site-sub-title "/home/cmacrae")
+(setq op/personal-disqus-shortname "cmacrae")
+(setq op/personal-github-link "https://github.com/cmacrae")
+#+end_src
+
+** ~org-bullets~
+#+begin_src emacs-lisp
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+
