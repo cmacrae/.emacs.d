@@ -90,7 +90,6 @@ General settings
 (setq vc-follow-symlinks t)
 (global-diff-hl-mode 1)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-(setq lpaste-author "cmacrae")
 (setq sauron-watch-nicks '("cmacrae"))
 (setq sauron-separate-frame nil)
 (setq sauron-hide-mode-line t)
