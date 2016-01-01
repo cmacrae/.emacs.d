@@ -254,6 +254,16 @@ Set exec/man PATH from shell
 (display-time-mode 1)
 #+end_src
 
+** Fringes
+#+begin_src emacs-lisp
+(fringe-mode '(4 . 0))
+
+(defun hide-fringes ()
+  (set-window-fringes (selected-window) 0 0))
+
+(add-hook 'eshell-mode 'hide-fringes)
+#+end_src
+
 ** Current line highlighting
 #+begin_src emacs-lisp
 (global-hl-line-mode t)
