@@ -173,6 +173,11 @@ Set exec/man PATH from shell
 (exec-path-from-shell-initialize)
 #+end_src
 
+Ensure live diff previews are updated after ~magit~ action
+#+begin_src emacs-lisp
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh t)
+#+end_src
+
 ** Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
