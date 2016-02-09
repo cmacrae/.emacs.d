@@ -72,9 +72,10 @@ Set the scratch buffer string
 (setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
 #+end_src
 
-Turn on ~global-flycheck-mode~ after init
+Turn on ~global-flycheck-mode~ & ~smartparens-global-mode~ after init
 #+begin_src emacs-lisp
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook #'smartparens-global-mode)
 #+end_src
 
 Start the server
@@ -372,7 +373,6 @@ Activate
 ** JavaScript
 #+begin_src emacs-lisp
 (add-hook 'js2-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'js2-mode-hook 'smartparens-mode)
 #+end_src
 
 ** Markdown
