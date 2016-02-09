@@ -287,8 +287,10 @@ Disable ~hl-line-mode~ for specific modes/buffers
 #+end_src
 
 ** Theme
+*** TODO Watch for ~package.el~ support!
 #+begin_src emacs-lisp
-(load-theme 'sanityinc-tomorrow-night t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'gruvbox-dark t)
 #+end_src
 
 ** Custom modeline
