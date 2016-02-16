@@ -29,6 +29,7 @@ $ git clone git://orgmode.org/org-mode.git src/org-mode
                       diff-hl
                       erc-hl-nicks
                       exec-path-from-shell
+		      expand-region
                       flycheck
 		      go-mode
                       helm
@@ -177,6 +178,12 @@ Set exec/man PATH from shell
 Ensure live diff previews are updated after ~magit~ action
 #+begin_src emacs-lisp
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh t)
+#+end_src
+
+Expand region
+#+begin_src emacs-lisp
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
 #+end_src
 
 ** Deactivation
