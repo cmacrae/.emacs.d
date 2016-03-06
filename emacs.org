@@ -23,6 +23,8 @@ $ git clone git://orgmode.org/org-mode.git src/org-mode
 ** Packages to install
 #+begin_src emacs-lisp
 (defvar my-packages '(
+                      ace-jump-mode
+		      ace-mc
                       ace-window
                       ansible-doc
                       color-theme-sanityinc-tomorrow
@@ -184,6 +186,13 @@ Expand region
 #+begin_src emacs-lisp
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
+#+end_src
+
+~ace-jump-mode~ / ~ace-mc~
+#+begin_src emacs-lisp
+(require 'ace-jump-mode)
+(global-set-key (kbd "C-0") 'ace-jump-mode)
+(global-set-key (kbd "C-)") 'ace-mc-add-multiple-cursors)
 #+end_src
 
 ** Deactivation
