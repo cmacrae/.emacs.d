@@ -49,6 +49,7 @@ $ git clone git://orgmode.org/org-mode.git src/org-mode
                       rainbow-delimiters
                       sauron
                       smartparens
+		      spacemacs-theme
                       yaml-mode
                       )
   "Packages to ensure are installed upon launch.")
@@ -316,10 +317,8 @@ Disable ~hl-line-mode~ for specific modes/buffers
 #+end_src
 
 ** Theme
-*** TODO Watch for ~package.el~ support!
 #+begin_src emacs-lisp
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'gruvbox-dark t)
+(load-theme 'spacemacs-light t)
 #+end_src
 
 ** Custom modeline
