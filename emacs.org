@@ -34,7 +34,6 @@ $ git clone git://orgmode.org/org-mode.git src/org-mode
                       org-page
                       popwin
                       rainbow-delimiters
-                      sauron
                       smartparens
 		      spacemacs-theme
                       yaml-mode
@@ -83,9 +82,6 @@ General settings
 (setq vc-follow-symlinks t)
 (global-diff-hl-mode 1)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-(setq sauron-watch-nicks '("cmacrae"))
-(setq sauron-separate-frame nil)
-(setq sauron-hide-mode-line t)
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
 (setq explicit-shell-file-name "/bin/zsh")
 #+end_src
@@ -194,8 +190,6 @@ Expand region
 ** Keybindings
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c m") 'magit-status)
-(global-set-key (kbd "C-c s") 'sauron-toggle-hide-show)
-(global-set-key (kbd "C-c t") 'sauron-clear)
 (global-set-key (kbd "C-c u") 'winner-undo)
 (global-set-key (kbd "C-c r") 'winner-redo)
 (global-set-key (kbd "C-x w") 'elfeed)
