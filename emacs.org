@@ -1,11 +1,14 @@
 * About
-My literate Emacs configuration, embedded using [[http://orgmode.org/][org-mode]].
+My literate Emacs configuration, embedded using [[http://orgmode.org/][org-mode]].  
 It's necessary to clone the latest ~org-mode~ into a directory named ~src/org-mode~ for this configuration to work:
 #+begin_example
 $ cd ~/.emacs.d
 $ mkdir src
 $ git clone git://orgmode.org/org-mode.git src/org-mode
 #+end_example
+
+It's also important to note that this configuration makes heavy use of the brilliant [[https://github.com/jwiegley/use-package][use-pkg]].  
+See ~init.el~ for the ~use-pkg~ bootstrapping code.
 * Common
 ** General
 Personal stuff
