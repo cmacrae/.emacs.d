@@ -107,7 +107,7 @@ NeoTree
 Popwin
 #+begin_src emacs-lisp
 (use-package popwin
-  :bind ("C-z" . popwin:keymap)
+  :bind-keymap ("C-z" . popwin:keymap)
   :config
   (popwin-mode 1)
   (push '(term-mode :position :top :height 16 :stick t) popwin:special-display-config)
