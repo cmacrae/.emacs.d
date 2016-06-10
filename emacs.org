@@ -343,9 +343,8 @@ Disable ~hl-line-mode~ for specific modes/buffers
 #+end_src
 ** Theme
 #+begin_src emacs-lisp
-(use-package spacemacs-theme
-  :config
-  (load-theme 'spacemacs-light t))
+(use-package spacemacs-theme)
+(load-theme 'spacemacs-light t)
 #+end_src
 
 ** Custom modeline
