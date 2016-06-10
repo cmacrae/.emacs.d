@@ -1,15 +1,17 @@
 ;;; init.el --- Where all the magic begins
 ;;
-;; This file loads Org-mode and then loads the rest of the Emacs initialization from Emacs lisp
+;;; Commentary:
+;; This file loads Org-mode and then loads the rest of the Emacs initialization from Emacs Lisp
 ;; embedded in the literate Org-mode file: emacs.org
+;;
+;;; Code:
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("elpa" . "http://tromey.com/elpa/")
-             '("melpa" . "https://melpa.org/packages/"))
+(unless (assoc-default "melpa" package-archives)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 (package-initialize)
 
-;; Bootstrap `use-package'
+;; Bootstrap use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))

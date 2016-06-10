@@ -6,44 +6,6 @@ $ cd ~/.emacs.d
 $ mkdir src
 $ git clone git://orgmode.org/org-mode.git src/org-mode
 #+end_example
-* Packages
-** Packages to install
-#+begin_src emacs-lisp
-(defvar my-packages '(
-                      ace-jump-mode
-		      ace-mc
-                      ace-window
-                      ansible-doc
-                      color-theme-sanityinc-tomorrow
-                      diff-hl
-                      erc-hl-nicks
-                      exec-path-from-shell
-		      expand-region
-                      flycheck
-		      go-mode
-                      helm
-                      helm-projectile
-		      indent-guide
-		      jinja2-mode
-                      magit
-                      markdown-mode
-		      multiple-cursors
-                      neotree
-                      openwith
-		      org-bullets
-                      org-page
-                      popwin
-                      rainbow-delimiters
-                      smartparens
-		      spacemacs-theme
-                      yaml-mode
-                      )
-  "Packages to ensure are installed upon launch.")
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
-#+end_src
-
 * Common
 ** General
 Personal stuff
@@ -52,7 +14,12 @@ Personal stuff
       user-mail-address "calum0macrae@gmail.com")
 #+end_src
 
-Custom elisp file (don't really use this, just stuff to dump here)
+Global ~:ensure~ for ~use-package~ statements
+#+begin_src emacs-lisp
+(setq use-package-always-ensure t)
+#+end_src
+
+Custom elisp file (don't really use this, just dump stuff here)
 #+begin_src emacs-lisp
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -65,8 +32,12 @@ Set the scratch buffer string
 
 Turn on ~global-flycheck-mode~ & ~smartparens-global-mode~ after init
 #+begin_src emacs-lisp
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'after-init-hook #'smartparens-global-mode)
+(use-package flycheck
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
+(use-package smartparens
+  :config
+  (add-hook 'after-init-hook #'smartparens-global-mode))
 #+end_src
 
 Start the server
@@ -76,30 +47,68 @@ Start the server
 
 General settings
 #+begin_src emacs-lisp
-(ido-mode t)
-(winner-mode 1)
-(projectile-global-mode)
+(use-package ido
+  :ensure nil
+  :config
+  (ido-mode t))
+
+(use-package winner
+  :ensure nil
+  :bind
+  ("C-c u" . winner-undo)
+  ("C-c r" . winner-redo)
+  :config
+  (winner-mode 1))
+
 (setq vc-follow-symlinks t)
-(global-diff-hl-mode 1)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
 (setq explicit-shell-file-name "/bin/zsh")
+(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+#+end_src
+
+Ace window
+#+begin_src emacs-lisp
+(use-package ace-window
+  :bind ("M-[" . ace-window)
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+#+end_src
+
+~erc-hl-nicks~
+#+begin_src emacs-lisp
+(use-package erc-hl-nicks)
+#+end_src
+
+~diff-hl~
+#+begin_src emacs-lisp
+(use-package diff-hl
+  :config
+  (global-diff-hl-mode 1))
+#+end_src
+
+Projectile
+#+begin_src emacs-lisp
+(use-package projectile
+  :config
+  (projectile-global-mode))
 #+end_src
 
 NeoTree
 #+begin_src emacs-lisp
-(require 'neotree)
-(global-set-key (kbd "C-;") 'neotree-toggle)
-(setq projectile-switch-project-action 'neotree-projectile-action)
+(use-package neotree
+  :bind ("C-;" . neotree-toggle)
+  :init
+  (setq projectile-switch-project-action 'neotree-projectile-action))
 #+end_src
 
 Popwin
 #+begin_src emacs-lisp
-(require 'popwin)
-(popwin-mode 1)
-(global-set-key (kbd "C-z") popwin:keymap)
-(push '(term-mode :position :top :height 16 :stick t) popwin:special-display-config)
-(push '(" *grep*" :height 30 :position bottom) popwin:special-display-config)
+(use-package popwin
+  :bind ("C-z" . popwin:keymap)
+  :config
+  (popwin-mode 1)
+  (push '(term-mode :position :top :height 16 :stick t) popwin:special-display-config)
+  (push '(" *grep*" :height 30 :position bottom) popwin:special-display-config))
 #+end_src
 
 Custom ~popwin-term~ function
@@ -113,8 +122,10 @@ Custom ~popwin-term~ function
    :default-config-keywords '(:position :top)))
 
 (provide 'popwin-term)
-(require 'popwin-term)
-(global-set-key (kbd "C-x t") 'popwin-term:term)
+
+(use-package popwin-term
+  :ensure nil
+  :bind ("C-x t" . popwin-term:term))
 #+end_src
 
 Kill term buffers upon exit
@@ -126,8 +137,10 @@ Kill term buffers upon exit
 
 Activate ~ansible-doc~ when loading YAML files (bind to ~C-c h a~)
 #+begin_src emacs-lisp
-(eval-after-load 'yaml-mode
-  '(define-key yaml-mode-map (kbd "C-c h a") #'ansible-doc))
+(use-package ansible-doc)
+(use-package yaml-mode
+  :bind (:map yaml-mode-map
+    ("C-c h a" . ansible-doc)))
 #+end_src
 
 Calendar/Diary
@@ -139,44 +152,55 @@ Calendar/Diary
 
 Multiple-cursors
 #+begin_src emacs-lisp
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(use-package multiple-cursors
+  :bind
+  ("C-S-c C-S-c" . mc/edit-lines)
+  ("C->" . mc/mark-next-like-this)
+  ("C-<" . mc/mark-previous-like-this)
+  ("C-c C-<" . mc/mark-all-like-this))
 #+end_src
 
 Openwith
 #+begin_src emacs-lisp
-(require 'openwith)
-(openwith-mode t)
-(setq openwith-associations '(("\\.avi\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-			      ("\\.mkv\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-			      ("\\.mp4\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-			      ("\\.pdf\\'" "/Applications/Preview.app/Contents/MacOS/Preview" (file))))
+(use-package openwith
+  :config
+  (openwith-mode t)
+  (setq openwith-associations '(("\\.avi\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+  			       ("\\.mkv\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+  			       ("\\.mp4\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+  			       ("\\.pdf\\'" "/Applications/Preview.app/Contents/MacOS/Preview" (file)))))
 #+end_src
 
 Set exec/man PATH from shell
 #+begin_src emacs-lisp
-(exec-path-from-shell-initialize)
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
 #+end_src
 
-Ensure live diff previews are updated after ~magit~ action
+Magit
 #+begin_src emacs-lisp
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh t)
+(use-package magit
+  :bind ("C-c m" . magit-status)
+  :config
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh t)) ;; Ensure live diff previews are updated after ~magit~ action
 #+end_src
 
 Expand region
 #+begin_src emacs-lisp
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
+(use-package expand-region
+  :bind ("C-=" . er/expand-region)
 #+end_src
 
 ~ace-jump-mode~ / ~ace-mc~
 #+begin_src emacs-lisp
-(require 'ace-jump-mode)
-(global-set-key (kbd "C-0") 'ace-jump-mode)
-(global-set-key (kbd "C-)") 'ace-mc-add-multiple-cursors)
+(use-package ace-jump-mode
+  :bind
+  ("C-0" . ace-jump-mode))
+
+(use-package ace-mc
+  :bind
+  ("C-)" . ace-mc-add-multiple-cursors))
 #+end_src
 
 ** Deactivation
@@ -185,16 +209,6 @@ Expand region
 (setq auto-save-default nil)
 (setq inhibit-startup-message t)
 (setq ring-bell-function 'ignore)
-#+end_src
-
-** Keybindings
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-c m") 'magit-status)
-(global-set-key (kbd "C-c u") 'winner-undo)
-(global-set-key (kbd "C-c r") 'winner-redo)
-(global-set-key (kbd "C-x w") 'elfeed)
-(global-set-key (kbd "M-[") 'ace-window)
-(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 #+end_src
 
 ** Custom functions
@@ -277,29 +291,61 @@ Expand region
 Disable ~hl-line-mode~ for specific modes/buffers
 #+begin_src emacs-lisp
 (make-variable-buffer-local 'global-hl-line-mode)
-(add-hook 'shell-mode-hook (lambda () (setq global-hl-line-mode nil)))
-(add-hook 'git-commit-mode-hook (lambda () (setq global-hl-line-mode nil)))
-(add-hook 'mu4e-main-mode-hook (lambda () (setq global-hl-line-mode nil)))
-(add-hook 'mu4e-view-mode-hook (lambda () (setq global-hl-line-mode nil)))
-(add-hook 'mu4e-headers-mode-hook (lambda () (setq global-hl-line-mode nil)))
-(add-hook 'term-mode-hook (lambda () (setq global-hl-line-mode nil)))
+(defvar my-ghd-modes '(
+                       shell-mode-hook
+                       git-commit-mode-hook
+                       mu4e-main-mode-hook
+                       mu4e-view-mode-hook
+                       mu4e-headers-mode-hook
+                       term-mode-hook
+                      )
+  "Modes to ensure global-hl-line-mode is disabled for.")
+(dolist (m my-ghd-modes)
+  (add-hook m (lambda () (setq global-hl-line-mode nil))))
 #+end_src
 
 ** Indent guides
 #+begin_src emacs-lisp
-(add-hook 'yaml-mode-hook 'indent-guide-mode)
-(add-hook 'python-mode-hook 'indent-guide-mode)
-(add-hook 'js2-mode-hook 'indent-guide-mode)
-(add-hook 'go-mode-hook 'indent-guide-mode)
-(add-hook 'ruby-mode-hook 'indent-guide-mode)
-(add-hook 'emacs-lisp-mode-hook 'indent-guide-mode)
-(add-hook 'common-lisp-mode-hook 'indent-guide-mode)
-(add-hook 'lisp-interaction-mode-hook 'indent-guide-mode)
+(use-package indent-guide
+  :config
+  (defvar my-indent-modes '(
+                            yaml-mode-hook
+                            python-mode-hook
+                            js2-mode-hook
+                            go-mode-hook
+                            ruby-mode-hook
+                            emacs-lisp-mode-hook
+                            common-lisp-mode-hook
+                            lisp-interaction-mode-hook
+                        )
+    "Modes to ensure indent-guide-mode is enabled for.")
+  (dolist (m my-indent-modes)
+      (add-hook m 'indent-guide-mode)))
 #+end_src
 
+** Rainbow Delimiters
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :config
+  (defvar my-rainbow-modes '(
+                            yaml-mode-hook
+                            python-mode-hook
+                            js2-mode-hook
+                            go-mode-hook
+                            ruby-mode-hook
+                            emacs-lisp-mode-hook
+                            common-lisp-mode-hook
+                            lisp-interaction-mode-hook
+                        )
+    "Modes to ensure rainbow-delimiters-mode is enabled for.")
+  (dolist (m my-rainbow-modes)
+      (add-hook m 'rainbow-delimiters-mode)))
+#+end_src
 ** Theme
 #+begin_src emacs-lisp
-(load-theme 'spacemacs-light t)
+(use-package spacemacs-theme
+  :config
+  (load-theme 'spacemacs-light t))
 #+end_src
 
 ** Custom modeline
@@ -332,125 +378,121 @@ Disable ~hl-line-mode~ for specific modes/buffers
 		"  "
                 ;; 'mode-name'
                 (:propertize "%m" 'face 'mode-line-mode-name)
-                " :: "
+                "    "
                 ;; line number
-                "Line %l, %p :: "
+                "Line %l, %p    "
 	       (:propertize global-mode-string 'face 'mode-line-mode-string))))
 #+end_src
 
 * Helm Config
 #+begin_src emacs-lisp
-(require 'helm)
-(require 'helm-config)
-#+end_src
+(use-package helm
+;;(require 'helm-config)
+  :init
+  (global-unset-key (kbd "C-x c"))
+  :bind(("C-c h" . helm-command-prefix)
+        ("C-x b" . helm-mini)
+        ("C-x C-f" . helm-find-files)
+        ("C-x C-l" . helm-locate)
+        ("M-x" . helm-M-x)
+        ("M-y" . helm-show-kill-ring)
 
-Keybindings
-#+begin_src emacs-lisp
-(global-unset-key (kbd "C-x c"))
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x C-l") 'helm-locate)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+        :map helm-map
+        ("<tab>" . helm-execute-persistent-action)
+        ("C-z" . helm-select-action))
 
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-z")  'helm-select-action)
-#+end_src
+  :config
+  (setq helm-display-header-line            nil
+        helm-scroll-amount                    8
+        helm-autoresize-mode                  t
+        helm-split-window-in-side-p           t
+        helm-move-to-line-cycle-in-source     t
+        helm-M-x-fuzzy-match                  t
+        helm-buffers-fuzzy-matching           t
+        helm-recentf-fuzzy-match              t
+        helm-ff-search-library-in-sexp        t
+        helm-ff-file-name-history-use-recentf t)
 
-Misc settings
-#+begin_src emacs-lisp
-(setq helm-display-header-line nil)
-(setq helm-scroll-amount                    8
-      helm-autoresize-mode                  t
-      helm-split-window-in-side-p           t
-      helm-move-to-line-cycle-in-source     t
-      helm-M-x-fuzzy-match                  t
-      helm-buffers-fuzzy-matching           t
-      helm-recentf-fuzzy-match              t
-      helm-ff-search-library-in-sexp        t
-      helm-ff-file-name-history-use-recentf t)
-#+end_src
-
-Activate
-#+begin_src emacs-lisp
-(helm-mode 1)
+  (helm-mode 1))
+(use-package helm-projectile)
 #+end_src
 
 * Misc Language Config
-** Go
 #+begin_src emacs-lisp
-(require 'go-mode)
-(add-to-list 'exec-path "~/code/go/bin")
-(add-hook 'before-save-hook 'gofmt-before-save)
-(setenv "GOPATH" "/Users/cmacrae/code/go")
-#+end_src
+(use-package go-mode
+  :config
+  (add-to-list 'exec-path "~/code/go/bin")
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (setenv "GOPATH" "/Users/cmacrae/code/go"))
 
-** JavaScript
-#+begin_src emacs-lisp
-(add-hook 'js2-mode-hook 'rainbow-delimiters-mode)
-#+end_src
+(use-package markdown-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+  (add-hook 'markdown-mode-hook 'flyspell-mode)
 
-** Markdown
-#+begin_src emacs-lisp
-(add-hook 'markdown-mode-hook 'flyspell-mode)
-#+end_src
+(use-package jinja2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
 
-** File associations
-#+begin_src emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 #+end_src
 
 * Mail
 ** mu4e
 General config
 #+begin_src emacs-lisp
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-(require 'mu4e)
-(setq
- mail-user-agent                 'mu4e-user-agent
- mu4e-mu-binary                  "/usr/local/bin/mu"
- mu4e-maildir                    "~/.mail/gmail"
- mu4e-html2text-command          "w3m -dump -T text/html"
- mu4e-get-mail-command           "offlineimap -q"
- mu4e-update-interval            300
- mu4e-attachment-dir             "~/downloads"
- mu4e-sent-messages-behavior     'delete
- mu4e-view-show-images           t
- mu4e-view-prefer-html           t
- mu4e-use-fancy-chars            t
- mu4e-headers-skip-duplicates    t
- message-kill-buffer-on-exit     t
- mu4e-hide-index-messages        t
- mu4e-compose-signature
- (concat
-  "Kind Regards,\n"
-  "Calum MacRae\n"))
-#+end_src
+(use-package mu4e
+  :ensure nil
+  :load-path "/usr/local/share/emacs/site-lisp/mu4e"
+  :config
+  (setq
+   mail-user-agent                 'mu4e-user-agent
+   mu4e-mu-binary                  "/usr/local/bin/mu"
+   mu4e-maildir                    "~/.mail/gmail"
+   mu4e-html2text-command          "w3m -dump -T text/html"
+   mu4e-get-mail-command           "offlineimap -q"
+   mu4e-update-interval            300
+   mu4e-attachment-dir             "~/downloads"
+   mu4e-sent-messages-behavior     'delete
+   mu4e-view-show-images           t
+   mu4e-view-prefer-html           t
+   mu4e-use-fancy-chars            t
+   mu4e-headers-skip-duplicates    t
+   message-kill-buffer-on-exit     t
+   mu4e-hide-index-messages        t
+   mu4e-compose-signature
+   (concat
+    "Kind Regards,\n"
+    "Calum MacRae\n"))
+  
+  ;; Enable spellchecking when composing a mesage
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode))
 
-Enable spellchecking when composing a mesage
-#+begin_src emacs-lisp
-(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+  ;; GPG
+  (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+  (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
 #+end_src
 
 Make the ~gnus-dired-mail-buffers~ function also work on message-mode derived modes, such as mu4e-compose-mode, bound to ~C-c  C-a~
 #+begin_src emacs-lisp
-(require 'gnus-dired)
-(defun gnus-dired-mail-buffers ()
-  "Return a list of active message buffers."
-  (let (buffers)
-    (save-current-buffer
-      (dolist (buffer (buffer-list t))
-	(set-buffer buffer)
-	(when (and (derived-mode-p 'message-mode)
-		(null message-sent-message-via))
-	  (push (buffer-name buffer) buffers))))
-    (nreverse buffers)))
-
-(setq gnus-dired-mail-mode 'mu4e-user-agent)
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+(use-package gnus-dired
+  :ensure nil
+  :config
+  (defun gnus-dired-mail-buffers ()
+    "Return a list of active message buffers."
+    (let (buffers)
+      (save-current-buffer
+        (dolist (buffer (buffer-list t))
+  	(set-buffer buffer)
+  	(when (and (derived-mode-p 'message-mode)
+  		(null message-sent-message-via))
+  	  (push (buffer-name buffer) buffers))))
+      (nreverse buffers)))
+  
+  (setq gnus-dired-mail-mode 'mu4e-user-agent)
+  (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode))
 #+end_src
 
 "View in browser" action for mu4e
@@ -473,21 +515,20 @@ Make the ~gnus-dired-mail-buffers~ function also work on message-mode derived mo
 #+end_src
 ** smtpmail
 #+begin_src emacs-lisp
-(require 'smtpmail)
-(require 'starttls)
-(setq message-send-mail-function 'smtpmail-send-it
-      smtpmail-stream-type 'starttls
-      smtpmail-smtp-service 587
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-user "calum0macrae@gmail.com")
-(setq starttls-extra-arguments '("--x509cafile" "/opt/pkg/share/ncat/ca-bundle.crt"))
-#+end_src
+(use-package starttls
+  :ensure nil
+  :config
+  (setq starttls-extra-arguments '("--x509cafile" "/opt/pkg/share/ncat/ca-bundle.crt")))
 
-** GPG
-#+begin_src emacs-lisp
-(add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
-(add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
+(use-package smtpmail
+  :ensure nil
+  :config
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-smtp-service 587
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-user "calum0macrae@gmail.com"))
 #+end_src
 
 * Org Config
@@ -512,21 +553,23 @@ Make the ~gnus-dired-mail-buffers~ function also work on message-mode derived mo
 
 ** ~org-page~
 #+begin_src emacs-lisp
-(require 'org-page)
-(setq op/repository-directory "~/code/git/blog")
-(setq op/theme-root-directory "~/Documents/blog/themes")
-(setq op/theme 'cmacrae)
-(setq op/site-domain "http://cmacr.ae")
-(setq op/site-main-title "Calum MacRae")
-(setq op/site-sub-title "/home/cmacrae")
-(setq op/personal-disqus-shortname "cmacrae")
-(setq op/personal-github-link "https://github.com/cmacrae")
+(use-package org-page
+  :config
+  (setq op/repository-directory "~/code/git/blog")
+  (setq op/theme-root-directory "~/Documents/blog/themes")
+  (setq op/theme 'cmacrae)
+  (setq op/site-domain "http://cmacr.ae")
+  (setq op/site-main-title "Calum MacRae")
+  (setq op/site-sub-title "/home/cmacrae")
+  (setq op/personal-disqus-shortname "cmacrae")
+  (setq op/personal-github-link "https://github.com/cmacrae"))
 #+end_src
 
 ** ~org-bullets~
 #+begin_src emacs-lisp
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
 
 
