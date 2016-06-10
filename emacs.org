@@ -7,19 +7,6 @@ $ mkdir src
 $ git clone git://orgmode.org/org-mode.git src/org-mode
 #+end_example
 * Packages
-** Package archives
-#+begin_src emacs-lisp
-(require 'cl)
-(require 'package)
-
-(add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/") t)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
-#+end_src
-
 ** Packages to install
 #+begin_src emacs-lisp
 (defvar my-packages '(
