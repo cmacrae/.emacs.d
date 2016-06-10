@@ -73,7 +73,7 @@ Ace window
 #+begin_src emacs-lisp
 (use-package ace-window
   :bind ("M-[" . ace-window)
-  :init
+  :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
@@ -100,7 +100,7 @@ NeoTree
 #+begin_src emacs-lisp
 (use-package neotree
   :bind ("C-;" . neotree-toggle)
-  :init
+  :config
   (setq projectile-switch-project-action 'neotree-projectile-action))
 #+end_src
 
