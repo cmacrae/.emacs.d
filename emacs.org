@@ -189,7 +189,7 @@ Magit
 Expand region
 #+begin_src emacs-lisp
 (use-package expand-region
-  :bind ("C-=" . er/expand-region)
+  :bind ("C-=" . er/expand-region))
 #+end_src
 
 ~ace-jump-mode~ / ~ace-mc~
