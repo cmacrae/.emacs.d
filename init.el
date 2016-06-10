@@ -2,7 +2,16 @@
 ;;
 ;; This file loads Org-mode and then loads the rest of the Emacs initialization from Emacs lisp
 ;; embedded in the literate Org-mode file: emacs.org
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 (setq emacs-dir (file-name-directory (or (buffer-file-name) load-file-name)))
 
