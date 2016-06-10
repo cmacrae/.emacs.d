@@ -400,7 +400,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
         ("M-y" . helm-show-kill-ring)
 
         :map helm-map
-        ("<tab>" . helm-execute-persistent-action)
+        ([tab] . helm-execute-persistent-action)
         ("C-z" . helm-select-action))
 
   :config
