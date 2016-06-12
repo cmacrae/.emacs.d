@@ -455,7 +455,7 @@ General config
    mu4e-html2text-command          "w3m -dump -T text/html"
    mu4e-get-mail-command           "offlineimap -q"
    mu4e-update-interval            300
-   mu4e-attachment-dir             "~/downloads"
+   mu4e-attachment-dir             "~/Downloads"
    mu4e-sent-messages-behavior     'delete
    mu4e-view-show-images           t
    mu4e-view-prefer-html           t
