@@ -389,7 +389,6 @@ Disable ~hl-line-mode~ for specific modes/buffers
 * Helm Config
 #+begin_src emacs-lisp
 (use-package helm
-;;(require 'helm-config)
   :init
   (global-unset-key (kbd "C-x c"))
   :bind(("C-c h" . helm-command-prefix)
