@@ -43,6 +43,13 @@ Turn on ~global-flycheck-mode~ & ~smartparens-global-mode~ after init
   (add-hook 'after-init-hook #'smartparens-global-mode))
 #+end_src
 
+In-line ~flycheck~ tips
+#+begin_src emacs-lisp
+(use-package flycheck-tip
+  config:
+  (flycheck-tip-use-timer 'verbose))
+#+end_src
+
 Start the server
 #+begin_src emacs-lisp
 (server-start)
