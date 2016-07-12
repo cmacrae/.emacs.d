@@ -46,7 +46,7 @@ Turn on ~global-flycheck-mode~ & ~smartparens-global-mode~ after init
 In-line ~flycheck~ tips
 #+begin_src emacs-lisp
 (use-package flycheck-tip
-  config:
+  :config
   (flycheck-tip-use-timer 'verbose))
 #+end_src
 
