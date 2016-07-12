@@ -213,6 +213,10 @@ Expand region
   ("C-)" . ace-mc-add-multiple-cursors))
 #+end_src
 
+~json-mode~
+#+begin_src emacs-lisp
+(use-package json-mode)
+#+end_src
 ** Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
