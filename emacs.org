@@ -193,9 +193,15 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package magit
   :bind ("C-c m" . magit-status)
   :config
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh t)) ;; Ensure live diff previews are updated after ~magit~ action
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)) ;; Ensure live diff previews are updated after ~magit~ action
 #+end_src
 
+*** GitHub integration
+#+begin_src emacs-lisp
+(use-package magit-gh-pulls
+  :config
+  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+#+end_src
 *** Expand region
 #+begin_src emacs-lisp
 (use-package expand-region
