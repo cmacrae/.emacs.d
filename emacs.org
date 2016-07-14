@@ -459,6 +459,98 @@ Disable ~hl-line-mode~ for specific modes/buffers
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 #+end_src
 
+* Mail
+** mu4e
+General config
+#+begin_src emacs-lisp
+(use-package mu4e
+  :ensure nil
+  :load-path "/usr/local/share/emacs/site-lisp/mu4e"
+  :config
+  (setq
+   mail-user-agent                 'mu4e-user-agent
+   mu4e-mu-binary                  "/usr/local/bin/mu"
+   mu4e-maildir                    "~/.mail/gmail"
+   mu4e-html2text-command          "w3m -dump -T text/html"
+   mu4e-get-mail-command           "offlineimap -q"
+   mu4e-update-interval            300
+   mu4e-attachment-dir             "~/Downloads"
+   mu4e-sent-messages-behavior     'delete
+   mu4e-view-show-images           t
+   mu4e-view-prefer-html           t
+   mu4e-use-fancy-chars            t
+   mu4e-headers-skip-duplicates    t
+   message-kill-buffer-on-exit     t
+   mu4e-hide-index-messages        t
+   mu4e-compose-signature
+   (concat
+    "Kind Regards,\n"
+    "Calum MacRae\n"))
+  
+  ;; Enable spellchecking when composing a mesage
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode))
+
+  ;; GPG
+  (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+  (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
+#+end_src
+
+Make the ~gnus-dired-mail-buffers~ function also work on message-mode derived modes, such as mu4e-compose-mode, bound to ~C-c  C-a~
+#+begin_src emacs-lisp
+(use-package gnus-dired
+  :ensure nil
+  :config
+  (defun gnus-dired-mail-buffers ()
+    "Return a list of active message buffers."
+    (let (buffers)
+      (save-current-buffer
+        (dolist (buffer (buffer-list t))
+  	(set-buffer buffer)
+  	(when (and (derived-mode-p 'message-mode)
+  		(null message-sent-message-via))
+  	  (push (buffer-name buffer) buffers))))
+      (nreverse buffers)))
+  
+  (setq gnus-dired-mail-mode 'mu4e-user-agent)
+  (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode))
+#+end_src
+
+"View in browser" action for mu4e
+#+begin_src emacs-lisp
+(defun mu4e-msgv-action-view-in-browser (msg)
+  "View the body of the message in a web browser."
+  (interactive)
+  (let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
+	(tmpfile (format "%s/%d.html" temporary-file-directory (random))))
+    (unless html (error "No html part for this message"))
+    (with-temp-file tmpfile
+      (insert
+       "<html>"
+       "<head><meta http-equiv=\"content-type\""
+       "content=\"text/html;charset=UTF-8\">"
+       html))
+    (browse-url (concat "file://" tmpfile))))
+(add-to-list 'mu4e-view-actions
+	     '("View in browser" . mu4e-msgv-action-view-in-browser) t)
+#+end_src
+** smtpmail
+#+begin_src emacs-lisp
+(use-package starttls
+  :ensure nil
+  :config
+  (setq starttls-extra-arguments '("--x509cafile" "/opt/pkg/share/ncat/ca-bundle.crt")))
+
+(use-package smtpmail
+  :ensure nil
+  :config
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-smtp-service 587
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-user "calum0macrae@gmail.com"))
+#+end_src
+
 * Org Config
 ** General
 #+begin_src emacs-lisp
