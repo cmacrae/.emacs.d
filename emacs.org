@@ -199,6 +199,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** GitHub integration
 #+begin_src emacs-lisp
 (use-package magit-gh-pulls
+  :bind (:map magit-gh-pulls-mode-map
+  ("£" . magit-gh-pulls-popup))
   :config
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 #+end_src
