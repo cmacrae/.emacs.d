@@ -234,6 +234,15 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (global-aggressive-indent-mode 1))
 #+end_src
 
+*** Docker Integration
+#+begin_src emacs-lisp
+(use-package dockerfile-mode
+  :init
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+(use-package docker-tramp)
+(use-package docker)
+#+end_src
 ** Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
