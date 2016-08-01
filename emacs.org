@@ -475,6 +475,10 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (use-package js2-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
+(use-package hcl-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.nomad\\'" . hcl-mode)))
 #+end_src
 
 * Mail
