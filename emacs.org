@@ -479,6 +479,8 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (use-package hcl-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.nomad\\'" . hcl-mode)))
+
+(use-package terraform-mode)
 #+end_src
 
 * Mail
