@@ -202,7 +202,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   :bind (:map magit-gh-pulls-mode-map
   ("£" . magit-gh-pulls-popup))
   :init
-  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+  (setq magit-gh-pulls-arguments (quote ("--open-new-in-browser"))))
 #+end_src
 
 *** Expand region
