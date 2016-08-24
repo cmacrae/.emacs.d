@@ -92,7 +92,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** ~diff-hl~
 #+begin_src emacs-lisp
 (use-package diff-hl
-  :config
+  :init
   (global-diff-hl-mode 1))
 #+end_src
 
