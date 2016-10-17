@@ -126,6 +126,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package neotree
   :bind ("C-;" . neotree-toggle)
   :init
+  (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action 'neotree-projectile-action))
 #+end_src
 
@@ -211,6 +212,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package magit
   :bind ("C-c m" . magit-status)
   :init
+  (setq magit-completing-read-function 'ivy-completing-read)
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)) ;; Ensure live diff previews are updated after ~magit~ action
 #+end_src
 
@@ -261,6 +263,23 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 
 (use-package docker-tramp)
 (use-package docker)
+#+end_src
+
+*** Ivy & Counsel
+#+begin_src emacs-lisp
+(use-package counsel)
+(use-package ivy
+  :init
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "")
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-initial-inputs-alist nil)
+  :bind
+  ("C-s" . swiper)
+  ("M-x" . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
+  :config
+  (ivy-mode 1))
 #+end_src
 
 ** Deactivation
@@ -444,38 +463,6 @@ Disable ~hl-line-mode~ for specific modes/buffers
 	       (:propertize global-mode-string 'face 'mode-line-mode-string))))
 #+end_src
 
-* Helm Config
-#+begin_src emacs-lisp
-(use-package helm
-  :init
-  (global-unset-key (kbd "C-x c"))
-  :bind(("C-c h" . helm-command-prefix)
-        ("C-x b" . helm-mini)
-        ("C-x C-f" . helm-find-files)
-        ("C-x C-l" . helm-locate)
-        ("M-x" . helm-M-x)
-        ("M-y" . helm-show-kill-ring)
-
-        :map helm-map
-        ([tab] . helm-execute-persistent-action)
-        ("C-z" . helm-select-action))
-
-  :config
-  (setq helm-display-header-line            nil
-        helm-scroll-amount                    8
-        helm-autoresize-mode                  t
-        helm-split-window-in-side-p           t
-        helm-move-to-line-cycle-in-source     t
-        helm-M-x-fuzzy-match                  t
-        helm-buffers-fuzzy-matching           t
-        helm-recentf-fuzzy-match              t
-        helm-ff-search-library-in-sexp        t
-        helm-ff-file-name-history-use-recentf t)
-
-  (helm-mode 1))
-(use-package helm-projectile)
-#+end_src
-
 * Misc Language Config
 #+begin_src emacs-lisp
 (use-package go-mode
@@ -544,5 +531,4 @@ Disable ~hl-line-mode~ for specific modes/buffers
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 #+end_src
-
 
