@@ -55,13 +55,16 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (server-start)
 #+end_src
 
-*** General settings
+*** ido settings
 #+begin_src emacs-lisp
 (use-package ido
   :ensure nil
   :config
   (ido-mode t))
+#+end_src
 
+*** winner-mode
+#+begin_src emacs-lisp
 (use-package winner
   :ensure nil
   :bind
@@ -69,10 +72,25 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("C-c r" . winner-redo)
   :config
   (winner-mode 1))
+#+end_src
 
+*** Follow symlinks in version control
+#+begin_src emacs-lisp
 (setq vc-follow-symlinks t)
+#+end_src
+
+*** Use 'root' user by default for SSH connections using TRAMP
+#+begin_src emacs-lisp
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+#+end_src
+
+*** Set explicit shell binary
+#+begin_src emacs-lisp
 (setq explicit-shell-file-name "/bin/zsh")
+#+end_src
+
+*** Use M-3 to insert an octothorp
+#+begin_src emacs-lisp
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 #+end_src
 
@@ -244,6 +262,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package docker-tramp)
 (use-package docker)
 #+end_src
+
 ** Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
