@@ -47,7 +47,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package flycheck-tip
   :config
-  (flycheck-tip-use-timer 'verbose))
+  (setq flycheck-display-errors-function 'ignore))
 #+end_src
 
 *** Start the server
