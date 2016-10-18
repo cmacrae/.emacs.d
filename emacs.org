@@ -266,7 +266,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package docker)
 #+end_src
 
-*** Ivy & Counsel
+*** Ivy/Counsel/avy
 #+begin_src emacs-lisp
 (use-package counsel)
 (use-package ivy
@@ -281,6 +281,12 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("C-x C-f" . counsel-find-file)
   :config
   (ivy-mode 1))
+(use-package avy
+  :ensure nil
+  :bind
+  ("C-:" . avy-goto-char)
+  ("C-'" . avy-goto-char-2)
+  ("M-g g" . avy-goto-line))
 #+end_src
 
 ** Deactivation
