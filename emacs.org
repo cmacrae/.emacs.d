@@ -390,9 +390,6 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (defvar my-ghd-modes '(
                        shell-mode-hook
                        git-commit-mode-hook
-                       mu4e-main-mode-hook
-                       mu4e-view-mode-hook
-                       mu4e-headers-mode-hook
                        term-mode-hook
                       )
   "Modes to ensure global-hl-line-mode is disabled for.")
