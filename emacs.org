@@ -268,7 +268,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 
 *** Ivy/Counsel/avy
 #+begin_src emacs-lisp
-(use-package counsel)
+(use-package counsel
+  :bind
+  ("M-y" . counsel-yank-pop))
 (use-package ivy
   :init
   (setq ivy-use-virtual-buffers t)
