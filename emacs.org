@@ -126,6 +126,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** Projectile
 #+begin_src emacs-lisp
 (use-package projectile
+  :init
+  (setq projectile-completion-system 'ivy)
+  (setq projectile-switch-project-action 'neotree-projectile-action)
   :config
   (projectile-global-mode))
 #+end_src
@@ -133,10 +136,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** NeoTree
 #+begin_src emacs-lisp
 (use-package neotree
-  :bind ("C-;" . neotree-toggle)
-  :init
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-switch-project-action 'neotree-projectile-action))
+  :bind ("C-;" . neotree-toggle))
 #+end_src
 
 *** Popwin
