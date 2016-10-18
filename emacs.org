@@ -97,8 +97,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** Ace window
 #+begin_src emacs-lisp
 (use-package ace-window
-  :bind ("M-[" . ace-window)
+  :bind ("M-p" . ace-window)
   :config
+  (setq aw-dispatch-always t)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+end_src
 
