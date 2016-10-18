@@ -118,7 +118,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   '(diff-hl-insert ((t (:background "#7ccd7c"))))
   '(diff-hl-delete ((t (:background "#ee6363")))))
   ;; On-the-fly diff updates
-  '(diff-l-flydiff-mode)
+  (diff-hl-flydiff-mode)
   ;; Enable diff-hl globally
   (global-diff-hl-mode 1))
 #+end_src
