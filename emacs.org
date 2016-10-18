@@ -115,8 +115,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ;; Better looking colours for diff indicators /w spacemacs-light theme
   (custom-set-faces
   '(diff-hl-change ((t (:background "#3a81c3"))))
-  '(diff-hl-insert ((t (:background "#7ccd7c")))))
-  '(diff-hl-delete ((t (:background "#ee6363"))))
+  '(diff-hl-insert ((t (:background "#7ccd7c"))))
+  '(diff-hl-delete ((t (:background "#ee6363")))))
   ;; On-the-fly diff updates
   '(diff-l-flydiff-mode)
   ;; Enable diff-hl globally
