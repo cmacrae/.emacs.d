@@ -28,6 +28,11 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (load custom-file)
 #+end_src
 
+*** Just use 'y' or 'n' instead of 'yes' or 'no'
+#+begin_src emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
 *** Set the scratch buffer string
 #+begin_src emacs-lisp
 (setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
