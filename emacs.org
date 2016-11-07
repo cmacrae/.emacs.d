@@ -300,6 +300,18 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("M-g g" . avy-goto-line))
 #+end_src
 
+*** Perspective
+#+begin_src emacs-lisp
+(use-package perspective
+  :init
+  (persp-mode))
+
+(use-package persp-projectile
+  :bind (:map projectile-mode-map
+    ("C-c p s w" . projectile-persp-switch-project))
+  :config
+  (require 'persp-projectile))
+#+end_src
 ** Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
