@@ -307,8 +307,6 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (persp-mode))
 
 (use-package persp-projectile
-  :bind (:map projectile-mode-map
-    ("C-c p s w" . projectile-persp-switch-project))
   :config
   (require 'persp-projectile))
 #+end_src
