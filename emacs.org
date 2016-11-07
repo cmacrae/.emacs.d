@@ -40,19 +40,15 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 
 *** Turn on ~global-flycheck-mode~ & ~smartparens-global-mode~ after init
 #+begin_src emacs-lisp
+(use-package flycheck-pos-tip)
 (use-package flycheck
   :init
-  (add-hook 'after-init-hook #'global-flycheck-mode))
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :config
+  (flycheck-pos-tip-mode))
 (use-package smartparens
   :init
   (add-hook 'after-init-hook #'smartparens-global-mode))
-#+end_src
-
-*** In-line ~flycheck~ tips
-#+begin_src emacs-lisp
-(use-package flycheck-tip
-  :config
-  (setq flycheck-display-errors-function 'ignore))
 #+end_src
 
 *** Start the server
