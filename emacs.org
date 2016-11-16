@@ -304,12 +304,16 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package perspective
   :init
-  (persp-mode))
+  (persp-mode)
+  :config
+  (custom-set-faces
+  '(persp-selected-face ((t (:foreground "#3b99fc" :weight bold))))))
 
 (use-package persp-projectile
   :config
   (require 'persp-projectile))
 #+end_src
+
 ** Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
