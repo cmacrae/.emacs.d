@@ -115,9 +115,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   :init
   ;; Better looking colours for diff indicators /w spacemacs-light theme
   (custom-set-faces
-   '(diff-hl-change ((t (:background "#3a81c3"))))
-   '(diff-hl-insert ((t (:background "#7ccd7c"))))
-   '(diff-hl-delete ((t (:background "#ee6363")))))
+   '(diff-hl-change ((t (:background "#83A598"))))
+   '(diff-hl-insert ((t (:background "#84BB26"))))
+   '(diff-hl-delete ((t (:background "#FB4933")))))
   ;; On-the-fly diff updates
   (diff-hl-flydiff-mode)
   ;; Enable diff-hl globally
@@ -307,7 +307,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (persp-mode)
   :config
   (custom-set-faces
-  '(persp-selected-face ((t (:foreground "#3b99fc" :weight bold))))))
+  '(persp-selected-face ((t (:foreground "#83A598" :weight bold))))))
 
 (use-package persp-projectile
   :config
@@ -452,9 +452,9 @@ Disable ~hl-line-mode~ for specific modes/buffers
 
 ** Theme
 #+begin_src emacs-lisp
-(use-package atom-one-dark-theme
+(use-package darktooth-theme
   :init
-  (load-theme 'atom-one-dark t))
+  (load-theme 'darktooth t))
 #+end_src
 
 ** Font
