@@ -392,6 +392,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (set-window-fringes (selected-window) 0 0))
 
 (add-hook 'eshell-mode 'hide-fringes)
+(custom-set-faces
+  '(fringe ((t (:background "#504945")))))
 #+end_src
 
 ** Current line highlighting
