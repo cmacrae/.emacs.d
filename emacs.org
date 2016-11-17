@@ -137,7 +137,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** NeoTree
 #+begin_src emacs-lisp
 (use-package neotree
-  :bind ("C-;" . neotree-toggle))
+  :bind ("C-;" . neotree-toggle)
+  :config
+  (setq neo-theme (if window-system 'icons 'arrows)))
 #+end_src
 
 *** Popwin
@@ -452,6 +454,10 @@ Disable ~hl-line-mode~ for specific modes/buffers
       (add-hook m 'rainbow-delimiters-mode)))
 #+end_src
 
+** All the icons
+#+begin_src emacs-lisp
+(use-package all-the-icons)
+#+end_src
 ** Theme
 #+begin_src emacs-lisp
 (use-package darktooth-theme
