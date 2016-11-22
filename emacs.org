@@ -462,6 +462,12 @@ Disable ~hl-line-mode~ for specific modes/buffers
 ** All the icons
 #+begin_src emacs-lisp
 (use-package all-the-icons)
+(use-package all-the-icons-dired
+  :init
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  :config
+  (custom-set-faces
+  '(all-the-icons-dired-dir-face ((t (:foreground "#FDF4C1"))))))
 #+end_src
 ** Theme
 #+begin_src emacs-lisp
