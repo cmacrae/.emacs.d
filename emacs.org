@@ -9,8 +9,7 @@ $ git clone git://orgmode.org/org-mode.git src/org-mode
 
 It's also important to note that this configuration makes heavy use of the brilliant [[https://github.com/jwiegley/use-package][use-package]].
 See ~init.el~ for the ~use-package~ bootstrapping code.
-* Common
-** General
+* General
 *** Personal stuff
 #+begin_src emacs-lisp
 (setq user-full-name "Calum MacRae"
@@ -307,6 +306,26 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("M-g g" . avy-goto-line))
 #+end_src
 
+*** Hydras
+#+begin_src emacs-lisp
+(use-package hydra
+  :bind
+  ("C-c z" . hydra-zoom/body)
+  ("C-c t" . hydra-move-text/body)
+
+  :config
+  ;; Zoom
+  (defhydra hydra-zoom ()
+    "Zoom"
+    ("i" text-scale-increase "in")
+    ("o" text-scale-decrease "out")))
+
+  ;; Move Text
+  (defhydra hydra-move-text ()
+    "Move text"
+    ("p" move-text-up "up")
+    ("n" move-text-down "down"))
+#+end_src
 *** Perspective
 #+begin_src emacs-lisp
 (use-package perspective
@@ -321,7 +340,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (require 'persp-projectile))
 #+end_src
 
-** Deactivation
+* Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
 (setq auto-save-default nil)
@@ -329,7 +348,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (setq ring-bell-function 'ignore)
 #+end_src
 
-** Custom functions
+* Custom functions
 *** Sort words
 #+begin_src emacs-lisp
 (defun sort-words (reverse beg end)
@@ -373,6 +392,10 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
                 'sensible-move-beginning-of-line)
 #+end_src
 
+*** Move text
+#+begin_src emacs-lisp
+(use-package move-text)
+#+end_src
 * Appearance
 ** Hide stuff
 #+begin_src emacs-lisp
