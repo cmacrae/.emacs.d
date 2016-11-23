@@ -306,6 +306,31 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("M-g g" . avy-goto-line))
 #+end_src
 
+*** Corral
+#+begin_src emacs-lisp
+(use-package corral
+  :bind
+  ("M-9" . corral-parentheses-backward)
+  ("M-0" . corral-parentheses-forward)
+  ("M-[" . corral-brackets-backward)
+  ("M-]" . corral-brackets-forward)
+  ("M-{" . corral-braces-backward)
+  ("M-}" . corral-braces-forward)
+  ("M-\"" . corral-double-quotes-backward)
+  ("C-c v" . hydra-corral/body)
+  :config
+  (setq corral-preserve-point t)
+  (defhydra hydra-corral (:columns 5)
+    "Corral"
+    ("(" corral-parentheses-backward "Back")
+    (")" corral-parentheses-forward "Forward")
+    ("[" corral-brackets-backward "Back")
+    ("]" corral-brackets-forward "Forward")
+    ("{" corral-braces-backward "Back")
+    ("}" corral-braces-forward "Forward")
+    ("\"" corral-double-quotes-backward "Back")
+    ("." hydra-repeat "Repeat")))
+#+end_src
 *** Hydras
 #+begin_src emacs-lisp
 (use-package hydra
