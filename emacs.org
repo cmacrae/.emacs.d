@@ -329,6 +329,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("{" corral-braces-backward "Back")
     ("}" corral-braces-forward "Forward")
     ("\"" corral-double-quotes-backward "Back")
+    ("'" corral-single-quotes-backward "Back")
     ("." hydra-repeat "Repeat")))
 #+end_src
 *** Hydras
