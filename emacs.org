@@ -366,15 +366,19 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 
   ;; Buffer traversal
   (defhydra hydra-traverse (:pre (set-cursor-color "#FB4934")
-                            :post (set-cursor-color "#FDF4C1"))
+                            :post (set-cursor-color "#FDF4C1")
+			    :columns 4)
     "Traversal"
-    ("a" beginning-of-line)
-    ("e" end-of-line)
-    ("f" forward-char)
-    ("b" backward-char)
-    ("n" next-line)
-    ("p" previous-line)
-    ("g" nil "quit")))
+    ("a" beginning-of-line "Beginning")
+    ("e" end-of-line "End")
+    ("f" forward-char "Forward")
+    ("b" backward-char "Back")
+    ("n" next-line "Next")
+    ("p" previous-line "Prev")
+    ("v" scroll-up-command "Up")
+    ("M-v" scroll-down-command "Down")
+    ("l" recenter-top-bottom "Recenter")
+    ("q" nil "quit")))
 #+end_src
 *** Perspective
 #+begin_src emacs-lisp
