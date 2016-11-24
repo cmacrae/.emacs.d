@@ -150,28 +150,20 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** Popwin
 #+begin_src emacs-lisp
 (use-package popwin
-  :bind-keymap ("C-z" . popwin:keymap)
-  :config
+  :bind ("C-x t" . popwin-term:term)
+  :init
   (popwin-mode 1)
-  (push '(term-mode :position :top :height 16 :stick t) popwin:special-display-config)
-  (push '(" *grep*" :height 30 :position bottom) popwin:special-display-config))
-#+end_src
+  :config
+  (push '(" *grep*" :height 30 :position bottom) popwin:special-display-config)
 
-*** Custom ~popwin-term~ function
-#+begin_src emacs-lisp
-(defun popwin-term:term ()
+  (defun popwin-term:term ()
   (interactive)
   (popwin:display-buffer-1
    (or (get-buffer "*terminal*")
        (save-window-excursion
          (call-interactively 'term)))
-   :default-config-keywords '(:position :top)))
-
-(provide 'popwin-term)
-
-(use-package popwin-term
-  :ensure nil
-  :bind ("C-x t" . popwin-term:term))
+	 :default-config-keywords '(:position :top))
+	 (provide 'popwin-term)))
 #+end_src
 
 *** Kill term buffers upon exit
