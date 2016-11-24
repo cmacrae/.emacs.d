@@ -358,12 +358,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     "Transpose"
      ("c" transpose-chars "characters")
      ("w" transpose-words "words")
-     ("o" org-transpose-words "Org mode words")
      ("l" transpose-lines "lines")
      ("s" transpose-sentences "sentences")
-     ("e" org-transpose-elements "Org mode elements")
      ("p" transpose-paragraphs "paragraphs")
-     ("t" org-table-transpose-table-at-point "Org mode table")
      ("q" nil "cancel" :color blue)))
 #+end_src
 *** Perspective
