@@ -345,23 +345,24 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ;; Zoom
   (defhydra hydra-zoom ()
     "Zoom"
-    ("i" text-scale-increase "in")
-    ("o" text-scale-decrease "out"))
+    ("i" text-scale-increase "In")
+    ("o" text-scale-decrease "Out")
+    ("q" nil "Quit"))
 
   ;; Move Text
   (defhydra hydra-move-text ()
     "Move text"
-    ("p" move-text-up "up")
-    ("n" move-text-down "down"))
+    ("p" move-text-up "Up")
+    ("n" move-text-down "Down"))
 
   ;; Transpose
   (defhydra hydra-transpose (:color red)
     "Transpose"
-    ("c" transpose-chars "characters")
-    ("w" transpose-words "words")
-    ("l" transpose-lines "lines")
-    ("s" transpose-sentences "sentences")
-    ("p" transpose-paragraphs "paragraphs")
+    ("c" transpose-chars "Characters")
+    ("w" transpose-words "Words")
+    ("l" transpose-lines "Lines")
+    ("s" transpose-sentences "Sentences")
+    ("p" transpose-paragraphs "Paragraphs")
     ("q" nil "cancel" :color blue))
 
   ;; Buffer traversal
@@ -378,7 +379,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("v" scroll-up-command "Up")
     ("M-v" scroll-down-command "Down")
     ("l" recenter-top-bottom "Recenter")
-    ("q" nil "quit")))
+    ("q" nil "Quit")))
 #+end_src
 *** Perspective
 #+begin_src emacs-lisp
@@ -408,7 +409,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("s" persp-switch "Switch")
   ("C-x" persp-switch-last "Switch Last")
   ("b" persp-switch-to-buffer "Switch to Buffer")
-  ("P" projectile-persp-switch-project "Switch Project")))
+  ("P" projectile-persp-switch-project "Switch Project")
+  ("q" nil "Quit")))
 #+end_src
 
 * Deactivation
