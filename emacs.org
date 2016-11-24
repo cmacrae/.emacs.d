@@ -150,11 +150,10 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 *** Popwin
 #+begin_src emacs-lisp
 (use-package popwin
-  :bind ("C-x t" . popwin-term:term)
-  :init
-  (popwin-mode 1)
+  :bind
+  ("C-x t" . popwin-term:term)
   :config
-  (push '(" *grep*" :height 30 :position bottom) popwin:special-display-config)
+  (popwin-mode 1)
 
   (defun popwin-term:term ()
   (interactive)
