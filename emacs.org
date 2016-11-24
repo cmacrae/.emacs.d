@@ -390,8 +390,25 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   '(persp-selected-face ((t (:foreground "#83A598" :weight bold))))))
 
 (use-package persp-projectile
+  :bind
+  ("C-c x" . hydra-persp/body)
   :config
-  (require 'persp-projectile))
+  (require 'persp-projectile)
+  (defhydra hydra-persp (:columns 4
+                         :color blue)
+  "Perspective"
+  ("a" persp-add-buffer "Add Buffer")
+  ("i" persp-import "Import")
+  ("c" persp-kill "Close")
+  ("n" persp-next "Next")
+  ("p" persp-prev "Prev")
+  ("k" persp-remove-buffer "Kill Buffer")
+  ("r" persp-rename "Rename")
+  ("A" persp-set-buffer "Set Buffer")
+  ("s" persp-switch "Switch")
+  ("C-x" persp-switch-last "Switch Last")
+  ("b" persp-switch-to-buffer "Switch to Buffer")
+  ("P" projectile-persp-switch-project "Switch Project")))
 #+end_src
 
 * Deactivation
