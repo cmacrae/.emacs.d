@@ -382,7 +382,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("w" whitespace-mode "Whitespace")
     ("f" focus-mode "Focus")
     ("s" flyspell-mode "FlySpell")
-    ("S" flyspell-prog-mode "FlySpell Prog")))
+    ("S" flyspell-prog-mode "FlySpell Prog")
+    ("q" nil "Quit")))
 #+end_src
 *** Perspective
 #+begin_src emacs-lisp
