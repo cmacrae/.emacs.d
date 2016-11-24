@@ -338,19 +338,33 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   :bind
   ("C-c z" . hydra-zoom/body)
   ("C-c t" . hydra-move-text/body)
+  ("C-c T" . hydra-transpose/body)
 
   :config
   ;; Zoom
   (defhydra hydra-zoom ()
     "Zoom"
     ("i" text-scale-increase "in")
-    ("o" text-scale-decrease "out")))
+    ("o" text-scale-decrease "out"))
 
   ;; Move Text
   (defhydra hydra-move-text ()
     "Move text"
     ("p" move-text-up "up")
     ("n" move-text-down "down"))
+
+  ;; Transpose
+  (defhydra hydra-transpose (:color red)
+    "Transpose"
+     ("c" transpose-chars "characters")
+     ("w" transpose-words "words")
+     ("o" org-transpose-words "Org mode words")
+     ("l" transpose-lines "lines")
+     ("s" transpose-sentences "sentences")
+     ("e" org-transpose-elements "Org mode elements")
+     ("p" transpose-paragraphs "paragraphs")
+     ("t" org-table-transpose-table-at-point "Org mode table")
+     ("q" nil "cancel" :color blue)))
 #+end_src
 *** Perspective
 #+begin_src emacs-lisp
