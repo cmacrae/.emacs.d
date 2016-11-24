@@ -378,8 +378,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("B" backward-word "Back Word")
     ("n" next-line "Next")
     ("p" previous-line "Prev")
-    ("v" scroll-up-command "Up")
-    ("M-v" scroll-down-command "Down")
+    ("v" scroll-up-command "Down")
+    ("M-v" scroll-down-command "Up")
     ("l" recenter-top-bottom "Recenter")
     ("q" nil "Quit" :color blue)))
 #+end_src
