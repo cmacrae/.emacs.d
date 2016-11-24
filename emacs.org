@@ -339,6 +339,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("C-c z" . hydra-zoom/body)
   ("C-c t" . hydra-move-text/body)
   ("C-c T" . hydra-transpose/body)
+  ("C-c g" . hydra-traverse/body)
 
   :config
   ;; Zoom
@@ -356,12 +357,23 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ;; Transpose
   (defhydra hydra-transpose (:color red)
     "Transpose"
-     ("c" transpose-chars "characters")
-     ("w" transpose-words "words")
-     ("l" transpose-lines "lines")
-     ("s" transpose-sentences "sentences")
-     ("p" transpose-paragraphs "paragraphs")
-     ("q" nil "cancel" :color blue)))
+    ("c" transpose-chars "characters")
+    ("w" transpose-words "words")
+    ("l" transpose-lines "lines")
+    ("s" transpose-sentences "sentences")
+    ("p" transpose-paragraphs "paragraphs")
+    ("q" nil "cancel" :color blue))
+
+  ;; Buffer traversal
+  (defhydra hydra-traverse ()
+    "Traversal"
+    ("a" beginning-of-line)
+    ("e" end-of-line)
+    ("f" forward-char)
+    ("b" backward-char)
+    ("n" next-line)
+    ("p" previous-line)
+    ("g" nil "quit")))
 #+end_src
 *** Perspective
 #+begin_src emacs-lisp
