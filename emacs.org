@@ -332,6 +332,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("C-c t" . hydra-move-text/body)
   ("C-c T" . hydra-transpose/body)
   ("C-c g" . hydra-traverse/body)
+  ("C-c M" . hydra-toggle-mode/body)
 
   :config
   ;; Zoom
@@ -373,7 +374,15 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("v" scroll-up-command "Down")
     ("M-v" scroll-down-command "Up")
     ("l" recenter-top-bottom "Recenter")
-    ("q" nil "Quit" :color blue)))
+    ("q" nil "Quit" :color blue))
+
+  ;; Toggle mode
+  (defhydra hydra-toggle-mode (:color blue)
+    "Toggle"
+    ("w" whitespace-mode "Whitespace")
+    ("f" focus-mode "Focus")
+    ("s" flyspell-mode "FlySpell")
+    ("S" flyspell-prog-mode "FlySpell Prog")))
 #+end_src
 *** Perspective
 #+begin_src emacs-lisp
