@@ -385,6 +385,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     "Toggle"
     ("w" whitespace-mode "Whitespace")
     ("f" focus-mode "Focus")
+    ("i" aggressive-indent-mode "Aggressive indent")
     ("s" flyspell-mode "FlySpell")
     ("S" flyspell-prog-mode "FlySpell Prog")
     ("q" nil "Quit")))
