@@ -55,6 +55,10 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (server-start)
 #+end_src
 
+*** Confirm quit
+#+begin_src emacs-lisp
+(setq confirm-kill-emacs 'yes-or-no-p)
+#+End_src
 *** ido settings
 #+begin_src emacs-lisp
 (use-package ido
