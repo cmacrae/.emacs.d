@@ -378,6 +378,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("v" scroll-up-command "Down")
     ("M-v" scroll-down-command "Up")
     ("l" recenter-top-bottom "Recenter")
+    ("SPC" set-mark-command "Set Mark")
+    ("<" beginning-of-buffer "Beginning")
+    (">" end-of-buffer "End")
     ("q" nil "Quit" :color blue))
 
   ;; Toggle mode
