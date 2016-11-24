@@ -408,6 +408,10 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("q" nil "Quit")))
 #+end_src
 
+*** Focus
+#+begin_src emacs-lisp
+(use-package focus)
+#+end_src
 * Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
