@@ -112,7 +112,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package diff-hl
   :init
-  ;; Better looking colours for diff indicators /w spacemacs-light theme
+  ;; Better looking colours for diff indicators /w darktooth theme
   (custom-set-faces
    '(diff-hl-change ((t (:background "#83A598"))))
    '(diff-hl-insert ((t (:background "#84BB26"))))
@@ -138,6 +138,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package neotree
   :bind ("C-;" . neotree-toggle)
   :config
+  ;; Better looking colours for diff indicators /w darktooth theme
   (custom-set-faces
    '(neo-header-face ((t (:foreground "#7C6F64"))))
    '(neo-file-link-face ((t (:foreground "#FDF4C1"))))
@@ -389,6 +390,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   :init
   (persp-mode)
   :config
+  ;; Better looking colours for diff indicators /w darktooth theme
   (custom-set-faces
   '(persp-selected-face ((t (:foreground "#83A598" :weight bold))))))
 
@@ -497,6 +499,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (set-window-fringes (selected-window) 0 0))
 
 (add-hook 'eshell-mode 'hide-fringes)
+;; Better looking colours for diff indicators /w darktooth theme
 (custom-set-faces
   '(fringe ((t (:background "#504945")))))
 #+end_src
@@ -564,6 +567,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
   :init
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
   :config
+  ;; Better looking colours for diff indicators /w darktooth theme
   (custom-set-faces
   '(all-the-icons-dired-dir-face ((t (:foreground "#FDF4C1"))))))
 #+end_src
