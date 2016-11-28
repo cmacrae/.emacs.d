@@ -16,6 +16,16 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
       user-mail-address "calum0macrae@gmail.com")
 #+end_src
 
+*** UTF-8
+#+begin_src emacs-lisp
+(set-charset-priority 'unicode)
+(setq locale-coding-system   'utf-8)
+(set-terminal-coding-system  'utf-8)
+(set-keyboard-coding-system  'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system        'utf-8)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+#+end_src
 *** Global ~:ensure~ for ~use-package~ statements
 #+begin_src emacs-lisp
 (setq use-package-always-ensure t)
