@@ -365,7 +365,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ;; Buffer traversal
   (defhydra hydra-traverse (:pre (set-cursor-color "#FB4934")
                             :post (set-cursor-color "#FDF4C1")
-			    :columns 4)
+			    :columns 8)
     "Traversal"
     ("a" beginning-of-line "Beginning")
     ("e" end-of-line "End")
