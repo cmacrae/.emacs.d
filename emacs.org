@@ -678,27 +678,68 @@ Disable ~hl-line-mode~ for specific modes/buffers
 	       (:propertize global-mode-string 'face 'mode-line-mode-string))))
 #+end_src
 
-* Misc Language Config
+* Language Config
+** Go
 #+begin_src emacs-lisp
 (use-package go-mode
   :config
+  ; Use goimports instead of go-fmt
+  (setq gofmt-command "goimports")
   (add-to-list 'exec-path "~/code/go/bin")
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (setenv "GOPATH" "/Users/cmacrae/code/go"))
+  (add-hook 'go-mode-hook 'setup-go-mode-compile)
+  (setenv "GOPATH" "/Users/cmacrae/code/go")
+  (add-hook 'go-mode-hook '(lambda ()
+			     (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
+  (add-hook 'go-mode-hook '(lambda ()
+			     (local-set-key (kbd "C-c C-g") 'go-goto-imports)))
+  (add-hook 'go-mode-hook (lambda ()
+			    (set (make-local-variable 'company-backends) '(company-go))
+			    (company-mode))))
 
+;; Use 'go build' for compilation
+(defun setup-go-mode-compile ()
+  (if (not (string-match "go" compile-command))
+      (set (make-local-variable 'compile-command)
+           "go build -v && go test -v && go vet")))
+
+(use-package company-go
+  :after go-mode
+  :config
+  (setq tab-width 4)
+
+  :bind (:map go-mode-map
+  ("M-." . godef-jump)))
+
+(use-package flymake-go)
+(use-package go-eldoc
+  :config
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
+#+end_src
+** Markdown
+#+begin_src emacs-lisp
 (use-package markdown-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
   (add-hook 'markdown-mode-hook 'flyspell-mode)
+#+end_src
 
+** Jinja2
+#+begin_src emacs-lisp
 (use-package jinja2-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
+#+end_src
 
+** JavaScript
+#+begin_src emacs-lisp
 (use-package js2-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+#+end_src
 
+** HashiCorp
+#+begin_src emacs-lisp
 (use-package hcl-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.nomad\\'" . hcl-mode)))
