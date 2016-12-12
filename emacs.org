@@ -143,6 +143,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   :init
   (setq projectile-completion-system 'ivy)
   (setq projectile-switch-project-action 'neotree-projectile-action)
+  :bind ("C-c p p" . projectile-persp-switch-project)
   :config
   (projectile-global-mode))
 #+end_src
