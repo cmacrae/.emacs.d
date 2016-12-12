@@ -88,16 +88,6 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (winner-mode 1))
 #+end_src
 
-*** Flyspell settings
-#+begin_src emacs-lisp
-(use-package flyspell
-  :ensure nil
-  :init
-  (unbind-key "C-;" flyspell-mode-map)
-  :bind
-  ("C-c C-;" . flyspell-auto-correct-previous-word))
-#+end_src
-
 *** Follow symlinks in version control
 #+begin_src emacs-lisp
 (setq vc-follow-symlinks t)
