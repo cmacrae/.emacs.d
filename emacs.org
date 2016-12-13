@@ -674,7 +674,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
                 (:propertize "%m" 'face 'mode-line-mode-name)
                 "    "
                 ;; line number
-                "Line %l, %p    "
+                "Line %l:%c, %p    "
 	       (:propertize global-mode-string 'face 'mode-line-mode-string))))
 #+end_src
 
