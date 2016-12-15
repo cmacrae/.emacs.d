@@ -499,12 +499,13 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 * Appearance
 ** Hide stuff
 #+begin_src emacs-lisp
-(blink-cursor-mode 0)
-(when window-system
-  (tooltip-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1))
+(dolist (mode
+  '(tool-bar-mode
+    tooltip-mode
+    scroll-bar-mode
+    menu-bar-mode
+    blink-cursor-mode))
+  (funcall mode 0))
 #+end_src
 
 ** Clock
