@@ -31,10 +31,9 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (setq use-package-always-ensure t)
 #+end_src
 
-*** Custom elisp file (don't really use this, just dump stuff here)
+*** Discard customizations
 #+begin_src emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(setq custom-file (make-temp-file ""))
 #+end_src
 
 *** Just use 'y' or 'n' instead of 'yes' or 'no'
