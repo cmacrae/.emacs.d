@@ -440,6 +440,21 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package focus)
 #+end_src
+*** Dumb Jump
+#+begin_src emacs-lisp
+(use-package dumb-jump
+  :bind
+  ("C-c j" . hydra-dumb-jump/body)
+  :config
+  (setq dumb-jump-selector 'ivy)
+  (defhydra hydra-dumb-jump (:color blue)
+  "Dumb Jump"
+  ("g" dumb-jump-go "Jump to def")
+  ("p" dumb-jump-back "Jump back")
+  ("q" dumb-jump-quick-look "Quick look")
+  ("o" dumb-jump-go-other-window "Jump in other window")
+  ("q" nil "Quit")))
+#+end_src
 * Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
