@@ -727,10 +727,25 @@ Disable ~hl-line-mode~ for specific modes/buffers
   :bind (:map go-mode-map
   ("M-." . godef-jump)))
 
+;; Flymake integration
 (use-package flymake-go)
+
+;; ElDoc integration
 (use-package go-eldoc
   :config
   (add-hook 'go-mode-hook 'go-eldoc-setup))
+
+;; Linting
+(use-package flycheck-gometalinter
+  :config
+  (progn
+    (flycheck-gometalinter-setup))
+    ;; skip linting for vendor dirs
+    (setq flycheck-gometalinter-vendor t)
+    ;; use in test files
+    (setq flycheck-gometalinter-test t)
+    ;; only use fast linters
+    (setq flycheck-gometalinter-fast t))
 #+end_src
 ** Markdown
 #+begin_src emacs-lisp
