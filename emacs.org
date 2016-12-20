@@ -360,7 +360,8 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (defhydra hydra-move-text ()
     "Move text"
     ("p" move-text-up "Up")
-    ("n" move-text-down "Down"))
+    ("n" move-text-down "Down")
+    ("q" nil "Quit" :color blue))
 
   ;; Transpose
   (defhydra hydra-transpose (:color red)
@@ -370,7 +371,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("l" transpose-lines "Lines")
     ("s" transpose-sentences "Sentences")
     ("p" transpose-paragraphs "Paragraphs")
-    ("q" nil "cancel" :color blue))
+    ("q" nil "Quit" :color blue))
 
   ;; Buffer traversal
   (defhydra hydra-traverse (:pre (set-cursor-color "#FB4934")
