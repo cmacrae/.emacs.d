@@ -746,7 +746,9 @@ Disable ~hl-line-mode~ for specific modes/buffers
     ;; use in test files
     (setq flycheck-gometalinter-test t)
     ;; only use fast linters
-    (setq flycheck-gometalinter-fast t))
+    (setq flycheck-gometalinter-fast t)
+    ;; explicitly disable 'gotype' linter
+    (setq flycheck-gometalinter-disable-linters '("gotype")))
 #+end_src
 ** Markdown
 #+begin_src emacs-lisp
