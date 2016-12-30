@@ -658,6 +658,12 @@ Disable ~hl-line-mode~ for specific modes/buffers
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
 #+end_src
 
+*** Smaller font size if laptop
+#+begin_src emacs-lisp
+(when (string= system-name "walker")
+  (set-face-attribute 'default nil :height 90))
+#+end_src
+
 ** Custom modeline
 #+begin_src emacs-lisp
 (defun shorten-directory (dir max-length)
