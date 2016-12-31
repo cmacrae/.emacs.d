@@ -710,7 +710,13 @@ Disable ~hl-line-mode~ for specific modes/buffers
   (add-to-list 'exec-path "~/code/go/bin")
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook 'setup-go-mode-compile)
-  (setenv "GOPATH" "/Users/cmacrae/code/go")
+  (cond
+   ((string-equal system-type "gnu/linux")
+    (progn
+      (setenv "GOPATH" "/home/cmacrae/code/go")))
+   ((string-equal system-type "darwin")
+    (progn
+      (setenv "GOPATH" "/Users/cmacrae/code/go"))))
   (add-hook 'go-mode-hook '(lambda ()
 			     (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
   (add-hook 'go-mode-hook '(lambda ()
