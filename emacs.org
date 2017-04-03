@@ -456,6 +456,12 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("o" dumb-jump-go-other-window "Jump in other window")
   ("q" nil "Quit")))
 #+end_src
+*** ~undo-tree~
+#+begin_src emacs-lisp
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode))
+#+end_src
 * Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
