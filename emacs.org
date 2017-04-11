@@ -666,7 +666,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
 
 *** Smaller font size if laptop
 #+begin_src emacs-lisp
-(when (string= system-name "walker")
+(when (string= system-type "gnu/linux")
   (set-face-attribute 'default nil :height 90))
 #+end_src
 
