@@ -97,6 +97,10 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
 #+end_src
 
+*** Set TRAMP shell prompt pattern (fix for some fancy prompts)
+#+begin_src emacs-lisp
+(setq shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+#+end_src
 *** Set explicit shell binary
 #+begin_src emacs-lisp
 (setq explicit-shell-file-name "/bin/zsh")
