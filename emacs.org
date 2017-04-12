@@ -129,11 +129,6 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package diff-hl
   :init
-  ;; Better looking colours for diff indicators /w darktooth theme
-  (custom-set-faces
-   '(diff-hl-change ((t (:background "#83A598"))))
-   '(diff-hl-insert ((t (:background "#84BB26"))))
-   '(diff-hl-delete ((t (:background "#FB4933")))))
   ;; On-the-fly diff updates
   (diff-hl-flydiff-mode)
   ;; Enable diff-hl globally
@@ -156,12 +151,6 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (use-package neotree
   :bind ("C-;" . neotree-toggle)
   :config
-  ;; Better looking colours for diff indicators /w darktooth theme
-  (custom-set-faces
-   '(neo-header-face ((t (:foreground "#7C6F64"))))
-   '(neo-file-link-face ((t (:foreground "#FDF4C1"))))
-   '(neo-dir-link-face ((t (:foreground "#528B8B"))))
-   '(neo-root-dir-face ((t (:foreground "#BBAA97")))))
   (setq neo-theme (if window-system 'icons 'arrows)))
 #+end_src
 
@@ -412,11 +401,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package perspective
   :init
-  (persp-mode)
-  :config
-  ;; Better looking colours for diff indicators /w darktooth theme
-  (custom-set-faces
-  '(persp-selected-face ((t (:foreground "#83A598" :weight bold))))))
+  (persp-mode))
 
 (use-package persp-projectile
   :bind
@@ -565,9 +550,6 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   (set-window-fringes (selected-window) 0 0))
 
 (add-hook 'eshell-mode 'hide-fringes)
-;; Better looking colours for diff indicators /w darktooth theme
-(custom-set-faces
-  '(fringe ((t (:background "#504945")))))
 #+end_src
 
 ** Current line highlighting
@@ -631,17 +613,13 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (use-package all-the-icons)
 (use-package all-the-icons-dired
   :init
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-  :config
-  ;; Better looking colours for diff indicators /w darktooth theme
-  (custom-set-faces
-  '(all-the-icons-dired-dir-face ((t (:foreground "#FDF4C1"))))))
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+end_src
 ** Theme
 #+begin_src emacs-lisp
-(use-package darktooth-theme
+(use-package spacemacs-theme
   :init
-  (load-theme 'darktooth t))
+  (load-theme 'spacemacs-ligt t))
 #+end_src
 
 ** Font
