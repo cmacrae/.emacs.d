@@ -26,6 +26,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 (prefer-coding-system        'utf-8)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 #+end_src
+
 *** Global ~:ensure~ for ~use-package~ statements
 #+begin_src emacs-lisp
 (setq use-package-always-ensure t)
@@ -68,6 +69,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (setq confirm-kill-emacs 'yes-or-no-p)
 #+End_src
+
 *** ido settings
 #+begin_src emacs-lisp
 (use-package ido
@@ -101,6 +103,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (setq shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
 #+end_src
+
 *** Set explicit shell binary
 #+begin_src emacs-lisp
 (setq explicit-shell-file-name "/bin/zsh")
@@ -331,6 +334,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("'" corral-single-quotes-backward "Back")
     ("." hydra-repeat "Repeat")))
 #+end_src
+
 *** Hydras
 #+begin_src emacs-lisp
 (use-package hydra
@@ -397,6 +401,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
     ("S" flyspell-prog-mode "FlySpell Prog")
     ("q" nil "Quit")))
 #+end_src
+
 *** Perspective
 #+begin_src emacs-lisp
 (use-package perspective
@@ -430,6 +435,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package focus)
 #+end_src
+
 *** Dumb Jump
 #+begin_src emacs-lisp
 (use-package dumb-jump
@@ -445,12 +451,14 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
   ("o" dumb-jump-go-other-window "Jump in other window")
   ("q" nil "Quit")))
 #+end_src
+
 *** ~undo-tree~
 #+begin_src emacs-lisp
 (use-package undo-tree
   :config
   (global-undo-tree-mode))
 #+end_src
+
 *** Nix
 #+begin_src emacs-lisp
 (use-package nix-mode
@@ -467,6 +475,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 			    (set (make-local-variable 'company-backends) '(company-nixos-options))
 			    (company-mode))))
 #+end_src
+
 * Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
@@ -523,6 +532,7 @@ See ~init.el~ for the ~use-package~ bootstrapping code.
 #+begin_src emacs-lisp
 (use-package move-text)
 #+end_src
+
 * Appearance
 ** Hide stuff
 #+begin_src emacs-lisp
@@ -615,11 +625,12 @@ Disable ~hl-line-mode~ for specific modes/buffers
   :init
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+end_src
+
 ** Theme
 #+begin_src emacs-lisp
 (use-package spacemacs-theme
   :init
-  (load-theme 'spacemacs-ligt t))
+  (load-theme 'spacemacs-light t))
 #+end_src
 
 ** Font
