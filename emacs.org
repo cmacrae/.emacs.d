@@ -365,7 +365,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 
   ;; Buffer traversal
   (defhydra hydra-traverse (:pre (set-cursor-color "#FB4934")
-                            :post (set-cursor-color "#FDF4C1")
+                            :post (set-cursor-color "#100a14")
 			    :columns 8)
     "Traversal"
     ("a" beginning-of-line "Beginning")
