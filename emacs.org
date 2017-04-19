@@ -279,6 +279,11 @@ It's important to note that this configuration makes heavy use of the brilliant 
 *** Ivy/Counsel/avy
 #+begin_src emacs-lisp
 (use-package counsel
+  :init
+  ;; Better looking kill-ring separator in Counsel
+  (setq counsel-yank-pop-separator
+    (concat "\n\n"
+      (concat (apply 'concat (make-list 50 "---")) "\n")))
   :bind
   ("M-y" . counsel-yank-pop))
 (use-package ivy
