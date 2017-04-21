@@ -474,6 +474,10 @@ It's important to note that this configuration makes heavy use of the brilliant 
 			    (company-mode))))
 #+end_src
 
+*** MPD/Mingus
+#+begin_src emacs-lisp
+(use-package mingus)
+#+end_src
 * Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
