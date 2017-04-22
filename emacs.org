@@ -457,7 +457,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (global-undo-tree-mode))
 #+end_src
 
-*** Nix
+*** Nix/NixOS
 #+begin_src emacs-lisp
 (use-package nix-mode
   :config
@@ -474,10 +474,20 @@ It's important to note that this configuration makes heavy use of the brilliant 
 			    (company-mode))))
 #+end_src
 
+**** Configure FlySpell when on NixOS
+#+begin_src emacs-lisp
+;; operating-system-release doesn't match well here, so resort to a little fiddling :)
+(when (string-match-p "NixOS" (shell-command-to-string "uname -v | awk '{print substr($1,4);}'"))
+  (setq ispell-program-name "aspell")
+  (setq ispell-list-command "--list")
+  (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB")))
+#+end_src
+
 *** MPD/Mingus
 #+begin_src emacs-lisp
 (use-package mingus)
 #+end_src
+
 * Deactivation
 #+begin_src emacs-lisp
 (setq make-backup-files nil)
@@ -595,6 +605,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
                             emacs-lisp-mode-hook
                             common-lisp-mode-hook
                             lisp-interaction-mode-hook
+			    nix-mode-hook
                         )
     "Modes to ensure indent-guide-mode is enabled for.")
   (dolist (m my-indent-modes)
@@ -614,6 +625,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
                             emacs-lisp-mode-hook
                             common-lisp-mode-hook
                             lisp-interaction-mode-hook
+			    nix-mode-hook
                         )
     "Modes to ensure rainbow-delimiters-mode is enabled for.")
   (dolist (m my-rainbow-modes)
