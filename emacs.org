@@ -629,7 +629,11 @@ Disable ~hl-line-mode~ for specific modes/buffers
 
 ** All the icons
 #+begin_src emacs-lisp
-(use-package all-the-icons)
+(use-package all-the-icons
+  :init
+  (if (not
+    (file-exists-p (concat (getenv "XDG_DATA_HOME") "/fonts/all-the-icons.ttf")))
+    (all-the-icons-install-fonts "t")))
 (use-package all-the-icons-dired
   :init
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
