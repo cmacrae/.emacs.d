@@ -205,10 +205,20 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (use-package openwith
   :config
   (openwith-mode t)
-  (setq openwith-associations '(("\\.avi\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
+  (cond
+   ((string-equal system-type "gnu/linux")
+    (progn
+    (setq openwith-associations '(("\\.avi\\'" "mpv" (file))
+  			       ("\\.mkv\\'" "mpv" (file))
+  			       ("\\.mp4\\'" "mpv" (file))
+  			       ("\\.pdf\\'" "zathura" (file))))))
+
+   ((string-equal system-type "darwin")
+    (progn
+     (setq openwith-associations '(("\\.avi\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
   			       ("\\.mkv\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
   			       ("\\.mp4\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-  			       ("\\.pdf\\'" "/Applications/Preview.app/Contents/MacOS/Preview" (file)))))
+  			       ("\\.pdf\\'" "/Applications/Preview.app/Contents/MacOS/Preview" (file))))))))
 #+end_src
 
 *** Set exec/man PATH from shell
