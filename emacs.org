@@ -555,6 +555,21 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (use-package move-text)
 #+end_src
 
+*** Align values
+#+begin_src emacs-lisp
+(defun align-values (start end)
+  "Vertically aligns region based on lengths of the first value of each line.
+Example output:
+
+    foo        bar
+    foofoo     bar
+    foofoofoo  bar"
+  (interactive "r")
+  (align-regexp start end
+                "\\S-+\\(\\s-+\\)"
+                1 1 nil))
+#+end_src
+
 * Appearance
 ** Hide stuff
 #+begin_src emacs-lisp
