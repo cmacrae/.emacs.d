@@ -667,6 +667,9 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (use-package all-the-icons-dired
   :init
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+(use-package all-the-icons-ivy
+  :init
+  (all-the-icons-ivy-setup))
 #+end_src
 
 ** Theme
