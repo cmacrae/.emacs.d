@@ -230,6 +230,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :config
+  (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 #+end_src
 
