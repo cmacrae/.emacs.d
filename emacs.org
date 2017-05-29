@@ -392,7 +392,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 
   ;; Buffer traversal
   (defhydra hydra-traverse (:pre (set-cursor-color "#FB4934")
-                            :post (set-cursor-color "#100a14")
+                            :post (set-cursor-color "#51afef")
 			    :columns 8)
     "Traversal"
     ("a" beginning-of-line "Beginning")
@@ -697,15 +697,37 @@ Disable ~hl-line-mode~ for specific modes/buffers
 
 ** Theme
 #+begin_src emacs-lisp
-(use-package spacemacs-theme
+(use-package doom-themes
   :init
-  (load-theme 'spacemacs-light t))
+  (load-theme 'doom-one t)
+  :config
+  (doom-themes-neotree-config)
+  (doom-themes-nlinum-config)
+
+  (setq
+      doom-themes-enable-bold t
+      doom-themes-enable-italic t
+      doom-one-brighter-comments t
+      doom-neotree-file-icons t))
+#+end_src
+
+*** Modeline
+#+begin_src emacs-lisp
+(use-package spaceline
+  :init
+  (require 'spaceline-config)
+  (spaceline-emacs-theme))
+(use-package spaceline-all-the-icons
+  :after spaceline
+  :config
+  (spaceline-all-the-icons-theme)
+  (spaceline-all-the-icons--setup-git-ahead))
 #+end_src
 
 ** Font
 *** Use [[https://github.com/tonsky/FiraCode][Fira Code]] as the default font
 #+begin_src emacs-lisp
- (when (window-system)
+(when (window-system)
    (set-default-font "Fira Code"))
 #+end_src
 
@@ -740,48 +762,6 @@ Disable ~hl-line-mode~ for specific modes/buffers
   (dolist (char-regexp alist)
     (set-char-table-range composition-function-table (car char-regexp)
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
-#+end_src
-
-*** Smaller font size if laptop
-#+begin_src emacs-lisp
-(when (string= system-type "gnu/linux")
-  (set-face-attribute 'default nil :height 90))
-#+end_src
-
-** Custom modeline
-#+begin_src emacs-lisp
-(defun shorten-directory (dir max-length)
-  "Show up to `max-length' characters of a directory name `dir'."
-  (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
-        (output ""))
-    (when (and path (equal "" (car path)))
-      (setq path (cdr path)))
-    (while (and path (< (length output) (- max-length 4)))
-      (setq output (concat (car path) "/" output))
-      (setq path (cdr path)))
-    (when path
-      (setq output (concat ".../" output)))
-    output))
-
-(setq-default mode-line-format
-              (quote
-               ("   "
-                ;; mode
-		(:propertize (:eval (shorten-directory default-directory 10))
-			     'face 'mode-line-folder-face)
-		(:propertize "%b"
-			     'face 'mode-line-filename-face)
-		" "
-                (:propertize mode-line-modified 'face 'mode-line-modified-face)
-		"  "
-		(vc-mode vc-mode)
-		"  "
-                ;; 'mode-name'
-                (:propertize "%m" 'face 'mode-line-mode-name)
-                "    "
-                ;; line number
-                "Line %l:%c, %p    "
-	       (:propertize global-mode-string 'face 'mode-line-mode-string))))
 #+end_src
 
 * Language Config
