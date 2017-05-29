@@ -502,6 +502,10 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (use-package password-store)
 #+end_src
 
+*** ~restclient~
+#+begin_src emacs-lisp
+(use-package restclient)
+#+end_src
 * Deactivation
 #+begin_src emacs-lisp
 (setq
