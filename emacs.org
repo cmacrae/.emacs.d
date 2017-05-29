@@ -795,9 +795,6 @@ Disable ~hl-line-mode~ for specific modes/buffers
   :bind (:map go-mode-map
   ("M-." . godef-jump)))
 
-;; Flymake integration
-(use-package flymake-go)
-
 ;; ElDoc integration
 (use-package go-eldoc
   :config
