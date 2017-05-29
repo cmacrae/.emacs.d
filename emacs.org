@@ -107,6 +107,13 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 #+end_src
 
+*** Configure FlySpell to use aspell
+#+begin_src emacs-lisp
+(setq
+  ispell-program-name "aspell"
+  ispell-list-command "--list"
+  ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+#+end_src
 *** Ace window
 #+begin_src emacs-lisp
 (use-package ace-window
@@ -492,11 +499,6 @@ It's important to note that this configuration makes heavy use of the brilliant 
 
 **** Configure FlySpell when on NixOS
 #+begin_src emacs-lisp
-;; operating-system-release doesn't match well here, so resort to a little fiddling :)
-(when (string-match-p "NixOS" (shell-command-to-string "uname -v | awk '{print substr($1,4);}'"))
-  (setq ispell-program-name "aspell")
-  (setq ispell-list-command "--list")
-  (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB")))
 #+end_src
 
 *** ~password-store~
