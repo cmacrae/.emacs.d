@@ -497,10 +497,6 @@ It's important to note that this configuration makes heavy use of the brilliant 
 			    (company-mode))))
 #+end_src
 
-**** Configure FlySpell when on NixOS
-#+begin_src emacs-lisp
-#+end_src
-
 *** ~password-store~
 #+begin_src emacs-lisp
 (use-package password-store)
