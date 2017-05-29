@@ -78,7 +78,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
   :bind
   ("C-c u" . winner-undo)
   ("C-c r" . winner-redo)
-  :config
+  :init
   (winner-mode 1))
 #+end_src
 
