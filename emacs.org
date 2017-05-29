@@ -407,6 +407,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
   ;; Toggle mode
   (defhydra hydra-toggle-mode (:color blue)
     "Toggle"
+    ("c" centered-window-mode "Centered Buffer")
     ("w" whitespace-mode "Whitespace")
     ("f" focus-mode "Focus")
     ("i" aggressive-indent-mode "Aggressive indent")
@@ -605,6 +606,10 @@ Example output:
 (add-hook 'eshell-mode 'hide-fringes)
 #+end_src
 
+** Centered buffers
+#+begin_src emacs-lisp
+(use-package centered-window-mode)
+#+end_src
 ** Current line highlighting
 #+begin_src emacs-lisp
 (global-hl-line-mode t)
