@@ -728,7 +728,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
 *** Use [[https://github.com/tonsky/FiraCode][Fira Code]] as the default font
 #+begin_src emacs-lisp
 (when (window-system)
-   (set-default-font "Fira Code"))
+   (set-default-font "Fira Code Retina"))
 #+end_src
 
 *** Configure ligatures
