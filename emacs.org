@@ -772,6 +772,25 @@ Disable ~hl-line-mode~ for specific modes/buffers
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
 #+end_src
 
+*** Emoji
+#+begin_src emacs-lisp
+(use-package company-emoji
+  :config
+  (add-to-list 'company-backends 'company-emoji)
+  (add-hook 'markdown-mode-hook 'company-mode)
+  (add-hook 'git-commit-mode-hook 'company-mode)
+  (cond
+   ((string-equal system-type "darwin")
+   (set-fontset-font
+     t 'symbol
+     (font-spec :family "Apple Color Emoji") nil 'prepend))))
+
+(use-package emojify
+  :config
+  (add-hook 'markdown-mode-hook 'emojify-mode)
+  (add-hook 'git-commit-mode-hook 'emojify-mode))
+#+end_src
+
 * Language Config
 ** Go
 #+begin_src emacs-lisp
