@@ -295,7 +295,17 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 (use-package docker-tramp)
-(use-package docker)
+(use-package docker
+  :bind ("C-c d" . hydra-docker/body)
+  :config
+  (defhydra hydra-docker (:columns 5 :color blue)
+    "Docker"
+    ("c" docker-containers "Containers")
+    ("v" docker-volumes "Volumes")
+    ("i" docker-images "Images")
+    ("n" docker-networks "Networks")
+    ("b" dockerfile-build-buffer "Build Buffer")
+    ("q" nil "Quit")))
 #+end_src
 
 *** Ivy/Counsel/avy
