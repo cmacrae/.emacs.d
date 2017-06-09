@@ -524,6 +524,44 @@ It's important to note that this configuration makes heavy use of the brilliant 
 #+begin_src emacs-lisp
 (use-package restclient)
 #+end_src
+
+* Evil
+#+begin_src emacs-lisp
+(use-package evil
+  :init (evil-mode)
+  :config
+  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter))
+#+end_src
+
+** Magit compatibility
+#+begin_src emacs-lisp
+(use-package evil-magit)
+#+end_src
+
+** Surround
+#+begin_src emacs-lisp
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode 1))
+#+end_src
+
+** Goggles (visual hints for Evil mode)
+#+begin_src emacs-lisp
+(use-package evil-goggles
+  :config
+  (evil-goggles-mode))
+#+end_src
+
+** Lion (align)
+#+begin_src emacs-lisp
+(use-package evil-lion
+  :config
+  (evil-lion-mode))
+#+end_src
+
 * Deactivation
 #+begin_src emacs-lisp
 (setq
