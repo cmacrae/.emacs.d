@@ -567,6 +567,27 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (evil-lion-mode))
 #+end_src
 
+** EasyMotion
+#+begin_src emacs-lisp
+  (use-package evil-easymotion
+    :config
+    (evilem-default-keybindings "SPC"))
+#+end_src
+
+** Commentary
+#+begin_src emacs-lisp
+(use-package evil-commentary
+  :config
+  (evil-commentary-mode))
+#+end_src
+
+** Exchange
+#+begin_src emacs-lisp
+(use-package evil-exchange
+  :config
+  (evil-exchange-install))
+#+end_src
+
 * Deactivation
 #+begin_src emacs-lisp
 (setq
