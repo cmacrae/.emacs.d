@@ -541,9 +541,17 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter))
 #+end_src
 
-** Magit compatibility
+** Compatibility
+*** Magit
 #+begin_src emacs-lisp
 (use-package evil-magit)
+#+end_src
+
+*** smartparens
+#+begin_src emacs-lisp
+(use-package evil-smartparens
+  :config
+  (add-hook 'smaartparens-enabled-hook #'evil-smartparens-mode))
 #+end_src
 
 ** Surround
