@@ -729,6 +729,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
                             common-lisp-mode-hook
                             lisp-interaction-mode-hook
 			    nix-mode-hook
+			    terraform-mode
                         )
     "Modes to ensure indent-guide-mode is enabled for.")
   (dolist (m my-indent-modes)
