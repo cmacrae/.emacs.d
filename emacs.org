@@ -596,6 +596,14 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (evil-exchange-install))
 #+end_src
 
+** Snipe
+#+begin_src emacs-lisp
+(use-package evil-snipe
+  :config
+  (evil-snipe-mode 1)
+  (evil-snipe-override-mode 1))
+#+end_src
+
 * Deactivation
 #+begin_src emacs-lisp
 (setq
