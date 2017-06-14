@@ -554,6 +554,17 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (add-hook 'smaartparens-enabled-hook #'evil-smartparens-mode))
 #+end_src
 
+*** Org
+#+begin_src emacs-lisp
+(use-package evil-org
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme))))
+#+end_src
+
 ** Surround
 #+begin_src emacs-lisp
 (use-package evil-surround
@@ -596,12 +607,11 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (evil-exchange-install))
 #+end_src
 
-** Snipe
+** Quickscope
 #+begin_src emacs-lisp
-(use-package evil-snipe
+(use-package evil-quickscope
   :config
-  (evil-snipe-mode 1)
-  (evil-snipe-override-mode 1))
+  (global-evil-quickscope-always-mode 1))
 #+end_src
 
 * Deactivation
@@ -810,7 +820,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (use-package spaceline
   :init
   (require 'spaceline-config)
-  (spaceline-emacs-theme))
+  (spaceline-spacemacs-theme))
 (use-package spaceline-all-the-icons
   :after spaceline
   :config
