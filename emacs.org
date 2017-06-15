@@ -814,7 +814,6 @@ Disable ~hl-line-mode~ for specific modes/buffers
   (load-theme 'doom-one t)
   :config
   (doom-themes-neotree-config)
-  (doom-themes-nlinum-config)
 
   (setq
       doom-themes-enable-bold t
