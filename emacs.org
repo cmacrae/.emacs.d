@@ -619,7 +619,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 #+begin_src emacs-lisp
 (use-package evil-quickscope
   :config
-  (global-evil-quickscope-always-mode 1))
+  (global-evil-quickscope-mode 1))
 #+end_src
 
 * Deactivation
