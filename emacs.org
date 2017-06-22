@@ -761,7 +761,8 @@ Disable ~hl-line-mode~ for specific modes/buffers
                             emacs-lisp-mode-hook
                             common-lisp-mode-hook
                             lisp-interaction-mode-hook
-			    nix-mode-hook
+                            nix-mode-hook
+                            terraform-mode-hook
                         )
     "Modes to ensure rainbow-delimiters-mode is enabled for.")
   (dolist (m my-rainbow-modes)
