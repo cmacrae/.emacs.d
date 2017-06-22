@@ -530,6 +530,13 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (use-package restclient)
 #+end_src
 
+*** TODO highlighting
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :config
+  (global-hl-todo-mode)
+  (add-hook 'yaml-mode-hook 'hl-todo-mode))
+#+end_src
 * Evil
 #+begin_src emacs-lisp
 (use-package evil
