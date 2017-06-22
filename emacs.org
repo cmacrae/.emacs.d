@@ -745,21 +745,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
 #+begin_src emacs-lisp
 (use-package indent-guide
   :config
-  (defvar my-indent-modes '(
-                            yaml-mode-hook
-                            python-mode-hook
-                            js2-mode-hook
-                            go-mode-hook
-                            ruby-mode-hook
-                            emacs-lisp-mode-hook
-                            common-lisp-mode-hook
-                            lisp-interaction-mode-hook
-			    nix-mode-hook
-			    terraform-mode
-                        )
-    "Modes to ensure indent-guide-mode is enabled for.")
-  (dolist (m my-indent-modes)
-      (add-hook m 'indent-guide-mode)))
+  (indent-guide-global-mode))
 #+end_src
 
 ** Rainbow Delimiters
