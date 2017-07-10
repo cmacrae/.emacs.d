@@ -912,7 +912,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (defun setup-go-mode-compile ()
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
-           "gometalinter --deadline 10s && go build -v && go test -v && go vet")))
+           "gometalinter.v1 --deadline 10s && go build -v && go test -v && go vet")))
 
 ;; Completion integration
 (use-package company-go
