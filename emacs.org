@@ -99,7 +99,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 
 *** Set explicit shell binary
 #+begin_src emacs-lisp
-(setq explicit-shell-file-name "/bin/zsh")
+(setq explicit-shell-file-name "/run/current-system/sw/bin/zsh")
 #+end_src
 
 *** Use M-3 to insert an octothorp
