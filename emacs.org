@@ -517,14 +517,6 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (use-package password-store)
 #+end_src
 
-*** LastPass
-#+begin_src emacs-lisp
-(use-package lastpass
-  :config
-  (setq lastpass-user "calum@joinblink.com")
-  (lastpass-auth-source-enable)
-  (setq lastpass-multifactor-use-passcode t))
-#+end_src
 *** ~restclient~
 #+begin_src emacs-lisp
 (use-package restclient)
