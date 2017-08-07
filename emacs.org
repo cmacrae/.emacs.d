@@ -609,6 +609,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 ** Snipe
 #+begin_src emacs-lisp
 (use-package evil-snipe
+  :after evil-quickscope-mode
   :config
   (evil-snipe-mode 1)
   (evil-snipe-override-mode 1))
