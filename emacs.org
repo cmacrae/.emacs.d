@@ -55,6 +55,7 @@ It's important to note that this configuration makes heavy use of the brilliant 
 (use-package smartparens
   :config
   (progn
+    (smartparens-global-mode)
     (show-smartparens-global-mode t)))
 #+end_src
 
