@@ -580,7 +580,8 @@ It's important to note that this configuration makes heavy use of the brilliant 
 #+begin_src emacs-lisp
 (use-package evil-goggles
   :config
-  (evil-goggles-mode))
+  (evil-goggles-mode)
+  (evil-goggles-use-diff-faces))
 #+end_src
 
 ** Lion (align)
