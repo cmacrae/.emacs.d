@@ -821,12 +821,13 @@ Disable ~hl-line-mode~ for specific modes/buffers
 (use-package spaceline
   :init
   (require 'spaceline-config)
-  (spaceline-spacemacs-theme))
+  (spaceline-emacs-theme))
 (use-package spaceline-all-the-icons
   :after spaceline
   :config
   (spaceline-all-the-icons-theme)
-  (spaceline-all-the-icons--setup-git-ahead))
+  (spaceline-all-the-icons--setup-git-ahead)
+  (setq spaceline-all-the-icons-separator-type 'wave))
 #+end_src
 
 ** Font
