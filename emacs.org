@@ -42,12 +42,9 @@ It's important to note that this configuration makes heavy use of the brilliant 
 
 *** Turn on ~global-flycheck-mode~
 #+begin_src emacs-lisp
-(use-package flycheck-pos-tip)
 (use-package flycheck
   :init
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-  :config
-  (flycheck-pos-tip-mode))
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 #+end_src
 
 *** Smartparens
