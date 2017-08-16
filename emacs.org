@@ -77,15 +77,11 @@ It's important to note that this configuration makes heavy use of the brilliant 
   (ido-mode t))
 #+end_src
 
-*** winner-mode
+*** eyebrowse
 #+begin_src emacs-lisp
-(use-package winner
-  :ensure nil
-  :bind
-  ("C-c u" . winner-undo)
-  ("C-c r" . winner-redo)
-  :init
-  (winner-mode 1))
+(use-package eyebrowse
+  :config
+  (eyebrowse-mode t))
 #+end_src
 
 *** Follow symlinks in version control
