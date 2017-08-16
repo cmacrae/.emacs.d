@@ -715,13 +715,6 @@ Example output:
   (funcall mode 0))
 #+end_src
 
-** Clock
-#+begin_src emacs-lisp
-(setq display-time-format "%H:%M %a %d %b ")
-(setq display-time-default-load-average nil)
-(display-time-mode 1)
-#+end_src
-
 ** Fringes
 #+begin_src emacs-lisp
 (fringe-mode '(4 . 0))
