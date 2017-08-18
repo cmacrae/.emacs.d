@@ -819,6 +819,9 @@ Disable ~hl-line-mode~ for specific modes/buffers
   :config
   (spaceline-all-the-icons-theme)
   (spaceline-all-the-icons--setup-git-ahead)
+  (spaceline-toggle-all-the-icons-buffer-size-off)
+  (spaceline-toggle-all-the-icons-hud-off)
+  (spaceline-toggle-all-the-icons-vc-icon-off)
   (setq spaceline-all-the-icons-separator-type 'wave))
 #+end_src
 
