@@ -2,7 +2,7 @@
 ;;
 ;;; Commentary:
 ;; This file loads Org-mode and then loads the rest of the Emacs initialization from Emacs Lisp
-;; embedded in the literate Org-mode file: emacs.org
+;; embedded in the literate Org-mode file: readme.org
 ;;
 ;;; Code:
 (require 'package)
