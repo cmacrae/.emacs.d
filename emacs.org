@@ -1,892 +1,1029 @@
 * About
-My literate Emacs configuration, embedded using [[http://orgmode.org/][org-mode]].
-It's important to note that this configuration makes heavy use of the brilliant [[https://github.com/jwiegley/use-package][use-package]].
+  This is my literate configuration for [[https://www.gnu.org/software/emacs/][Emacs]].
+  This document includes a collection of configuration snippets to express how I personally like to use Emacs, each accompanied by some reasoning.
+  I think it's important to include reasoning for each part so I can understand /why/ I use it. Plus the added benefit of others being able to peruse and borrow parts, just as I have from others.
+
+  The combination of literacy and functionality is achieved using the amazing [[http://orgmode.org/][org-mode]], with [[http://orgmode.org/worg/org-contrib/babel/][org-babel]].
+
+  Throughout this document, you'll notice heavy use of the brilliant [[https://github.com/jwiegley/use-package][use-package]].
+  For anyone who hasn't tried out ~use-package~; I emplore you to do so - it truly makes managing your configuration an absolute joy.
 
 * General
-*** Personal stuff
-#+begin_src emacs-lisp
-(setq user-full-name "Calum MacRae"
-      user-mail-address "calum0macrae@gmail.com")
-#+end_src
-
-*** UTF-8
-#+begin_src emacs-lisp
-(set-charset-priority 'unicode)
-(setq locale-coding-system   'utf-8)
-(set-terminal-coding-system  'utf-8)
-(set-keyboard-coding-system  'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system        'utf-8)
-(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-#+end_src
-
-*** Global ~:ensure~ for ~use-package~ statements
-#+begin_src emacs-lisp
-(setq use-package-always-ensure t)
-#+end_src
-
-*** Discard customizations
-#+begin_src emacs-lisp
-(setq custom-file (make-temp-file ""))
-#+end_src
-
-*** Just use 'y' or 'n' instead of 'yes' or 'no'
-#+begin_src emacs-lisp
-(fset 'yes-or-no-p 'y-or-n-p)
-#+end_src
-
-*** Set the scratch buffer string
-#+begin_src emacs-lisp
-(setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
-#+end_src
-
-*** Turn on ~global-flycheck-mode~
-#+begin_src emacs-lisp
-(use-package flycheck
-  :init
-  (add-hook 'after-init-hook #'global-flycheck-mode))
-#+end_src
-
-*** Smartparens
-#+begin_src emacs-lisp
-(use-package smartparens
-  :config
-  (progn
-    (smartparens-global-mode)
-    (show-smartparens-global-mode t)))
-#+end_src
+  This section covers many different types of configuration for native Emacs capabilities
 
 *** Start the server
-#+begin_src emacs-lisp
-(server-start)
-#+end_src
+    Start the Emacs server so other clients can connect and use the same session.
+    This is useful for when you may be oprating Emacs from the GUI usually, but want to use the same session from a TTY/terminal.
+    Also handy for when you have your ~EDITOR~ set to ~emacsclient~.
+    #+begin_src emacs-lisp
+    (server-start)
+    #+end_src
+
+*** Personal stuff
+    Pretty self explanatory: just setting some personal details about who's using Emacs.
+    #+begin_src emacs-lisp
+    (setq user-full-name "Calum MacRae"
+          user-mail-address "calum0macrae@gmail.com")
+    #+end_src
+
+*** Deactivation
+    Deactivation of functionality I don't tend to use:
+    - Backup files
+    - Autosaving
+    - Start-up message
+    - Audible bell
+    #+begin_src emacs-lisp
+    (setq
+      make-backup-files nil
+      auto-save-default nil
+      inhibit-startup-message t
+      ring-bell-function 'ignore)
+    #+end_src
+
+*** UTF-8
+    Configure Emacs for full UTF-8 compatability
+    #+begin_src emacs-lisp
+    (set-charset-priority 'unicode)
+    (setq locale-coding-system   'utf-8)
+    (set-terminal-coding-system  'utf-8)
+    (set-keyboard-coding-system  'utf-8)
+    (set-selection-coding-system 'utf-8)
+    (prefer-coding-system        'utf-8)
+    (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+    #+end_src
+
+*** Global ~:ensure~ for ~use-package~ statements
+    ~use-package~ has an ~:ensure~ keyword which dictates whether packages are installed or not.
+    As most of my ~use-package~ configurations are for external packages, I set this to always ensure.
+    Then, in cases where I don't want this to be true, I simply set ~:ensure nil~
+    #+begin_src emacs-lisp
+    (setq use-package-always-ensure t)
+    #+end_src
+
+*** Discard customizations
+    Emacs has a comprehensive customization system that allows configuration changes interactively.
+    Personally, I opt to ensure all the configuration I use for my environment is fully declarative.
+    As such, the following configuration sets the ~custom-file~ to be a random temporary file created each time Emacs starts.
+    This means any customizations made interactively are discarded entirely.
+    #+begin_src emacs-lisp
+    (setq custom-file (make-temp-file ""))
+    #+end_src
+
+*** Just use 'y' or 'n' instead of 'yes' or 'no'
+    You'll find ~yes-or-no~ prompts coming up in Emacs a lot.
+    I'd much rather just type ~y~ or ~n~ than ~yes~ or ~no~ every time...
+    #+begin_src emacs-lisp
+    (fset 'yes-or-no-p 'y-or-n-p)
+    #+end_src
+
+*** Set the scratch buffer string
+    Set the scratch buffer's initial contents to include a comment with a timestamp of creation.
+    Not really all that useful, but cleaner than the default comment, and I like having something there.
+    #+begin_src emacs-lisp
+    (setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
+    #+end_src
 
 *** Confirm quit
-#+begin_src emacs-lisp
-(setq confirm-kill-emacs 'yes-or-no-p)
-#+End_src
-
-*** ido settings
-#+begin_src emacs-lisp
-(use-package ido
-  :ensure nil
-  :config
-  (ido-mode t))
-#+end_src
-
-*** eyebrowse
-#+begin_src emacs-lisp
-(use-package eyebrowse
-  :config
-  (eyebrowse-mode t))
-#+end_src
+    This adds a confirmation prompt when quitting Emacs - because I'm only human.
+    #+begin_src emacs-lisp
+    (setq confirm-kill-emacs 'yes-or-no-p)
+    #+End_src
 
 *** Follow symlinks in version control
-#+begin_src emacs-lisp
-(setq vc-follow-symlinks t)
-#+end_src
+    If there are any symlinks in version controlled repositories, follow them
+    #+begin_src emacs-lisp
+    (setq vc-follow-symlinks t)
+    #+end_src
 
 *** Use 'root' user by default for SSH connections using TRAMP
-#+begin_src emacs-lisp
-(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
-#+end_src
+    When connecting to a remote system over SSH via TRAMP, use the ~root~ user by default
+    #+begin_src emacs-lisp
+    (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+    #+end_src
 
 *** Set TRAMP shell prompt pattern (fix for some fancy prompts)
-#+begin_src emacs-lisp
-(setq shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-#+end_src
+    When connecting to some remote systems over SSH via TRAMP, you may run into some shells which use some different encoding for their prompt.
+    This can result in a malformed prompt on the client side. This little snippet fixes that
+    #+begin_src emacs-lisp
+    (setq shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+    #+end_src
 
 *** Set explicit shell binary
-#+begin_src emacs-lisp
-(setq explicit-shell-file-name "/run/current-system/sw/bin/zsh")
-#+end_src
+    Set the filepath to the binary to run when invoking ~term~ (or any of its siblings).
+    #+begin_src emacs-lisp
+    (setq explicit-shell-file-name "/run/current-system/sw/bin/zsh")
+    #+end_src
 
 *** Use M-3 to insert an octothorp
-#+begin_src emacs-lisp
-(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
-#+end_src
+    I'm usually on a British keyboard, so when doing ~M-3~: insert an octothorp, not a GBP sign
+    #+begin_src emacs-lisp
+    (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+    #+end_src
 
 *** Configure FlySpell to use aspell
-#+begin_src emacs-lisp
-(setq
-  ispell-program-name "aspell"
-  ispell-list-command "--list"
-  ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
-#+end_src
-*** Ace window
-#+begin_src emacs-lisp
-(use-package ace-window
-  :bind ("M-p" . ace-window)
-  :config
-  (setq aw-dispatch-always t)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-#+end_src
-
-*** ~erc-hl-nicks~
-#+begin_src emacs-lisp
-(use-package erc-hl-nicks)
-#+end_src
-
-*** GitGutter
-#+begin_src emacs-lisp
-(use-package git-gutter
-  :init (global-git-gutter-mode +1)
-  :config
-  (setq
-    git-gutter:modified-sign " "
-    git-gutter:added-sign " "
-    git-gutter:deleted-sign " "))
-(set-face-background 'git-gutter:modified "#da8548")
-(set-face-background 'git-gutter:added "#98be65")
-(set-face-background 'git-gutter:deleted "#ff6c6b")
-
-#+end_src
-
-*** Projectile
-#+begin_src emacs-lisp
-(use-package projectile
-  :init
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-switch-project-action 'neotree-projectile-action)
-  :bind ("C-c p p" . projectile-persp-switch-project)
-  :config
-  (projectile-global-mode))
-#+end_src
-
-*** NeoTree
-#+begin_src emacs-lisp
-(use-package neotree
-  :bind ("C-;" . neotree-toggle)
-  :config
-  (setq neo-theme (if window-system 'icons 'arrows)))
-#+end_src
-
-*** Popwin
-#+begin_src emacs-lisp
-(use-package popwin
-  :bind
-  ("C-x t" . popwin-term:term)
-  :config
-  (popwin-mode 1)
-
-  (defun popwin-term:term ()
-  (interactive)
-  (popwin:display-buffer-1
-   (or (get-buffer "*terminal*")
-       (save-window-excursion
-         (call-interactively 'term)))
-	 :default-config-keywords '(:position :top))
-	 (provide 'popwin-term)))
-#+end_src
+    I use ~aspell~, so this simply sets [[https://www.emacswiki.org/emacs/FlySpell][Flyspell]] to use it and passes a couple extra arguments
+    #+begin_src emacs-lisp
+    (setq ispell-program-name "aspell")
+    (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+    #+end_src
 
 *** Kill term buffers upon exit
-#+begin_src emacs-lisp
-(defadvice term-handle-exit
-  (after term-kill-buffer-on-exit activate)
-(kill-buffer))
-#+end_src
-
-*** Activate ~ansible-doc~ when loading YAML files (bind to ~C-c h a~)
-#+begin_src emacs-lisp
-(use-package ansible-doc)
-(use-package yaml-mode
-  :bind (:map yaml-mode-map
-    ("C-c h a" . ansible-doc)))
-#+end_src
+    If I'm using an interactive terminal, it's nice to just ~^D~ out of it and have the buffer disappear
+    #+begin_src emacs-lisp
+    (defadvice term-handle-exit
+      (after term-kill-buffer-on-exit activate)
+    (kill-buffer))
+    #+end_src
 
 *** Calendar/Diary
-#+begin_src emacs-lisp
-(setq calendar-week-start-day 1)
-(setq diary-file "~/org/diary")
-(add-hook 'diary-list-entries-hook 'diary-sort-entries t)
-#+end_src
+    Set the start of the week for the calendar to be Monday.
+    Sort entries when viewing diary items.
+    #+begin_src emacs-lisp
+    (setq calendar-week-start-day 1)
+    (setq diary-file "~/org/diary")
+    (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
+    #+end_src
 
-*** Multiple-cursors
-#+begin_src emacs-lisp
-(use-package multiple-cursors
-  :bind
-  ("C-S-c C-S-c" . mc/edit-lines)
-  ("C->" . mc/mark-next-like-this)
-  ("C-<" . mc/mark-previous-like-this)
-  ("C-c C->" . mc/mark-all-like-this))
-#+end_src
+* Packages
+  This section covers external packages I use and their configuration, in no particular order
 
-*** Openwith
-#+begin_src emacs-lisp
-(use-package openwith
-  :config
-  (openwith-mode t)
-  (cond
-   ((string-equal system-type "gnu/linux")
-    (progn
-    (setq openwith-associations '(("\\.avi\\'" "mpv" (file))
-  			       ("\\.mkv\\'" "mpv" (file))
-  			       ("\\.mp4\\'" "mpv" (file))
-  			       ("\\.pdf\\'" "zathura" (file))))))
+** Ivy/Counsel/Swiper
+   Absolutely brilliant interactive interface and completion frameworks.
+   These packages improve the Emacs experience so much.
+   As you can see from the ~:bind~ sections, I use these to replace some of the most used actions.
 
-   ((string-equal system-type "darwin")
-    (progn
-     (setq openwith-associations '(("\\.avi\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-  			       ("\\.mkv\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-  			       ("\\.mp4\\'" "/Applications/mpv.app/Contents/MacOS/mpv" (file))
-  			       ("\\.pdf\\'" "/Applications/Preview.app/Contents/MacOS/Preview" (file))))))))
-#+end_src
+   Ivy settings:
+   - Add recent files & bookmarks to buffer switch list
+   - Suppress count visibility for ~ivy-read~
+   - Set initial input chars to ~nil~
 
-*** Set exec/man PATH from shell
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :config
-  (setq exec-path-from-shell-check-startup-files nil)
-  (exec-path-from-shell-initialize))
-#+end_src
+   Counsel settings:
+   - Set a prettier candidate delimiter for killring
+   #+begin_src emacs-lisp
+   (use-package ivy
+     :init
+     (setq ivy-use-virtual-buffers t)
+     (setq ivy-count-format "")
+     (setq ivy-initial-inputs-alist nil)
+     :bind
+     ("C-s" . swiper)
+     ("M-x" . counsel-M-x)
+     ("C-x C-f" . counsel-find-file)
+     :config
+     (ivy-mode 1)
+   (use-package counsel
+     :init
+     ;; Better looking kill-ring separator in Counsel
+     (setq counsel-yank-pop-separator
+       (concat "\n\n"
+         (concat (apply 'concat (make-list 50 "---")) "\n")))
+     :bind
+     ("M-y" . counsel-yank-pop)))
+   #+end_src
 
-*** Magit
-#+begin_src emacs-lisp
-(use-package magit
-  :bind ("C-c m" . magit-status)
-  :init
-  (setq magit-completing-read-function 'ivy-completing-read))
-#+end_src
+** [[https://github.com/magit/magit][Magit]]
+   The one true Git porcelain!
+   Truely a joy to use - it surfaces the power of Git in such a fluent manner.
+   Anyone using Git and Emacs *needs* Magit in their life!
+   #+begin_src emacs-lisp
+   (use-package magit
+     :bind ("C-c m" . magit-status)
+     :init
+     (setq magit-completing-read-function 'ivy-completing-read))
+   #+end_src
 
-*** GitHub integration
-#+begin_src emacs-lisp
-(use-package magit-gh-pulls
-  :bind (:map magit-gh-pulls-mode-map
-  ("£" . magit-gh-pulls-popup))
-  :init
-  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
-  (setq magit-gh-pulls-arguments (quote ("--open-new-in-browser"))))
-#+end_src
+** [[https://github.com/sigma/magit-gh-pulls][GitHub integration]]
+   This package integrates Magit with GitHub to allow the user to perform pull request actions.
+   As mentioned previously, I'm usually using a British keyboard, so I've mapped the popup to the press of "£".
+   I've added an argument so that when raising a new PR, it's automatically opened in my web-browser.
+   If my web-browser is already running, this'll simply open a new tab - if not, it'll spawn a new instance.
+   Another handy functionality here is that the URL of the PR is automatically copied to the kill ring, so you can
+   paste it wherever necessary.
+   #+begin_src emacs-lisp
+   (use-package magit-gh-pulls
+     :bind (:map magit-gh-pulls-mode-map
+     ("£" . magit-gh-pulls-popup))
+     :init
+     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+     (setq magit-gh-pulls-arguments (quote ("--open-new-in-browser"))))
+   #+end_src
 
-*** Expand region
-#+begin_src emacs-lisp
-(use-package expand-region
-  :bind ("C-=" . er/expand-region))
-#+end_src
+** [[https://github.com/bbatsov/projectile][Projectile]]
+   Project management based on version control repositories.
+   Absolutely essential package for me. This makes hopping around and between various projects really easy.
+   Not only that, but it allows project-wide actions. Like killing all buffers for a project, performing a project-wide find-and-replace, or a grep, etc.
 
-*** ~ace-jump-mode~ / ~ace-mc~
-#+begin_src emacs-lisp
-(use-package ace-jump-mode
-  :bind
-  ("C-0" . ace-jump-mode))
+   Some configuration I use:
+   - Setting the completion system to ~ivy~
+   - Adding an action to invoke ~neotree~ upon switching projects
+   - Binding ~C-c p p~ to use ~perspective~'s projectile switch function to integrate the two
+   #+begin_src emacs-lisp
+   (use-package projectile
+     :init
+     (setq projectile-completion-system 'ivy)
+     (setq projectile-switch-project-action 'neotree-projectile-action)
+     :bind ("C-c p p" . projectile-persp-switch-project)
+     :config
+     (projectile-global-mode))
+   #+end_src
 
-(use-package ace-mc
-  :bind
-  ("C-)" . ace-mc-add-multiple-cursors))
-#+end_src
+** [[https://github.com/nex3/perspective-el][Perspective]]
+   Workspaces! Indespensible if you work on a lot of projects. Perspective is like workspaces (virtual desktops) for Emacs.
+   It's a means of namespacing a group of tangible buffers.
+   When [[https://github.com/bbatsov/persp-projectile][combined with Projectile]], this becomes a really nice combination as projects then seemlessly translate to workspaces.
 
-*** ~json-mode~
-#+begin_src emacs-lisp
-(use-package json-mode)
-#+end_src
+   Here, I've also added a hydra for various Perspective actions.
+   #+begin_src emacs-lisp
+   (use-package perspective
+     :init (persp-mode))
 
-*** Aggressive indent
-#+begin_src emacs-lisp
-(use-package aggressive-indent
-  :config
-  (global-aggressive-indent-mode 1))
-#+end_src
+   (use-package persp-projectile
+     :bind
+     ("C-c x" . hydra-persp/body)
+     :config
+     (require 'persp-projectile)
+     (defhydra hydra-persp (:columns 4
+                            :color blue)
+       "Perspective"
+       ("a" persp-add-buffer "Add Buffer")
+       ("i" persp-import "Import")
+       ("c" persp-kill "Close")
+       ("n" persp-next "Next")
+       ("p" persp-prev "Prev")
+       ("k" persp-remove-buffer "Kill Buffer")
+       ("r" persp-rename "Rename")
+       ("A" persp-set-buffer "Set Buffer")
+       ("s" persp-switch "Switch")
+       ("C-x" persp-switch-last "Switch Last")
+       ("b" persp-switch-to-buffer "Switch to Buffer")
+       ("P" projectile-persp-switch-project "Switch Project")
+       ("q" nil "Quit")))
+   #+end_src
 
-*** Move text
-#+begin_src emacs-lisp
-(use-package move-text)
-#+end_src
+** [[https://github.com/jaypei/emacs-neotree][NeoTree]]
+   Awesome little filetree as a sidebar, ầ la NerdTree for Vim
+   #+begin_src emacs-lisp
+   (use-package neotree
+     :bind ("C-;" . neotree-toggle)
+     :config
+     (setq neo-theme (if window-system 'icons 'arrows)))
+   #+end_src
 
-*** Docker Integration
-#+begin_src emacs-lisp
-(use-package dockerfile-mode
-  :init
-  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+** [[https://github.com/m2ym/popwin-el][popwin]]
+   Some windows in Emacs can be quite obtrusive. ~popwin~ aims to manage this.
+   By using ~popwin~ windows that could be deemed "temporary" only take up a small amount of realestate, which is reclaimed upon said window closing.
+   This is handy for things like ~grep~ results, help/compile buffers, etc.
 
-(use-package docker-tramp)
-(use-package docker
-  :bind ("C-c d" . hydra-docker/body)
-  :config
-  (defhydra hydra-docker (:columns 5 :color blue)
-    "Docker"
-    ("c" docker-containers "Containers")
-    ("v" docker-volumes "Volumes")
-    ("i" docker-images "Images")
-    ("n" docker-networks "Networks")
-    ("b" dockerfile-build-buffer "Build Buffer")
-    ("q" nil "Quit")))
-#+end_src
+   You can also define your own "pop-up" actions. As you can see here, I've defined a little "pop-up" terminal.
+   This will spawn a little terminal buffer at the top of my Emacs frame. Then, when I'm done with it and I exit the process/kill the buffer, the space is automatically reclaimed.
+   #+begin_src emacs-lisp
+   (use-package popwin
+     :bind
+     ("C-x t" . popwin-term:term)
+     :config
+     (popwin-mode 1)
 
-*** Ivy/Counsel/avy
-#+begin_src emacs-lisp
-(use-package counsel
-  :init
-  ;; Better looking kill-ring separator in Counsel
-  (setq counsel-yank-pop-separator
-    (concat "\n\n"
-      (concat (apply 'concat (make-list 50 "---")) "\n")))
-  :bind
-  ("M-y" . counsel-yank-pop))
-(use-package ivy
-  :init
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "")
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-initial-inputs-alist nil)
-  :bind
-  ("C-s" . swiper)
-  ("M-x" . counsel-M-x)
-  ("C-x C-f" . counsel-find-file)
-  :config
-  (ivy-mode 1))
-(use-package avy
-  :ensure nil
-  :bind
-  ("C-:" . avy-goto-char)
-  ("C-'" . avy-goto-char-2)
-  ("M-g g" . avy-goto-line))
-#+end_src
+     (defun popwin-term:term ()
+     (interactive)
+     (popwin:display-buffer-1
+      (or (get-buffer "*terminal*")
+          (save-window-excursion
+            (call-interactively 'term)))
+        :default-config-keywords '(:position :top))
+        (provide 'popwin-term)))
+   #+end_src
 
-*** Corral
-#+begin_src emacs-lisp
-(use-package corral
-  :bind
-  ("M-9" . corral-parentheses-backward)
-  ("M-0" . corral-parentheses-forward)
-  ("M-[" . corral-brackets-backward)
-  ("M-]" . corral-brackets-forward)
-  ("M-{" . corral-braces-backward)
-  ("M-}" . corral-braces-forward)
-  ("M-\"" . corral-double-quotes-backward)
-  ("C-c v" . hydra-corral/body)
-  :config
-  (setq corral-preserve-point t)
-  (defhydra hydra-corral (:columns 5)
-    "Corral"
-    ("(" corral-parentheses-backward "Back")
-    (")" corral-parentheses-forward "Forward")
-    ("[" corral-brackets-backward "Back")
-    ("]" corral-brackets-forward "Forward")
-    ("{" corral-braces-backward "Back")
-    ("}" corral-braces-forward "Forward")
-    ("\"" corral-double-quotes-backward "Back")
-    ("'" corral-single-quotes-backward "Back")
-    ("." hydra-repeat "Repeat")))
-#+end_src
+** [[https://github.com/flycheck/flycheck][Flycheck]]
+   Have Flycheck turned on for everything - checking stuff is always good!
+   #+begin_src emacs-lisp
+   (use-package flycheck
+     :init
+     (add-hook 'after-init-hook #'global-flycheck-mode))
+   #+end_src
 
-*** Hydras
-#+begin_src emacs-lisp
-(use-package hydra
-  :bind
-  ("C-c z" . hydra-zoom/body)
-  ("C-c t" . hydra-move-text/body)
-  ("C-c T" . hydra-transpose/body)
-  ("C-c g" . hydra-traverse/body)
-  ("C-c M" . hydra-toggle-mode/body)
+** [[https://github.com/abo-abo/ace-window][ace-window]]
+   Jump around Emacs windows & frames using character prefixes.
+   I use this constantly - it even works across multiple frames.
+   #+begin_src emacs-lisp
+   (use-package ace-window
+     :bind ("M-p" . ace-window)
+     :config
+     (setq aw-dispatch-always t)
+     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+   #+end_src
 
-  :config
-  ;; Zoom
-  (defhydra hydra-zoom ()
-    "Zoom"
-    ("i" text-scale-increase "In")
-    ("o" text-scale-decrease "Out")
-    ("q" nil "Quit" :color blue))
+** [[https://github.com/Fuco1/smartparens][Smartparens]]
+   Brilliant automatic balancing of pairs. Makes for a really nice experience when typing in any language - programming or not.
+   Just check out some of the gifs in the project's README.
+   #+begin_src emacs-lisp
+   (use-package smartparens
+     :config
+     (progn
+       (smartparens-global-mode)
+       (show-smartparens-global-mode t)))
+   #+end_src
 
-  ;; Move Text
-  (defhydra hydra-move-text ()
-    "Move text"
-    ("p" move-text-up "Up")
-    ("n" move-text-down "Down")
-    ("q" nil "Quit" :color blue))
+** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
+   Layout management! Very handy for switching betweeen layout configurations.
+   Think of it as a tiling window manager, except for panes within Emacs.
+   It allows the user to seemlessly switch back and forth between favourable splits.
+   #+begin_src emacs-lisp
+   (use-package eyebrowse
+     :config
+     (eyebrowse-mode t))
+   #+end_src
 
-  ;; Transpose
-  (defhydra hydra-transpose (:color red)
-    "Transpose"
-    ("c" transpose-chars "Characters")
-    ("w" transpose-words "Words")
-    ("l" transpose-lines "Lines")
-    ("s" transpose-sentences "Sentences")
-    ("p" transpose-paragraphs "Paragraphs")
-    ("q" nil "Quit" :color blue))
+** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
+   Nickname highlighting for ERC (IRC in Emacs)
+   #+begin_src emacs-lisp
+   (use-package erc-hl-nicks)
+   #+end_src
 
-  ;; Buffer traversal
-  (defhydra hydra-traverse (:pre (set-cursor-color "#FB4934")
-                            :post (set-cursor-color "#51afef")
-			    :columns 8)
-    "Traversal"
-    ("a" beginning-of-line "Beginning")
-    ("e" end-of-line "End")
-    ("f" forward-char "Forward")
-    ("F" forward-word "Forward Word")
-    ("b" backward-char "Back")
-    ("B" backward-word "Back Word")
-    ("n" next-line "Next")
-    ("p" previous-line "Prev")
-    ("v" scroll-up-command "Down")
-    ("M-v" scroll-down-command "Up")
-    ("l" recenter-top-bottom "Recenter")
-    ("SPC" set-mark-command "Set Mark")
-    ("<" beginning-of-buffer "Beginning")
-    (">" end-of-buffer "End")
-    ("q" nil "Quit" :color blue))
+** [[https://github.com/syohex/emacs-git-gutter][GitGutter]]
+   Hints and actions in the buffer/fringe for bits being followed by Git.
+   The configuration bellow gives little diff highlights in the fringe for changes.
+   #+begin_src emacs-lisp
+   (use-package git-gutter
+     :init
+     (setq
+       git-gutter:modified-sign " "
+       git-gutter:added-sign " "
+       git-gutter:deleted-sign " ")
+     (global-git-gutter-mode t)
+     (set-face-background 'git-gutter:modified "#da8548")
+     (set-face-background 'git-gutter:added "#98be65")
+     (set-face-background 'git-gutter:deleted "#ff6c6b"))
+   #+end_src
 
-  ;; Toggle mode
-  (defhydra hydra-toggle-mode (:color blue)
-    "Toggle"
-    ("c" centered-window-mode "Centered Buffer")
-    ("w" whitespace-mode "Whitespace")
-    ("f" focus-mode "Focus")
-    ("i" aggressive-indent-mode "Aggressive indent")
-    ("s" flyspell-mode "FlySpell")
-    ("S" flyspell-prog-mode "FlySpell Prog")
-    ("q" nil "Quit")))
-#+end_src
+** YAML & Ansible
+   YAML's great - so support is obviously nice to have.
+   I also spend quite a bit of my time working with Ansible. ~ansible-doc~ is a handy little package to pull up Ansible module documentation within Emacs.
+   I've bound ~C-c h a~ for the YAML mode keymap to spawn ~ansible-doc~
+   #+begin_src emacs-lisp
+   (use-package ansible-doc)
+   (use-package yaml-mode
+     :bind (:map yaml-mode-map
+       ("C-c h a" . ansible-doc)))
+   #+end_src
 
-*** Perspective
-#+begin_src emacs-lisp
-(use-package perspective
-  :init
-  (persp-mode))
+** [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
+   Having multiple cursors can be very powerful.
+   This allows you to perform simultaneous actions at multiple positions within the buffer.
+   This can be based on arbitrary regions (n amount of lines, as chosen manually), for each ocurrance of a pattern/selection, etc.
+   #+begin_src emacs-lisp
+   (use-package multiple-cursors
+     :bind
+     ("C-S-c C-S-c" . mc/edit-lines)
+     ("C->" . mc/mark-next-like-this)
+     ("C-<" . mc/mark-previous-like-this)
+     ("C-c C->" . mc/mark-all-like-this))
+   #+end_src
 
-(use-package persp-projectile
-  :bind
-  ("C-c x" . hydra-persp/body)
-  :config
-  (require 'persp-projectile)
-  (defhydra hydra-persp (:columns 4
-                         :color blue)
-  "Perspective"
-  ("a" persp-add-buffer "Add Buffer")
-  ("i" persp-import "Import")
-  ("c" persp-kill "Close")
-  ("n" persp-next "Next")
-  ("p" persp-prev "Prev")
-  ("k" persp-remove-buffer "Kill Buffer")
-  ("r" persp-rename "Rename")
-  ("A" persp-set-buffer "Set Buffer")
-  ("s" persp-switch "Switch")
-  ("C-x" persp-switch-last "Switch Last")
-  ("b" persp-switch-to-buffer "Switch to Buffer")
-  ("P" projectile-persp-switch-project "Switch Project")
-  ("q" nil "Quit")))
-#+end_src
+** [[https://github.com/purcell/exec-path-from-shell][Set exec/man PATH from shell]]
+   When looking for executables/man-pages, Emacs will inherit these properties from the OS environment.
+   This package provides the ability to do so from the user's shell, where they may have some more complex logic to determine such paths.
+   #+begin_src emacs-lisp
+   (use-package exec-path-from-shell
+     :config
+     (setq exec-path-from-shell-check-startup-files nil)
+     (exec-path-from-shell-initialize))
+   #+end_src
 
-*** Focus
-#+begin_src emacs-lisp
-(use-package focus)
-#+end_src
+** [[https://github.com/magnars/expand-region.el][Expand region]]
+   Select regions by semantic units.
+   Really handy for selecting regions of data - just repeat keypress to expand selection further.
+   #+begin_src emacs-lisp
+   (use-package expand-region
+     :bind ("C-=" . er/expand-region))
+   #+end_src
 
-*** Dumb Jump
-#+begin_src emacs-lisp
-(use-package dumb-jump
-  :bind
-  ("C-c j" . hydra-dumb-jump/body)
-  :config
-  (setq dumb-jump-selector 'ivy)
-  (defhydra hydra-dumb-jump (:color blue)
-  "Dumb Jump"
-  ("g" dumb-jump-go "Jump to def")
-  ("p" dumb-jump-back "Jump back")
-  ("q" dumb-jump-quick-look "Quick look")
-  ("o" dumb-jump-go-other-window "Jump in other window")
-  ("q" nil "Quit")))
-#+end_src
+** ~json-mode~
+   No reasoning needed here! Everyone needs JSON
+   #+begin_src emacs-lisp
+   (use-package json-mode)
+   #+end_src
 
-*** ~undo-tree~
-#+begin_src emacs-lisp
-(use-package undo-tree
-  :config
-  (global-undo-tree-mode))
-#+end_src
+** [[https://github.com/Malabarba/aggressive-indent-mode][Aggressive indent]]
+   Keeps code indented when making disruptive changes
+   #+begin_src emacs-lisp
+   (use-package aggressive-indent
+     :config
+     (global-aggressive-indent-mode 1))
+   #+end_src
 
-*** Nix/NixOS
-#+begin_src emacs-lisp
-(use-package nix-mode
-  :config
-  (add-hook 'nix-mode-hook #'(lambda ()
-                             (when (and (stringp buffer-file-name)
-                                        (string-match "\\.nix\\'" buffer-file-name))
-                               (aggressive-indent-mode 0)))))
-(use-package nixos-options
-  :if
-  (string-match-p "NixOS"
-    (shell-command-to-string "uname -v | awk '{print substr($1,4);}'")))
-(use-package company-nixos-options
-  :if
-  (string-match-p "NixOS"
-    (shell-command-to-string "uname -v | awk '{print substr($1,4);}'"))
-  :config
-  ;;(add-to-list 'company-backends 'company-nixos-options)
-  (add-hook 'nix-mode-hook (lambda ()
-			    (set (make-local-variable 'company-backends) '(company-nixos-options))
-			    (company-mode))))
-#+end_src
+** [[https://github.com/emacsfodder/move-text][MoveText]]
+   Easily move text up and down.
+   I've tied this into a little hydra for more natural repeated movement.
+   #+begin_src emacs-lisp
+   (use-package move-text
+     :bind ("C-c t" . hydra-move-text/body)
+     :config
+     ;; Move Text
+     (defhydra hydra-move-text ()
+       "Move text"
+       ("k" move-text-up "Up")
+       ("j" move-text-down "Down")
+       ("q" nil "Quit" :color blue)))
+   #+end_src
 
-*** ~password-store~
-#+begin_src emacs-lisp
-(use-package password-store)
-#+end_src
+** Docker Integration
+   Various docker integrations:
+   - ~dockerfile-mode~ is pretty self explanatory
+   - ~docker-tramp~ allows TRAMP connections into running containers
+   - ~docker~, with a hydra, allows for interaction with the Docker distribution
+   #+begin_src emacs-lisp
+   (use-package dockerfile-mode
+     :mode "\\Dockerfile\\'")
 
-*** ~restclient~
-#+begin_src emacs-lisp
-(use-package restclient)
-#+end_src
+   (use-package docker-tramp)
+   (use-package docker
+     :bind ("C-c d" . hydra-docker/body)
+     :config
+     (defhydra hydra-docker (:columns 5 :color blue)
+       "Docker"
+       ("c" docker-containers "Containers")
+       ("v" docker-volumes "Volumes")
+       ("i" docker-images "Images")
+       ("n" docker-networks "Networks")
+       ("b" dockerfile-build-buffer "Build Buffer")
+       ("q" nil "Quit")))
+   #+end_src
 
-*** TODO highlighting
-#+begin_src emacs-lisp
-(use-package hl-todo
-  :config
-  (global-hl-todo-mode)
-  (add-hook 'yaml-mode-hook 'hl-todo-mode))
-#+end_src
+** [[https://github.com/nivekuil/corral][Corral]]
+   Quickly surround text with delimiters, along with a hydra
+   #+begin_src emacs-lisp
+   (use-package corral
+     :bind
+     ("M-9" . corral-parentheses-backward)
+     ("M-0" . corral-parentheses-forward)
+     ("M-[" . corral-brackets-backward)
+     ("M-]" . corral-brackets-forward)
+     ("M-{" . corral-braces-backward)
+     ("M-}" . corral-braces-forward)
+     ("M-\"" . corral-double-quotes-backward)
+     ("C-c v" . hydra-corral/body)
+     :config
+     (setq corral-preserve-point t)
+     (defhydra hydra-corral (:columns 5)
+       "Corral"
+       ("(" corral-parentheses-backward "Back")
+       (")" corral-parentheses-forward "Forward")
+       ("[" corral-brackets-backward "Back")
+       ("]" corral-brackets-forward "Forward")
+       ("{" corral-braces-backward "Back")
+       ("}" corral-braces-forward "Forward")
+       ("\"" corral-double-quotes-backward "Back")
+       ("'" corral-single-quotes-backward "Back")
+       ("." hydra-repeat "Repeat")))
+  #+end_src
+
+** [[https://github.com/larstvei/Focus][Focus]]
+   Makes the current function at the point the only syntax-highlighted construct in the buffer.
+   All other buffer contents are "subdued" to look like comments.
+   #+begin_src emacs-lisp
+   (use-package focus)
+   #+end_src
+
+** [[https://github.com/jacktasia/dumb-jump][Dumb Jump]]
+   Jump to definitions
+   #+begin_src emacs-lisp
+   (use-package dumb-jump
+     :bind
+     ("C-c j" . hydra-dumb-jump/body)
+     :config
+     (setq dumb-jump-selector 'ivy)
+     (defhydra hydra-dumb-jump (:color blue)
+     "Dumb Jump"
+     ("g" dumb-jump-go "Jump to def")
+     ("p" dumb-jump-back "Jump back")
+     ("q" dumb-jump-quick-look "Quick look")
+     ("o" dumb-jump-go-other-window "Jump in other window")
+     ("q" nil "Quit")))
+   #+end_src
+
+** [[http://www.dr-qubit.org/undo-tree/undo-tree.el][undo-tree]]
+   Powerful undo actions formulated in a tree structure
+   #+begin_src emacs-lisp
+   (use-package undo-tree
+     :config
+     (global-undo-tree-mode))
+   #+end_src
+
+** [[https://github.com/stuartsierra/password-store/blob/master/contrib/emacs/password-store.el][password-store]]
+   I use [[https://www.passwordstore.org/][pass]] to manage my passwords.
+   This is a handy little package for interfacing with it.
+   #+begin_src emacs-lisp
+   (use-package password-store)
+   #+end_src
+
+** Nix/NixOS
+   Various packages for working with [[https://nixos.org/nix/manual/#ch-expression-language][Nix]]/[[https://nixos.org/][NixOS]]
+
+   Turn off ~aggressive-indent-mode~ as it doesn't play nice.
+   #+begin_src emacs-lisp
+   (use-package nix-mode
+     :config
+     (add-hook 'nix-mode-hook #'(lambda ()
+                                (when (and (stringp buffer-file-name)
+               (string-match "\\.nix\\'" buffer-file-name))
+                                  (aggressive-indent-mode 0)))))
+   #+end_src
+
+   Configure ~company-mode~ completions for NixOS options.
+   I've made this conditional based on the shell output of ~uname~, as conventional means of determining this won't work (it just reports as a generic Linux distro).
+   #+begin_src emacs-lisp
+   (use-package nixos-options
+     :if
+     (string-match-p "NixOS"
+       (shell-command-to-string "uname -v | awk '{print substr($1,4);}'")))
+
+   (use-package company-nixos-options
+     :if
+     (string-match-p "NixOS"
+       (shell-command-to-string "uname -v | awk '{print substr($1,4);}'"))
+     :config
+     (add-hook 'nix-mode-hook (lambda ()
+                               (set (make-local-variable 'company-backends) '(company-nixos-options))
+                               (company-mode))))
+   #+end_src
+
+** [[https://github.com/pashky/restclient.el][restclient]]
+   REST client for Emacs! Really cool package.
+   Kinda like Postman/Insomnia.
+   #+begin_src emacs-lisp
+   (use-package restclient
+     :mode ("\\.http\\'" . restclient-mode))
+   #+end_src
+
+** [[https://github.com/tarsius/hl-todo][Note/TODO highlighting]]
+   It's nice to have some note/todo highlighting :)
+   #+begin_src emacs-lisp
+   (use-package hl-todo
+     :config
+     (global-hl-todo-mode)
+     (add-hook 'yaml-mode-hook 'hl-todo-mode))
+   #+end_src
+
+* [[https://github.com/abo-abo/hydra][Hydras]]
+  Great package to tie tangible actions together into convenient keybinding landscapes.
+  Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
+
+  General hydras:
+  - Zoom: increase/decrease current buffer text size
+  - Transpose: transpose various constructs of text
+  - Toggle mode: turn frequently "toggled" modes on and off
+  #+begin_src emacs-lisp
+  (use-package hydra
+    :bind
+    ("C-c z" . hydra-zoom/body)
+    ("C-c T" . hydra-transpose/body)
+    ("C-c M" . hydra-toggle-mode/body)
+
+    :config
+    ;; Zoom
+    (defhydra hydra-zoom ()
+      "Zoom"
+      ("i" text-scale-increase "In")
+      ("o" text-scale-decrease "Out")
+      ("q" nil "Quit" :color blue))
+
+    ;; Transpose
+    (defhydra hydra-transpose (:color red)
+      "Transpose"
+      ("c" transpose-chars "Characters")
+      ("w" transpose-words "Words")
+      ("l" transpose-lines "Lines")
+      ("s" transpose-sentences "Sentences")
+      ("p" transpose-paragraphs "Paragraphs")
+      ("q" nil "Quit" :color blue))
+
+    ;; Toggle mode
+    (defhydra hydra-toggle-mode (:color blue)
+      "Toggle"
+      ("c" centered-window-mode "Centered Buffer")
+      ("w" whitespace-mode "Whitespace")
+      ("f" focus-mode "Focus")
+      ("i" aggressive-indent-mode "Aggressive indent")
+      ("s" flyspell-mode "FlySpell")
+      ("S" flyspell-prog-mode "FlySpell Prog")
+      ("q" nil "Quit")))
+  #+end_src
+
 * Evil
-#+begin_src emacs-lisp
-(use-package evil
-  :init (evil-mode)
-  :config
-  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter))
-#+end_src
+  Vim emulation in Emacs. Because: yes, you can have the best of both worlds!
+
+  Below you'll find various extensions to my Evil layer that generally improve the quality of life.
+  This first configuration block is simply to turn Evil on at start and add some NeoTree bindings for compatability.
+  #+begin_src emacs-lisp
+  (use-package evil
+    :init (evil-mode)
+    :config
+    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter))
+  #+end_src
 
 ** Compatibility
+   Make some things play nicer with Evil
 *** Magit
-#+begin_src emacs-lisp
-(use-package evil-magit)
-#+end_src
+  #+begin_src emacs-lisp
+  (use-package evil-magit)
+  #+end_src
 
 *** smartparens
-#+begin_src emacs-lisp
-(use-package evil-smartparens
-  :config
-  (add-hook 'smaartparens-enabled-hook #'evil-smartparens-mode))
-#+end_src
+  #+begin_src emacs-lisp
+  (use-package evil-smartparens
+    :config
+    (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+  #+end_src
 
 *** Org
-#+begin_src emacs-lisp
-(use-package evil-org
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme))))
-#+end_src
+  #+begin_src emacs-lisp
+  (use-package evil-org
+    :after org
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme))))
+  #+end_src
 
 ** Surround
-#+begin_src emacs-lisp
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
-#+end_src
+   Easily surround, emulating surround.vim
+   #+begin_src emacs-lisp
+   (use-package evil-surround
+     :config
+     (global-evil-surround-mode 1))
+   #+end_src
 
-** Goggles (visual hints for Evil mode)
-#+begin_src emacs-lisp
-(use-package evil-goggles
-  :config
-  (evil-goggles-mode)
-  (evil-goggles-use-diff-faces))
-#+end_src
+** Goggles
+   Visual hints when performing Evil operations (~dd~, ~yy~, ~cw~, ~p~, etc.)
+   #+begin_src emacs-lisp
+   (use-package evil-goggles
+     :config
+     (evil-goggles-mode)
+     (evil-goggles-use-diff-faces))
+   #+end_src
 
-** Lion (align)
-#+begin_src emacs-lisp
-(use-package evil-lion
-  :config
-  (evil-lion-mode))
-#+end_src
+** Lion
+   Align operators (~gl~ & ~gL~), emulating lion.vim
+   #+begin_src emacs-lisp
+   (use-package evil-lion
+     :config
+     (evil-lion-mode))
+   #+end_src
 
-** EasyMotion
-#+begin_src emacs-lisp
-  (use-package evil-easymotion
-    :config
-    (evilem-default-keybindings "SPC"))
-#+end_src
+** Traversal
+*** EasyMotion
+    Buffer traversal made easy! Emulates easymotion.vim
+    #+begin_src emacs-lisp
+    (use-package evil-easymotion
+      :config
+      (evilem-default-keybindings "SPC"))
+    #+end_src
+
+*** Snipe
+    2-char searching with ~f~, ~F~, ~t~, ~T~ operators. Like seek.vim/sneak.vim
+    #+begin_src emacs-lisp
+    (use-package evil-snipe
+      :after evil-quickscope
+      :config
+      (evil-snipe-mode 1)
+      (evil-snipe-override-mode 1))
+    #+end_src
+
+*** Quickscope
+    Highlight targets for ~f~, ~F~, ~t~, ~T~ operators. Emulates quick_scope.vim
+    #+begin_src emacs-lisp
+    (use-package evil-quickscope
+      :config
+      (global-evil-quickscope-mode 1))
+    #+end_src
 
 ** Commentary
-#+begin_src emacs-lisp
-(use-package evil-commentary
-  :config
-  (evil-commentary-mode))
-#+end_src
+   Easily comment lines/blocks. Emulates commentary.vim
+   #+begin_src emacs-lisp
+   (use-package evil-commentary
+     :config
+     (evil-commentary-mode))
+   #+end_src
 
 ** Exchange
-#+begin_src emacs-lisp
-(use-package evil-exchange
-  :config
-  (evil-exchange-install))
-#+end_src
-
-** Snipe
-#+begin_src emacs-lisp
-(use-package evil-snipe
-  :after evil-quickscope-mode
-  :config
-  (evil-snipe-mode 1)
-  (evil-snipe-override-mode 1))
-#+end_src
-
-** Quickscope
-#+begin_src emacs-lisp
-(use-package evil-quickscope
-  :config
-  (global-evil-quickscope-mode 1))
-#+end_src
-
-* Deactivation
-#+begin_src emacs-lisp
-(setq
-  make-backup-files nil
-  auto-save-default nil
-  inhibit-startup-message t
-  ring-bell-function 'ignore)
-#+end_src
+   Exchange operator for exchanging constructs of text. Emulates exchange.vim
+   #+begin_src emacs-lisp
+   (use-package evil-exchange
+     :config
+     (evil-exchange-install))
+   #+end_src
 
 * Custom functions
-*** Sort words
-#+begin_src emacs-lisp
-(defun sort-words (reverse beg end)
-  "Sort words in region alphabetically, in REVERSE if negative.
-    Prefixed with negative \\[universal-argument], sorts in reverse.
+  Useful functions gathered that don't quite require an entire package.
+** Sort words
+   Taken from [[https://www.emacswiki.org/emacs/SortWords][here]]; just a handy little function to sort words in a region alphabetically
+   #+begin_src emacs-lisp
+   (defun sort-words (reverse beg end)
+     "Sort words in region alphabetically, in REVERSE if negative.
+       Prefixed with negative \\[universal-argument], sorts in reverse.
 
-    The variable `sort-fold-case' determines whether alphabetic case
-    affects the sort order.
+       The variable `sort-fold-case' determines whether alphabetic case
+       affects the sort order.
 
-    See `sort-regexp-fields'."
-  (interactive "*P\nr")
-  (sort-regexp-fields reverse "\\w+" "\\&" beg end))
-#+end_src
+       See `sort-regexp-fields'."
+     (interactive "*P\nr")
+     (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+   #+end_src
 
-*** Sensible beginning of line
-#+begin_src emacs-lisp
-(defun sensible-move-beginning-of-line (arg)
-  "Move point back to indentation of beginning of line.
+** Sensible beginning of line
+   Taken from [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][here]], I use this to replace ~move-beginning-of-line~ (~C-a~).
+   It will take your point back to the first column of the line you're on, as per the indentation.
+   A second press will then take your point back to the very beginning of the line.
+   Pressing again will take you back to the indented column.
+   #+begin_src emacs-lisp
+   (defun sensible-move-beginning-of-line (arg)
+     "Move point back to indentation of beginning of line.
 
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
+     Move point to the first non-whitespace character on this line.
+     If point is already there, move to the beginning of the line.
+     Effectively toggle between the first non-whitespace character and
+     the beginning of the line.
 
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
+     If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+     point reaches the beginning or end of the buffer, stop there."
+     (interactive "^p")
+     (setq arg (or arg 1))
 
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
+     ;; Move lines first
+     (when (/= arg 1)
+       (let ((line-move-visual nil))
+         (forward-line (1- arg))))
 
-  (let ((orig-point (point)))
-    (back-to-indentation)
-    (when (= orig-point (point))
-      (move-beginning-of-line 1))))
+     (let ((orig-point (point)))
+       (back-to-indentation)
+       (when (= orig-point (point))
+         (move-beginning-of-line 1))))
 
-(global-set-key [remap move-beginning-of-line]
-                'sensible-move-beginning-of-line)
-#+end_src
-
-*** Align values
-#+begin_src emacs-lisp
-(defun align-values (start end)
-  "Vertically aligns region based on lengths of the first value of each line.
-Example output:
-
-    foo        bar
-    foofoo     bar
-    foofoofoo  bar"
-  (interactive "r")
-  (align-regexp start end
-                "\\S-+\\(\\s-+\\)"
-                1 1 nil))
-#+end_src
+   (global-set-key [remap move-beginning-of-line]
+                   'sensible-move-beginning-of-line)
+   #+end_src
 
 * Appearance
+  Configuration related to the appearance of Emacs
 ** Hide stuff
-#+begin_src emacs-lisp
-(dolist (mode
-  '(tool-bar-mode
-    tooltip-mode
-    scroll-bar-mode
-    menu-bar-mode
-    blink-cursor-mode))
-  (funcall mode 0))
-#+end_src
+   Hide various elements of the Emacs GUI:
+   - toolbar
+   - tooltips
+   - scrollbar
+   - menubar
+   - blinking cursor
+   #+begin_src emacs-lisp
+   (dolist (mode
+     '(tool-bar-mode
+       tooltip-mode
+       scroll-bar-mode
+       menu-bar-mode
+       blink-cursor-mode))
+     (funcall mode 0))
+   #+end_src
 
 ** Fringes
-#+begin_src emacs-lisp
-(fringe-mode '(4 . 0))
+   Fringes always looked too fat to me by default, and take up too much space.
+   This just makes them a bit thinner and turns the fringe off completely where I don't feel it's necessary.
+   #+begin_src emacs-lisp
+   (fringe-mode '(4 . 0))
 
-(defun hide-fringes ()
-  (set-window-fringes (selected-window) 0 0))
+   (defun hide-fringes ()
+     (set-window-fringes (selected-window) 0 0))
 
-(add-hook 'eshell-mode 'hide-fringes)
-#+end_src
+   (add-hook 'eshell-mode 'hide-fringes)
+   #+end_src
 
 ** Centered buffers
-#+begin_src emacs-lisp
-(use-package centered-window-mode)
-#+end_src
-** Current line highlighting
-#+begin_src emacs-lisp
-(global-hl-line-mode t)
-#+end_src
+   A really simple package that will centre your buffer contents in the frame.
+   Purely cosmetic, but I do find it helps with focus from time to time.
+   If I'm working on something that only needs one buffer, I'll usually centre it.
+   I have this bound to a key in my ~toggle-mode~ hydra so I can switch it on/off easily.
+   #+begin_src emacs-lisp
+   (use-package centered-window-mode)
+   #+end_src
 
-Disable ~hl-line-mode~ for specific modes/buffers
-#+begin_src emacs-lisp
-(make-variable-buffer-local 'global-hl-line-mode)
-(defvar my-ghd-modes '(
-                       shell-mode-hook
-                       git-commit-mode-hook
-                       term-mode-hook
-                      )
-  "Modes to ensure global-hl-line-mode is disabled for.")
-(dolist (m my-ghd-modes)
-  (add-hook m (lambda () (setq global-hl-line-mode nil))))
-#+end_src
+** Current line highlighting
+   Highlights the current line of the point.
+   Just helps to visualise where you are in the buffer.
+   I turn it on globally, but explicitly turn it off where I don't deem it necessary.
+   #+begin_src emacs-lisp
+   (global-hl-line-mode t)
+
+   (make-variable-buffer-local 'global-hl-line-mode)
+   (defvar my-ghd-modes '(
+                          shell-mode-hook
+                          git-commit-mode-hook
+                          term-mode-hook
+                         )
+     "Modes to ensure global-hl-line-mode is disabled for.")
+     (dolist (m my-ghd-modes)
+       (add-hook m (lambda () (setq global-hl-line-mode nil))))
+   #+end_src
 
 ** Indent guides
-#+begin_src emacs-lisp
-(use-package indent-guide
-  :config
-  (indent-guide-global-mode))
-#+end_src
+   Cool little package to provide indentation guides.
+   This will display a line of ~|~ characters with a comment face to indicate the indentation of the current block.
+   #+begin_src emacs-lisp
+   (use-package indent-guide
+     :config
+     (indent-guide-global-mode))
+   #+end_src
 
 ** Rainbow Delimiters
-#+begin_src emacs-lisp
-(use-package rainbow-delimiters
-  :config
-  (defvar my-rainbow-modes '(
-                            yaml-mode-hook
-                            python-mode-hook
-                            js2-mode-hook
-                            go-mode-hook
-                            ruby-mode-hook
-                            emacs-lisp-mode-hook
-                            common-lisp-mode-hook
-                            lisp-interaction-mode-hook
-                            nix-mode-hook
-                            terraform-mode-hook
-                        )
-    "Modes to ensure rainbow-delimiters-mode is enabled for.")
-  (dolist (m my-rainbow-modes)
-      (add-hook m 'rainbow-delimiters-mode)))
-#+end_src
+   So handy! This will colourize delimiters differently based on their depth.
+   Really helps you not get burried when you're in deep.
+   #+begin_src emacs-lisp
+   (use-package rainbow-delimiters
+     :config
+     (defvar my-rainbow-modes '(
+                               yaml-mode-hook
+                               python-mode-hook
+                               js2-mode-hook
+                               go-mode-hook
+                               ruby-mode-hook
+                               emacs-lisp-mode-hook
+                               common-lisp-mode-hook
+                               lisp-interaction-mode-hook
+                               nix-mode-hook
+                               terraform-mode-hook
+                           )
+       "Modes to ensure rainbow-delimiters-mode is enabled for.")
+     (dolist (m my-rainbow-modes)
+         (add-hook m 'rainbow-delimiters-mode)))
+   #+end_src
 
 ** All the icons
-#+begin_src emacs-lisp
-(use-package all-the-icons
-  :init
-  (cond
-   ((string-equal system-type "gnu/linux")
-    (if (not
-      (file-exists-p (concat (getenv "XDG_DATA_HOME") "/fonts/all-the-icons.ttf")))
-      (all-the-icons-install-fonts "t")))
-   ((string-equal system-type "darwin")
-     (if (not
-      (file-exists-p (concat (getenv "HOME") "/Library/Fonts/all-the-icons.ttf")))
-      (all-the-icons-install-fonts "t")))))
+   Fancy! Just a bit of extra prettiness.
+   This places little glyphs around to better convey some things where text may be a bit cluttered.
+   That, and it makes things look nice! We're visual creatures, after-all.
 
-;; dired
-(use-package all-the-icons-dired
-  :init
-  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+   In this first block, I've added a conditional call to the downloading of the ~all-the-icons~ font, based on the OS environment.
+   #+begin_src emacs-lisp
+   (use-package all-the-icons
+     :init
+     (cond
+      ((string-equal system-type "gnu/linux")
+       (if (not
+         (file-exists-p (concat (getenv "XDG_DATA_HOME") "/fonts/all-the-icons.ttf")))
+         (all-the-icons-install-fonts "t")))
+      ((string-equal system-type "darwin")
+        (if (not
+         (file-exists-p (concat (getenv "HOME") "/Library/Fonts/all-the-icons.ttf")))
+         (all-the-icons-install-fonts "t")))))
+   #+end_src
 
-;; ivy
-(use-package all-the-icons-ivy
-  :init
-  (all-the-icons-ivy-setup))
-#+end_src
+*** Dired
+    Makes ~dired~ buffers a little more easy on the eyes.
+    Actually very helpful when trying to pick some files out manually.
+    #+begin_src emacs-lisp
+    (use-package all-the-icons-dired
+      :init
+      (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+    #+end_src
+
+*** Ivy
+    Icons in some ~ivy~ operations (file icons in ~counsel-find-file~, etc.)
+    #+begin_src emacs-lisp
+    (use-package all-the-icons-ivy
+      :init
+      (all-the-icons-ivy-setup))
+    #+end_src
 
 ** Theme
-#+begin_src emacs-lisp
-(use-package doom-themes
-  :init
-  (load-theme 'doom-one t)
-  :config
-  (doom-themes-neotree-config)
+   /Fashion First!/
 
-  (setq
-      doom-themes-enable-bold t
-      doom-themes-enable-italic t
-      doom-one-brighter-comments t
-      doom-neotree-file-icons t))
-#+end_src
+   Right now, I'm using the beautiful ~doom-one~ theme from [[https://github.com/hlissner][hlissner]]'s [[https://github.com/hlissner/emacs-doom-themes][doom-themes]].
+   It's inspired by Atom's "One Dark" themes. It's high contrast, and easy on the eyes.
+   Bright enough to easily distinguish between different constructs, but not sickening.
+   It's also got some nice hinting for textual faces and NeoTree icons.
+   #+begin_src emacs-lisp
+   (use-package doom-themes
+     :init
+     (load-theme 'doom-one t)
+     :config
+     (doom-themes-neotree-config)
 
-*** Modeline
-#+begin_src emacs-lisp
-(use-package spaceline
-  :init
-  (require 'spaceline-config)
-  (spaceline-emacs-theme))
-(use-package spaceline-all-the-icons
-  :after spaceline
-  :config
-  (spaceline-all-the-icons-theme)
-  (spaceline-all-the-icons--setup-git-ahead)
-  (spaceline-toggle-all-the-icons-buffer-size-off)
-  (spaceline-toggle-all-the-icons-hud-off)
-  (spaceline-toggle-all-the-icons-vc-icon-off)
-  (setq spaceline-all-the-icons-separator-type 'wave))
-#+end_src
+     (setq
+         doom-themes-enable-bold t
+         doom-themes-enable-italic t
+         doom-one-brighter-comments t
+         doom-neotree-file-icons t))
+   #+end_src
+
+** Modeline
+   The ever important modeline! Making your modeline look good and express useful information is vital, in my opinion.
+   There's a lot of info you can cram in there - but to do so tastefully and efficiently is key.
+
+   I did build a custom modeline from scratch before, but since trying out [[https://github.com/TheBB/spaceline][Spaceline]], taken from [[http://spacemacs.org/][Spacemacs]], I've not gone back.
+   There are a few things I turn off, and I also stuff some more ~all-the-icons~ love in - so all in all, it's very clean and clear.
+   #+begin_src emacs-lisp
+   (use-package spaceline
+     :init
+     (require 'spaceline-config)
+     (spaceline-emacs-theme))
+   (use-package spaceline-all-the-icons
+     :after spaceline
+     :config
+     (spaceline-all-the-icons-theme)
+     (spaceline-all-the-icons--setup-git-ahead)
+     (spaceline-toggle-all-the-icons-buffer-size-off)
+     (spaceline-toggle-all-the-icons-hud-off)
+     (spaceline-toggle-all-the-icons-vc-icon-off)
+     (setq spaceline-all-the-icons-separator-type 'wave))
+   #+end_src
 
 ** Font
+   Some configuration for fonts
 *** Use [[https://github.com/tonsky/FiraCode][Fira Code]] as the default font
-#+begin_src emacs-lisp
-(when (window-system)
-   (set-default-font "Fira Code Retina"))
-#+end_src
+    #+begin_src emacs-lisp
+    (when (window-system)
+       (set-default-font "Fira Code Retina"))
+    #+end_src
 
 *** Configure ligatures
-#+begin_src emacs-lisp
-(let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-               (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-               (36 . ".\\(?:>\\)")
-               (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-               (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-               (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-               (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-               (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-               (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-               (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-               (48 . ".\\(?:x[a-zA-Z]\\)")
-               (58 . ".\\(?:::\\|[:=]\\)")
-               (59 . ".\\(?:;;\\|;\\)")
-               (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-               (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-               (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-               (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-               (91 . ".\\(?:]\\)")
-               (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-               (94 . ".\\(?:=\\)")
-               (119 . ".\\(?:ww\\)")
-               (123 . ".\\(?:-\\)")
-               (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-               (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-               )
-             ))
-  (dolist (char-regexp alist)
-    (set-char-table-range composition-function-table (car char-regexp)
-                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
-#+end_src
+    Ligatures are nice to have. They make things easier to read and ever so slightly more compact
+    #+begin_src emacs-lisp
+    (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+                   (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+                   (36 . ".\\(?:>\\)")
+                   (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+                   (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+                   (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+                   (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+                   (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+                   (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+                   (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+                   (48 . ".\\(?:x[a-zA-Z]\\)")
+                   (58 . ".\\(?:::\\|[:=]\\)")
+                   (59 . ".\\(?:;;\\|;\\)")
+                   (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+                   (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+                   (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+                   (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+                   (91 . ".\\(?:]\\)")
+                   (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+                   (94 . ".\\(?:=\\)")
+                   (119 . ".\\(?:ww\\)")
+                   (123 . ".\\(?:-\\)")
+                   (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+                   (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+                   )
+                 ))
+      (dolist (char-regexp alist)
+        (set-char-table-range composition-function-table (car char-regexp)
+                              `([,(cdr char-regexp) 0 font-shape-gstring]))))
+    #+end_src
 
 *** Emoji
-#+begin_src emacs-lisp
-(use-package company-emoji
-  :config
-  (add-to-list 'company-backends 'company-emoji)
-  (add-hook 'markdown-mode-hook 'company-mode)
-  (add-hook 'git-commit-mode-hook 'company-mode)
-  (cond
-   ((string-equal system-type "darwin")
-   (set-fontset-font
-     t 'symbol
-     (font-spec :family "Apple Color Emoji") nil 'prepend))))
+    Because this is the world we live in: don't hate, appreciate!
+    Emojis can be fun in READMEs (and maybe Git commits where machine readability doesn't matter all that much)
+    #+begin_src emacs-lisp
+    (use-package company-emoji
+      :config
+      (add-to-list 'company-backends 'company-emoji)
+      (add-hook 'markdown-mode-hook 'company-mode)
+      (add-hook 'git-commit-mode-hook 'company-mode)
+      (cond
+       ((string-equal system-type "darwin")
+       (set-fontset-font
+         t 'symbol
+         (font-spec :family "Apple Color Emoji") nil 'prepend))))
 
-(use-package emojify
-  :config
-  (add-hook 'markdown-mode-hook 'emojify-mode)
-  (add-hook 'git-commit-mode-hook 'emojify-mode))
-#+end_src
+    (use-package emojify
+      :config
+      (add-hook 'markdown-mode-hook 'emojify-mode)
+      (add-hook 'git-commit-mode-hook 'emojify-mode))
+    #+end_src
 
 * Language Config
-** Go
-#+begin_src emacs-lisp
+  Configuration specific to languages I tend to use
+** Go ❤
+
+   This configuration for Go does a few things:
+   - Use ~goimports~ instead of ~go-fmt~ for formatting buffers
+   - Add ~\~/code/go/bin~ to the executable path, so built binaries can be found
+   - Format before saving (adhering to ~go fmt~)
+   - Use compilation to determine problems
+   - ~GOROOT~ & ~GOPATH~ interpretation based on ~/etc/zshrc~:
+     I use declarative configuration in Nix for my workstations, so this will inherit the right values for these variables.
+   - Add some bindings for:
+     - Removing unused imports
+     - Navigating to imports
+     - Navigating to definitions
+   - Set up ~company-mode~ with a Go backend for completion
+   - Custom compilation operation:
+     - Use ~gometalinter~ to check for issues
+     - Build
+     - Test/Vet
+   - ElDoc integration
+   - Use ~gometalinter~ for live linting
+
+#+Begin_src emacs-lisp
 (use-package go-mode
   :config
   ; Use goimports instead of go-fmt
@@ -897,12 +1034,12 @@ Disable ~hl-line-mode~ for specific modes/buffers
   (setenv "GOROOT" (shell-command-to-string ". /etc/zshrc; echo -n $GOROOT"))
   (setenv "GOPATH" (shell-command-to-string ". /etc/zshrc; echo -n $GOPATH"))
   (add-hook 'go-mode-hook '(lambda ()
-			     (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
+                             (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
   (add-hook 'go-mode-hook '(lambda ()
-			     (local-set-key (kbd "C-c C-g") 'go-goto-imports)))
+                             (local-set-key (kbd "C-c C-g") 'go-goto-imports)))
   (add-hook 'go-mode-hook (lambda ()
-			    (set (make-local-variable 'company-backends) '(company-go))
-			    (company-mode))))
+                            (set (make-local-variable 'company-backends) '(company-go))
+                            (company-mode))))
 
 ;; Ensure all linting passes, then use 'go build' to compile, then test/vet
 (defun setup-go-mode-compile ()
@@ -912,7 +1049,7 @@ Disable ~hl-line-mode~ for specific modes/buffers
 
 ;; Completion integration
 (use-package company-go
-  :after go-mode
+  :after go
   :config
   (setq tab-width 4)
 
@@ -939,74 +1076,68 @@ Disable ~hl-line-mode~ for specific modes/buffers
     (setq flycheck-gometalinter-disable-linters '("gotype")))
 #+end_src
 ** Markdown
-#+begin_src emacs-lisp
-(use-package markdown-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
-  (add-hook 'markdown-mode-hook 'flyspell-mode)
-#+end_src
+   Markdown compatability. Activate ~markdown-mode~ for ~.md~ files and turn on ~flyspell~
+   #+begin_src emacs-lisp
+   (use-package markdown-mode
+     :mode "\\.md\\'"
+     :config
+     (add-hook 'markdown-mode-hook 'flyspell-mode))
+   #+end_src
 
 ** Jinja2
-#+begin_src emacs-lisp
-(use-package jinja2-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
-#+end_src
+   Jinja2 compatability. Activate ~jinja2-mode~ for ~.j2~ files
+   #+begin_src emacs-lisp
+   (use-package jinja2-mode
+     :mode "\\.j2\\'")
+   #+end_src
 
 ** JavaScript
-#+begin_src emacs-lisp
-(use-package js2-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-#+end_src
+   JavaScript compatability. Activate ~js2-mode~ for ~.js~ files
+   #+begin_src emacs-lisp
+   (use-package js2-mode
+     :mode "\\.js\\'")
+   #+end_src
 
 ** HashiCorp
-#+begin_src emacs-lisp
-(use-package hcl-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.nomad\\'" . hcl-mode)))
+   Compatability with ~HCL~ and Terraform syntax.
+   Activate ~hcl-mode~ for ~.nomad~ files.
+   #+begin_src emacs-lisp
+   (use-package hcl-mode
+     :mode "\\.nomad\\'")
 
-(use-package terraform-mode)
-#+end_src
+   (use-package terraform-mode)
+   #+end_src
 
 * Org Config
-** General
-#+begin_src emacs-lisp
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-(setq org-return-follows-link t)
-(setq org-agenda-files '("~/org"))
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
-	 "* TODO %^{Brief Description} %^g\n%?\tAdded: %U")
-	("r" "ToRead" entry (file+headline "~/org/gtd.org" "Tasks")
-	 "* TOREAD %^{Title} %^g\n%?\tLink: %c")
-	("p" "Project" entry (file+headline "~/org/gtd.org" "Projects")
-	 "* %^{Brief Description} %^g\n%?\tAdded: %U")
-	("m" "Maybe" entry (file+headline "~/org/gtd.org" "Maybe/Some Day")
-	 "* %^{Brief Description} %^g\n%?\tAdded: %U")))
-#+end_src
+  Configuration for the brilliant Org mode!
 
-** ~org-page~
-#+begin_src emacs-lisp
-(use-package org-page
-  :config
-  (setq op/repository-directory "~/code/git/blog")
-  (setq op/theme-root-directory "~/Documents/blog/themes")
-  (setq op/theme 'cmacrae)
-  (setq op/site-domain "http://cmacr.ae")
-  (setq op/site-main-title "Calum MacRae")
-  (setq op/site-sub-title "/home/cmacrae")
-  (setq op/personal-disqus-shortname "cmacrae")
-  (setq op/personal-github-link "https://github.com/cmacrae"))
-#+end_src
+** General
+   - A few keybindings for captures, agenda, etc.
+   - Follow filesystem links for Org files
+   - Agenda files directory
+   - Custom capture templates
+   #+begin_src emacs-lisp
+   (global-set-key "\C-cl" 'org-store-link)
+   (global-set-key "\C-cc" 'org-capture)
+   (global-set-key "\C-ca" 'org-agenda)
+   (global-set-key "\C-cb" 'org-iswitchb)
+   (setq org-return-follows-link t)
+   (setq org-agenda-files '("~/org"))
+   (setq org-capture-templates
+         '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+            "* TODO %^{Brief Description} %^g\n%?\tAdded: %U")
+           ("r" "ToRead" entry (file+headline "~/org/gtd.org" "Tasks")
+            "* TOREAD %^{Title} %^g\n%?\tLink: %c")
+           ("p" "Project" entry (file+headline "~/org/gtd.org" "Projects")
+            "* %^{Brief Description} %^g\n%?\tAdded: %U")
+           ("m" "Maybe" entry (file+headline "~/org/gtd.org" "Maybe/Some Day")
+            "* %^{Brief Description} %^g\n%?\tAdded: %U")))
+   #+end_src
 
 ** ~org-bullets~
-#+begin_src emacs-lisp
-(use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-#+end_src
-
+   Make Org headings look a bit fancier
+   #+begin_src emacs-lisp
+   (use-package org-bullets
+     :config
+     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+   #+end_src
