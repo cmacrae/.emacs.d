@@ -1,4 +1,4 @@
 *
 !.gitignore
 !init.el
-!emacs.org
+!*.org
