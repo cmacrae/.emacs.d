@@ -152,13 +152,11 @@
    These packages improve the Emacs experience so much.
    As you can see from the ~:bind~ sections, I use these to replace some of the most used actions.
 
-   Ivy settings:
+*** Ivy
    - Add recent files & bookmarks to buffer switch list
    - Suppress count visibility for ~ivy-read~
    - Set initial input chars to ~nil~
 
-   Counsel settings:
-   - Set a prettier candidate delimiter for killring
    #+begin_src emacs-lisp
    (use-package ivy
      :init
@@ -170,15 +168,27 @@
      ("M-x" . counsel-M-x)
      ("C-x C-f" . counsel-find-file)
      :config
-     (ivy-mode 1)
+     (ivy-mode 1))
+   #+end_src
+
+*** Counsel
+    - Set a prettier candidate delimiter for killring
+    - Bind common functions
+    - Bind common org functions
+   #+begin_src emacs-lisp
    (use-package counsel
      :init
-     ;; Better looking kill-ring separator in Counsel
      (setq counsel-yank-pop-separator
        (concat "\n\n"
          (concat (apply 'concat (make-list 50 "---")) "\n")))
-     :bind
-     ("M-y" . counsel-yank-pop)))
+     :bind (
+     ("M-y" . counsel-yank-pop)
+     ("C-h f" . counsel-describe-function)
+     ("C-h v" . counsel-describe-variable)
+
+     :map org-mode-map
+     ("C-c  C-j" . counsel-org-goto)
+     ("C-c  C-q" . counsel-org-tag)))
    #+end_src
 
 ** [[https://github.com/magit/magit][Magit]]
