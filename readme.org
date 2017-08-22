@@ -514,6 +514,7 @@
    This is a handy little package for interfacing with it.
    #+begin_src emacs-lisp
    (use-package ivy-pass
+     :init (setq password-store-password-length 30)
      :bind ("C-c M-p" . ivy-pass))
    #+end_src
 
