@@ -509,11 +509,12 @@
      (global-undo-tree-mode))
    #+end_src
 
-** [[https://github.com/stuartsierra/password-store/blob/master/contrib/emacs/password-store.el][password-store]]
+** [[https://github.com/ecraven/ivy-pass/][ivy-pass]]
    I use [[https://www.passwordstore.org/][pass]] to manage my passwords.
    This is a handy little package for interfacing with it.
    #+begin_src emacs-lisp
-   (use-package password-store)
+   (use-package ivy-pass
+     :bind ("C-c M-p" . ivy-pass))
    #+end_src
 
 ** Nix/NixOS
