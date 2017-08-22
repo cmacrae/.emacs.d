@@ -226,16 +226,29 @@
    Some configuration I use:
    - Setting the completion system to ~ivy~
    - Adding an action to invoke ~neotree~ upon switching projects
-   - Binding ~C-c p p~ to use ~perspective~'s projectile switch function to integrate the two
    #+begin_src emacs-lisp
    (use-package projectile
      :init
      (setq projectile-completion-system 'ivy)
      (setq projectile-switch-project-action 'neotree-projectile-action)
-     :bind ("C-c p p" . projectile-persp-switch-project)
      :config
      (projectile-global-mode))
    #+end_src
+
+*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
+    Further integration of Counsel with Projectile than what's provided natively.
+    As I use ~counsel-projectile-on~ to remap a bunch of Projectile's functions to their Counsel equivilents, but I want to use
+    Perspective functionality, I remap ~projectile-switch-project~, after ~counsel-projectile-on~ has been called, to ~projectile-persp-switch-project~.
+    This then masks ~counsel-projectile-switch-project~ and integrates Perspective when switching projects.
+    #+begin_src emacs-lisp
+    (use-package counsel-projectile
+        :bind
+        ("C-c p s r" . counsel-projectile-rg)
+        :init
+        (counsel-projectile-on)
+        :config
+        (define-key projectile-mode-map [remap projectile-switch-project] #'projectile-persp-switch-project))
+    #+end_src
 
 ** [[https://github.com/nex3/perspective-el][Perspective]]
    Workspaces! Indespensible if you work on a lot of projects. Perspective is like workspaces (virtual desktops) for Emacs.
