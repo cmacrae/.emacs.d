@@ -11,138 +11,138 @@
 * General
   This section covers many different types of configuration for native Emacs capabilities
 
-*** Start the server
-    Start the Emacs server so other clients can connect and use the same session.
-    This is useful for when you may be oprating Emacs from the GUI usually, but want to use the same session from a TTY/terminal.
-    Also handy for when you have your ~EDITOR~ set to ~emacsclient~.
-    #+begin_src emacs-lisp
-    (server-start)
-    #+end_src
+** Start the server
+   Start the Emacs server so other clients can connect and use the same session.
+   This is useful for when you may be oprating Emacs from the GUI usually, but want to use the same session from a TTY/terminal.
+   Also handy for when you have your ~EDITOR~ set to ~emacsclient~.
+   #+begin_src emacs-lisp
+   (server-start)
+   #+end_src
 
-*** Personal stuff
-    Pretty self explanatory: just setting some personal details about who's using Emacs.
-    #+begin_src emacs-lisp
-    (setq user-full-name "Calum MacRae"
-          user-mail-address "calum0macrae@gmail.com")
-    #+end_src
+** Personal stuff
+   Pretty self explanatory: just setting some personal details about who's using Emacs.
+   #+begin_src emacs-lisp
+   (setq user-full-name "Calum MacRae"
+         user-mail-address "calum0macrae@gmail.com")
+   #+end_src
 
-*** Deactivation
-    Deactivation of functionality I don't tend to use:
-    - Backup files
-    - Autosaving
-    - Start-up message
-    - Audible bell
-    #+begin_src emacs-lisp
-    (setq
-      make-backup-files nil
-      auto-save-default nil
-      inhibit-startup-message t
-      ring-bell-function 'ignore)
-    #+end_src
+** Deactivation
+   Deactivation of functionality I don't tend to use:
+   - Backup files
+   - Autosaving
+   - Start-up message
+   - Audible bell
+   #+begin_src emacs-lisp
+   (setq
+     make-backup-files nil
+     auto-save-default nil
+     inhibit-startup-message t
+     ring-bell-function 'ignore)
+   #+end_src
 
-*** UTF-8
-    Configure Emacs for full UTF-8 compatability
-    #+begin_src emacs-lisp
-    (set-charset-priority 'unicode)
-    (setq locale-coding-system   'utf-8)
-    (set-terminal-coding-system  'utf-8)
-    (set-keyboard-coding-system  'utf-8)
-    (set-selection-coding-system 'utf-8)
-    (prefer-coding-system        'utf-8)
-    (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-    #+end_src
+** UTF-8
+   Configure Emacs for full UTF-8 compatability
+   #+begin_src emacs-lisp
+   (set-charset-priority 'unicode)
+   (setq locale-coding-system   'utf-8)
+   (set-terminal-coding-system  'utf-8)
+   (set-keyboard-coding-system  'utf-8)
+   (set-selection-coding-system 'utf-8)
+   (prefer-coding-system        'utf-8)
+   (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+   #+end_src
 
-*** Global ~:ensure~ for ~use-package~ statements
-    ~use-package~ has an ~:ensure~ keyword which dictates whether packages are installed or not.
-    As most of my ~use-package~ configurations are for external packages, I set this to always ensure.
-    Then, in cases where I don't want this to be true, I simply set ~:ensure nil~
-    #+begin_src emacs-lisp
-    (setq use-package-always-ensure t)
-    #+end_src
+** Global ~:ensure~ for ~use-package~ statements
+   ~use-package~ has an ~:ensure~ keyword which dictates whether packages are installed or not.
+   As most of my ~use-package~ configurations are for external packages, I set this to always ensure.
+   Then, in cases where I don't want this to be true, I simply set ~:ensure nil~
+   #+begin_src emacs-lisp
+   (setq use-package-always-ensure t)
+   #+end_src
 
-*** Discard customizations
-    Emacs has a comprehensive customization system that allows configuration changes interactively.
-    Personally, I opt to ensure all the configuration I use for my environment is fully declarative.
-    As such, the following configuration sets the ~custom-file~ to be a random temporary file created each time Emacs starts.
-    This means any customizations made interactively are discarded entirely.
-    #+begin_src emacs-lisp
-    (setq custom-file (make-temp-file ""))
-    #+end_src
+** Discard customizations
+   Emacs has a comprehensive customization system that allows configuration changes interactively.
+   Personally, I opt to ensure all the configuration I use for my environment is fully declarative.
+   As such, the following configuration sets the ~custom-file~ to be a random temporary file created each time Emacs starts.
+   This means any customizations made interactively are discarded entirely.
+   #+begin_src emacs-lisp
+   (setq custom-file (make-temp-file ""))
+   #+end_src
 
-*** Just use 'y' or 'n' instead of 'yes' or 'no'
-    You'll find ~yes-or-no~ prompts coming up in Emacs a lot.
-    I'd much rather just type ~y~ or ~n~ than ~yes~ or ~no~ every time...
-    #+begin_src emacs-lisp
-    (fset 'yes-or-no-p 'y-or-n-p)
-    #+end_src
+** Just use 'y' or 'n' instead of 'yes' or 'no'
+   You'll find ~yes-or-no~ prompts coming up in Emacs a lot.
+   I'd much rather just type ~y~ or ~n~ than ~yes~ or ~no~ every time...
+   #+begin_src emacs-lisp
+   (fset 'yes-or-no-p 'y-or-n-p)
+   #+end_src
 
-*** Set the scratch buffer string
-    Set the scratch buffer's initial contents to include a comment with a timestamp of creation.
-    Not really all that useful, but cleaner than the default comment, and I like having something there.
-    #+begin_src emacs-lisp
-    (setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
-    #+end_src
+** Set the scratch buffer string
+   Set the scratch buffer's initial contents to include a comment with a timestamp of creation.
+   Not really all that useful, but cleaner than the default comment, and I like having something there.
+   #+begin_src emacs-lisp
+   (setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
+   #+end_src
 
-*** Confirm quit
-    This adds a confirmation prompt when quitting Emacs - because I'm only human.
-    #+begin_src emacs-lisp
-    (setq confirm-kill-emacs 'yes-or-no-p)
-    #+End_src
+** Confirm quit
+   This adds a confirmation prompt when quitting Emacs - because I'm only human.
+   #+begin_src emacs-lisp
+   (setq confirm-kill-emacs 'yes-or-no-p)
+   #+End_src
 
-*** Follow symlinks in version control
-    If there are any symlinks in version controlled repositories, follow them
-    #+begin_src emacs-lisp
-    (setq vc-follow-symlinks t)
-    #+end_src
+** Follow symlinks in version control
+   If there are any symlinks in version controlled repositories, follow them
+   #+begin_src emacs-lisp
+   (setq vc-follow-symlinks t)
+   #+end_src
 
-*** Use 'root' user by default for SSH connections using TRAMP
-    When connecting to a remote system over SSH via TRAMP, use the ~root~ user by default
-    #+begin_src emacs-lisp
-    (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
-    #+end_src
+** Use 'root' user by default for SSH connections using TRAMP
+   When connecting to a remote system over SSH via TRAMP, use the ~root~ user by default
+   #+begin_src emacs-lisp
+   (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+   #+end_src
 
-*** Set TRAMP shell prompt pattern (fix for some fancy prompts)
-    When connecting to some remote systems over SSH via TRAMP, you may run into some shells which use some different encoding for their prompt.
-    This can result in a malformed prompt on the client side. This little snippet fixes that
-    #+begin_src emacs-lisp
-    (setq shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-    #+end_src
+** Set TRAMP shell prompt pattern (fix for some fancy prompts)
+   When connecting to some remote systems over SSH via TRAMP, you may run into some shells which use some different encoding for their prompt.
+   This can result in a malformed prompt on the client side. This little snippet fixes that
+   #+begin_src emacs-lisp
+   (setq shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+   #+end_src
 
-*** Set explicit shell binary
-    Set the filepath to the binary to run when invoking ~term~ (or any of its siblings).
-    #+begin_src emacs-lisp
-    (setq explicit-shell-file-name "/run/current-system/sw/bin/zsh")
-    #+end_src
+** Set explicit shell binary
+   Set the filepath to the binary to run when invoking ~term~ (or any of its siblings).
+   #+begin_src emacs-lisp
+   (setq explicit-shell-file-name "/run/current-system/sw/bin/zsh")
+   #+end_src
 
-*** Use M-3 to insert an octothorp
-    I'm usually on a British keyboard, so when doing ~M-3~: insert an octothorp, not a GBP sign
-    #+begin_src emacs-lisp
-    (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
-    #+end_src
+** Use M-3 to insert an octothorp
+   I'm usually on a British keyboard, so when doing ~M-3~: insert an octothorp, not a GBP sign
+   #+begin_src emacs-lisp
+   (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+   #+end_src
 
-*** Configure FlySpell to use aspell
-    I use ~aspell~, so this simply sets [[https://www.emacswiki.org/emacs/FlySpell][Flyspell]] to use it and passes a couple extra arguments
-    #+begin_src emacs-lisp
-    (setq ispell-program-name "aspell")
-    (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
-    #+end_src
+** Configure FlySpell to use aspell
+   I use ~aspell~, so this simply sets [[https://www.emacswiki.org/emacs/FlySpell][Flyspell]] to use it and passes a couple extra arguments
+   #+begin_src emacs-lisp
+   (setq ispell-program-name "aspell")
+   (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+   #+end_src
 
-*** Kill term buffers upon exit
-    If I'm using an interactive terminal, it's nice to just ~^D~ out of it and have the buffer disappear
-    #+begin_src emacs-lisp
-    (defadvice term-handle-exit
-      (after term-kill-buffer-on-exit activate)
-    (kill-buffer))
-    #+end_src
+** Kill term buffers upon exit
+   If I'm using an interactive terminal, it's nice to just ~^D~ out of it and have the buffer disappear
+   #+begin_src emacs-lisp
+   (defadvice term-handle-exit
+     (after term-kill-buffer-on-exit activate)
+   (kill-buffer))
+   #+end_src
 
-*** Calendar/Diary
-    Set the start of the week for the calendar to be Monday.
-    Sort entries when viewing diary items.
-    #+begin_src emacs-lisp
-    (setq calendar-week-start-day 1)
-    (setq diary-file "~/org/diary")
-    (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
-    #+end_src
+** Calendar/Diary
+   Set the start of the week for the calendar to be Monday.
+   Sort entries when viewing diary items.
+   #+begin_src emacs-lisp
+   (setq calendar-week-start-day 1)
+   (setq diary-file "~/org/diary")
+   (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
+   #+end_src
 
 * Packages
   This section covers external packages I use and their configuration, in no particular order
