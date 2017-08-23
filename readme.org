@@ -373,9 +373,11 @@
        git-gutter:added-sign " "
        git-gutter:deleted-sign " ")
      (global-git-gutter-mode t)
-     (set-face-background 'git-gutter:modified "#da8548")
-     (set-face-background 'git-gutter:added "#98be65")
-     (set-face-background 'git-gutter:deleted "#ff6c6b"))
+     :config
+     (add-hook 'window-setup-hook (lambda ()
+       (set-face-background 'git-gutter:modified "#da8548")
+       (set-face-background 'git-gutter:added "#98be65")
+       (set-face-background 'git-gutter:deleted "#ff6c6b"))))
    #+end_src
 
 ** YAML & Ansible
