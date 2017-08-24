@@ -153,14 +153,12 @@
    As you can see from the ~:bind~ sections, I use these to replace some of the most used actions.
 
 *** Ivy
-   - Add recent files & bookmarks to buffer switch list
    - Suppress count visibility for ~ivy-read~
    - Set initial input chars to ~nil~
 
    #+begin_src emacs-lisp
    (use-package ivy
      :init
-     (setq ivy-use-virtual-buffers t)
      (setq ivy-count-format "")
      (setq ivy-initial-inputs-alist nil)
      :bind
