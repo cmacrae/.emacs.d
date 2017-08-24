@@ -222,6 +222,9 @@
    Not only that, but it allows project-wide actions. Like killing all buffers for a project, performing a project-wide find-and-replace, or a grep, etc.
 
    Some configuration I use:
+   - Custom function for switching buffers based on status of current project:
+     If I'm in a project and I do ~C-x b~, it calls ~counsel-projectile-switch-to-buffer~.
+     If I'm not in a project, it falls back to ~ivy-switch-buffer~.
    - Setting the completion system to ~ivy~
    - Adding an action to invoke ~neotree~ upon switching projects
    #+begin_src emacs-lisp
@@ -229,6 +232,15 @@
      :init
      (setq projectile-completion-system 'ivy)
      (setq projectile-switch-project-action 'neotree-projectile-action)
+     (defun smart-switch-buffer ()
+       "Call `counsel-projectile-switch-to-buffer` if `projectile-project-p`, otherwise
+        fallback to `ivy-switch-buffer`."
+       (interactive)
+       (if (projectile-project-p)
+           (counsel-projectile-switch-to-buffer)
+         (ivy-switch-buffer)))
+     :bind
+     ("C-x b" . smart-switch-buffer)
      :config
      (projectile-global-mode))
    #+end_src
