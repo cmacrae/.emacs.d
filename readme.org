@@ -944,6 +944,19 @@
          doom-neotree-file-icons t))
    #+end_src
 
+** Make file visiting buffers stand out
+   The following expression adds a little flair to buffers visiting files.
+   I have it activate upon visiting files and after switching perspectives.
+   #+begin_src emacs-lisp
+   (use-package solaire-mode
+     :init
+     (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
+     (advice-add #'persp-load-state-from-file :after #'solaire-mode-restore-persp-mode-buffers)
+     :config
+     (require 'solaire-mode)
+     (solaire-mode-swap-bg))
+   #+end_src
+ 
 ** Modeline
    The ever important modeline! Making your modeline look good and express useful information is vital, in my opinion.
    There's a lot of info you can cram in there - but to do so tastefully and efficiently is key.
