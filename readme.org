@@ -879,16 +879,8 @@
      :config
      (defvar my-rainbow-modes '(
                                yaml-mode-hook
-                               python-mode-hook
-                               js2-mode-hook
-                               go-mode-hook
-                               ruby-mode-hook
-                               emacs-lisp-mode-hook
-                               common-lisp-mode-hook
-                               lisp-interaction-mode-hook
-                               nix-mode-hook
-                               terraform-mode-hook
-                           )
+			       prog-mode-hook
+                               )
        "Modes to ensure rainbow-delimiters-mode is enabled for.")
      (dolist (m my-rainbow-modes)
          (add-hook m 'rainbow-delimiters-mode)))
