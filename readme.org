@@ -356,16 +356,6 @@
        (show-smartparens-global-mode t)))
    #+end_src
 
-** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
-   Layout management! Very handy for switching betweeen layout configurations.
-   Think of it as a tiling window manager, except for panes within Emacs.
-   It allows the user to seemlessly switch back and forth between favourable splits.
-   #+begin_src emacs-lisp
-   (use-package eyebrowse
-     :config
-     (eyebrowse-mode t))
-   #+end_src
-
 ** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
    Nickname highlighting for ERC (IRC in Emacs)
    #+begin_src emacs-lisp
