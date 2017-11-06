@@ -643,7 +643,9 @@
   This first configuration block is simply to turn Evil on at start and add some NeoTree bindings for compatability.
   #+begin_src emacs-lisp
   (use-package evil
-    :init (evil-mode)
+    :init
+    (setq evil-want-C-u-scroll t)
+    (evil-mode)
     :config
     (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
     (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
