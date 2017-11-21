@@ -591,6 +591,12 @@
      (add-hook 'yaml-mode-hook 'hl-todo-mode))
    #+end_src
 
+** [[https://github.com/julienXX/ivy-lobsters][ivy-lobsters]]
+   That's right, I'm a crustacean :crab:
+   #+begin_src emacs-lisp
+   (use-package ivy-lobsters)
+   #+end_src
+
 * [[https://github.com/abo-abo/hydra][Hydras]]
   Great package to tie tangible actions together into convenient keybinding landscapes.
   Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
@@ -948,7 +954,7 @@
      (require 'solaire-mode)
      (solaire-mode-swap-bg))
    #+end_src
- 
+
 ** Modeline
    The ever important modeline! Making your modeline look good and express useful information is vital, in my opinion.
    There's a lot of info you can cram in there - but to do so tastefully and efficiently is key.
