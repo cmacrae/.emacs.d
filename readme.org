@@ -248,7 +248,7 @@
         :bind
         ("C-c p s r" . counsel-projectile-rg)
         :init
-        (counsel-projectile-on)
+        (counsel-projectile-mode)
         :config
         (define-key projectile-mode-map [remap projectile-switch-project] #'projectile-persp-switch-project))
     #+end_src
