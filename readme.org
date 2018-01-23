@@ -1157,6 +1157,7 @@
    (global-set-key "\C-ca" 'org-agenda)
    (global-set-key "\C-cb" 'org-iswitchb)
    (setq org-return-follows-link t)
+   (setq org-src-fontify-natively t)
    (setq org-agenda-files '("~/org"))
    (setq org-capture-templates
          '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
