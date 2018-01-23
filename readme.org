@@ -247,10 +247,10 @@
     (use-package counsel-projectile
         :bind
         ("C-c p s r" . counsel-projectile-rg)
+          (:map counsel-projectile-mode-map
+          ("C-c p p" . projectile-persp-switch-project))
         :init
-        (counsel-projectile-mode)
-        :config
-        (define-key projectile-mode-map [remap projectile-switch-project] #'projectile-persp-switch-project))
+        (counsel-projectile-mode))
     #+end_src
 
 ** [[https://github.com/nex3/perspective-el][Perspective]]
@@ -264,10 +264,10 @@
      :init (persp-mode))
 
    (use-package persp-projectile
+     :after (perspective)
      :bind
      ("C-c x" . hydra-persp/body)
      :config
-     (require 'persp-projectile)
      (defhydra hydra-persp (:columns 4
                             :color blue)
        "Perspective"
