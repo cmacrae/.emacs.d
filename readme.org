@@ -669,7 +669,7 @@
 *** Org
   #+begin_src emacs-lisp
   (use-package evil-org
-    :after org
+    :after (org)
     :config
     (add-hook 'org-mode-hook 'evil-org-mode)
     (add-hook 'evil-org-mode-hook
@@ -715,7 +715,7 @@
     2-char searching with ~f~, ~F~, ~t~, ~T~ operators. Like seek.vim/sneak.vim
     #+begin_src emacs-lisp
     (use-package evil-snipe
-      :after evil-quickscope
+      :after (evil-quickscope)
       :config
       (evil-snipe-mode 1)
       (evil-snipe-override-mode 1))
@@ -923,6 +923,7 @@
    It's also got some nice hinting for textual faces and NeoTree icons.
    #+begin_src emacs-lisp
    (use-package doom-themes
+     :after (spaceline)
      :init
      (setq
          doom-themes-enable-bold t
