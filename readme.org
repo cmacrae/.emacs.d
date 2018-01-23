@@ -1033,8 +1033,15 @@
 
     (use-package emojify
       :config
-      (add-hook 'markdown-mode-hook 'emojify-mode)
-      (add-hook 'git-commit-mode-hook 'emojify-mode))
+      (defvar my-emoji-hooks '(
+                               markdown-mode-hook
+                               git-commit-mode-hook
+                               magit-status-mode-hook
+                               magit-log-mode-hook
+                               )
+        "Modes to enable emojify-mode for")
+        (dolist (e my-emoji-hooks)
+          (add-hook e 'emojify-mode)))
     #+end_src
 
 * Language Config
