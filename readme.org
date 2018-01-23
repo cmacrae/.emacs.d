@@ -1151,7 +1151,9 @@
    (use-package hcl-mode
      :mode "\\.nomad\\'")
 
-   (use-package terraform-mode)
+   (use-package terraform-mode
+     :config
+      (add-hook 'terraform-mode-hook 'company-mode))
    #+end_src
 
 * Org Config
