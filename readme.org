@@ -178,6 +178,7 @@
     - Set a prettier candidate delimiter for killring
     - Bind common functions
     - Bind common org functions
+    - Ensure `smex` is installed for better candidate matching
    #+begin_src emacs-lisp
    (use-package counsel
      :init
@@ -191,7 +192,10 @@
 
      :map org-mode-map
      ("C-c  C-j" . counsel-org-goto)
-     ("C-c  C-q" . counsel-org-tag)))
+     ("C-c  C-q" . counsel-org-tag))
+
+     :config
+     (use-package smex :ensure t))
    #+end_src
 
 ** [[https://github.com/magit/magit][Magit]]
