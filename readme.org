@@ -89,6 +89,11 @@
    (setq confirm-kill-emacs 'yes-or-no-p)
    #+End_src
 
+** Delete trailing whitespace on save
+   Get rid of any trailing whitespace upon saving
+   #+begin_src emacs-lisp
+   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+   #+end_src
 ** Follow symlinks in version control
    If there are any symlinks in version controlled repositories, follow them
    #+begin_src emacs-lisp
@@ -1121,7 +1126,8 @@
    (use-package markdown-mode
      :mode "\\.md\\'"
      :config
-     (add-hook 'markdown-mode-hook 'flyspell-mode))
+     (add-hook 'markdown-mode-hook 'flyspell-mode)
+     (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
    #+end_src
 
 ** Jinja2
