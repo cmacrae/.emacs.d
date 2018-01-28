@@ -594,6 +594,19 @@
    (use-package ivy-lobsters)
    #+end_src
 
+** [[https://github.com/steckerhalter/discover-my-major][discover-my-major]]
+   A great little package to help discover more about the current major mode.
+   #+begin_src emacs-lisp
+   (use-package discover-my-major
+     :bind ("C-h C-m" . hydra-discover/body)
+     :config
+     (defhydra hydra-discover(:color blue)
+       "Discover"
+       ("m" discover-my-major "Major")
+       ("M" discover-my-mode "Mode")
+       ("q" nil "Quit" :color blue)))
+   #+end_src
+
 * [[https://github.com/abo-abo/hydra][Hydras]]
   Great package to tie tangible actions together into convenient keybinding landscapes.
   Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
