@@ -1120,6 +1120,10 @@
     (setq flycheck-gometalinter-fast t)
     ;; explicitly disable 'gotype' linter
     (setq flycheck-gometalinter-disable-linters '("gotype")))
+
+;; Go REPL
+(use-package gorepl-mode
+  :config (add-hook 'go-mode-hook #'gorepl-mode))
 #+end_src
 ** Markdown
    Markdown compatability. Activate ~markdown-mode~ for ~.md~ files and turn on ~flyspell~
