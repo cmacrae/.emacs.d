@@ -1068,10 +1068,6 @@
    - Use compilation to determine problems
    - ~GOROOT~ & ~GOPATH~ interpretation based on ~/etc/zshrc~:
      I use declarative configuration in Nix for my workstations, so this will inherit the right values for these variables.
-   - Add some bindings for:
-     - Removing unused imports
-     - Navigating to imports
-     - Navigating to definitions
    - Set up ~company-mode~ with a Go backend for completion
    - Custom compilation operation:
      - Use ~gometalinter~ to check for issues
@@ -1090,10 +1086,6 @@
   (add-hook 'go-mode-hook 'setup-go-mode-compile)
   (setenv "GOROOT" (shell-command-to-string ". /etc/zshrc; echo -n $GOROOT"))
   (setenv "GOPATH" (shell-command-to-string ". /etc/zshrc; echo -n $GOPATH"))
-  (add-hook 'go-mode-hook '(lambda ()
-                             (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
-  (add-hook 'go-mode-hook '(lambda ()
-                             (local-set-key (kbd "C-c C-g") 'go-goto-imports)))
   (add-hook 'go-mode-hook (lambda ()
                             (set (make-local-variable 'company-backends) '(company-go))
                             (company-mode))))
@@ -1108,10 +1100,7 @@
 (use-package company-go
   :after go
   :config
-  (setq tab-width 4)
-
-  :bind (:map go-mode-map
-  ("M-." . godef-jump)))
+  (setq tab-width 4))
 
 ;; ElDoc integration
 (use-package go-eldoc
