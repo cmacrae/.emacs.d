@@ -1061,7 +1061,6 @@
 * Language Config
   Configuration specific to languages I tend to use
 ** Go ❤
-
    This configuration for Go does a few things:
    - Use ~goimports~ instead of ~go-fmt~ for formatting buffers
    - Add ~\~/code/go/bin~ to the executable path, so built binaries can be found
@@ -1095,7 +1094,7 @@
 (defun setup-go-mode-compile ()
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
-           "gometalinter.v1 --deadline 10s && go build -v && go test -v && go vet")))
+           "gometalinter --deadline 10s && go build -v && go test -v && go vet")))
 
 ;; Completion integration
 (use-package company-go
@@ -1110,22 +1109,24 @@
 
 ;; Linting
 (use-package flycheck-gometalinter
+  :init
+  ;; skip linting for vendor dirs
+  (setq flycheck-gometalinter-vendor t)
+  ;; use in test files
+  (setq flycheck-gometalinter-test t)
+  ;; only use fast linters
+  (setq flycheck-gometalinter-fast t)
+  ;; explicitly disable 'gotype' & 'govet' linters (also currently broken Nix overlays)
+  (setq flycheck-gometalinter-disable-linters '("gotype" "vet" "vetshadhow" "megacheck" "interfacer" "ineffassign"))
   :config
   (progn
-    (flycheck-gometalinter-setup))
-    ;; skip linting for vendor dirs
-    (setq flycheck-gometalinter-vendor t)
-    ;; use in test files
-    (setq flycheck-gometalinter-test t)
-    ;; only use fast linters
-    (setq flycheck-gometalinter-fast t)
-    ;; explicitly disable 'gotype' linter
-    (setq flycheck-gometalinter-disable-linters '("gotype")))
+    (flycheck-gometalinter-setup)))
 
 ;; Go REPL
 (use-package gorepl-mode
   :config (add-hook 'go-mode-hook #'gorepl-mode))
 #+end_src
+
 ** Markdown
    Markdown compatability. Activate ~markdown-mode~ for ~.md~ files and turn on ~flyspell~
    #+begin_src emacs-lisp
