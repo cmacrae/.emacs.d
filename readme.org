@@ -546,6 +546,7 @@
    Turn off ~aggressive-indent-mode~ as it doesn't play nice.
    #+begin_src emacs-lisp
    (use-package nix-mode
+     :init (setenv "NIX_REMOTE" "daemon")
      :config
      (add-hook 'nix-mode-hook #'(lambda ()
                                 (when (and (stringp buffer-file-name)
