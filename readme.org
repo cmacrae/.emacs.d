@@ -1117,7 +1117,7 @@
   ;; only use fast linters
   (setq flycheck-gometalinter-fast t)
   ;; explicitly disable 'gotype' & 'govet' linters (also currently broken Nix overlays)
-  (setq flycheck-gometalinter-disable-linters '("gotype" "vet" "vetshadhow" "megacheck" "interfacer" "ineffassign"))
+  (setq flycheck-gometalinter-disable-linters '("gotype" "vet" "vetshadow" "megacheck" "interfacer" "ineffassign"))
   :config
   (progn
     (flycheck-gometalinter-setup)))
