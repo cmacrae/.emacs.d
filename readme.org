@@ -218,10 +218,10 @@
    paste it wherever necessary.
    #+begin_src emacs-lisp
    (use-package magit-gh-pulls
+     :hook (magit-mode . turn-on-magit-gh-pulls)
      :bind (:map magit-gh-pulls-mode-map
      ("£" . magit-gh-pulls-popup))
      :init
-     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
      (setq magit-gh-pulls-arguments (quote ("--open-new-in-browser"))))
    #+end_src
 
@@ -327,8 +327,8 @@
    Have Flycheck turned on for everything - checking stuff is always good!
    #+begin_src emacs-lisp
    (use-package flycheck
-     :init
-     (add-hook 'after-init-hook #'global-flycheck-mode))
+     :hook
+     (after-init . global-flycheck-mode))
    #+end_src
 
 ** [[https://github.com/abo-abo/ace-window][ace-window]]
@@ -370,8 +370,8 @@
        git-gutter:added-sign " "
        git-gutter:deleted-sign " ")
      (global-git-gutter-mode t)
-     :config
-     (add-hook 'window-setup-hook (lambda ()
+     :hook
+     (window-setup . (lambda ()
        (set-face-background 'git-gutter:modified "#da8548")
        (set-face-background 'git-gutter:added "#98be65")
        (set-face-background 'git-gutter:deleted "#ff6c6b"))))
@@ -547,29 +547,21 @@
    #+begin_src emacs-lisp
    (use-package nix-mode
      :init (setenv "NIX_REMOTE" "daemon")
-     :config
-     (add-hook 'nix-mode-hook #'(lambda ()
-                                (when (and (stringp buffer-file-name)
-               (string-match "\\.nix\\'" buffer-file-name))
-                                  (aggressive-indent-mode 0)))))
+     :hook
+     (nix-mode . (lambda ()
+                   (when (and (stringp buffer-file-name)
+                     (string-match "\\.nix\\'" buffer-file-name))
+                       (aggressive-indent-mode 0)))))
    #+end_src
 
    Configure ~company-mode~ completions for NixOS options.
-   I've made this conditional based on the shell output of ~uname~, as conventional means of determining this won't work (it just reports as a generic Linux distro).
    #+begin_src emacs-lisp
-   (use-package nixos-options
-     :if
-     (string-match-p "NixOS"
-       (shell-command-to-string "uname -v | awk '{print substr($1,4);}'")))
-
+   (use-package nixos-options)
    (use-package company-nixos-options
-     :if
-     (string-match-p "NixOS"
-       (shell-command-to-string "uname -v | awk '{print substr($1,4);}'"))
-     :config
-     (add-hook 'nix-mode-hook (lambda ()
-                               (set (make-local-variable 'company-backends) '(company-nixos-options))
-                               (company-mode))))
+     :hook
+     (nix-mode . (lambda ()
+                   (set (make-local-variable 'company-backends) '(company-nixos-options))
+                     (company-mode))))
    #+end_src
 
 ** [[https://github.com/pashky/restclient.el][restclient]]
@@ -586,7 +578,8 @@
    (use-package hl-todo
      :config
      (global-hl-todo-mode)
-     (add-hook 'yaml-mode-hook 'hl-todo-mode))
+     :hook
+     (yaml-mode . hl-todo-mode))
    #+end_src
 
 ** [[https://github.com/julienXX/ivy-lobsters][ivy-lobsters]]
@@ -680,19 +673,18 @@
 *** smartparens
   #+begin_src emacs-lisp
   (use-package evil-smartparens
-    :config
-    (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+    :hook
+    (smartparens-enabled . evil-smartparens-mode))
   #+end_src
 
 *** Org
   #+begin_src emacs-lisp
   (use-package evil-org
     :after (org)
-    :config
-    (add-hook 'org-mode-hook 'evil-org-mode)
-    (add-hook 'evil-org-mode-hook
-              (lambda ()
-                (evil-org-set-key-theme))))
+    :hook
+    ((org-mode . evil-org-mode)
+     (evil-org-mode . (lambda ()
+                (evil-org-set-key-theme)))))
   #+end_src
 
 ** Surround
@@ -885,14 +877,9 @@
    Really helps you not get burried when you're in deep.
    #+begin_src emacs-lisp
    (use-package rainbow-delimiters
-     :config
-     (defvar my-rainbow-modes '(
-                               yaml-mode-hook
-			       prog-mode-hook
-                               )
-       "Modes to ensure rainbow-delimiters-mode is enabled for.")
-     (dolist (m my-rainbow-modes)
-         (add-hook m 'rainbow-delimiters-mode)))
+     :hook
+     (prog-mode . rainbow-delimiters-mode)
+     (yaml-mode . rainbow-delimiters-mode))
    #+end_src
 
 ** All the icons
@@ -920,8 +907,8 @@
     Actually very helpful when trying to pick some files out manually.
     #+begin_src emacs-lisp
     (use-package all-the-icons-dired
-      :init
-      (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
+      :hook
+      (dired-mode . all-the-icons-dired-mode))
     #+end_src
 
 *** Ivy
@@ -981,10 +968,10 @@
    #+begin_src emacs-lisp
    (use-package solaire-mode
      :init
-     (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
      (advice-add #'persp-load-state-from-file :after #'solaire-mode-restore-persp-mode-buffers)
+     :hook
+     (after-change-major-mode . turn-on-solaire-mode)
      :config
-     (require 'solaire-mode)
      (solaire-mode-swap-bg))
    #+end_src
 
@@ -1035,27 +1022,18 @@
     Emojis can be fun in READMEs (and maybe Git commits where machine readability doesn't matter all that much)
     #+begin_src emacs-lisp
     (use-package company-emoji
+      :hook
+      ((markdown-mode . company-mode)
+       (git-commit-mode . company-mode))
       :config
-      (add-to-list 'company-backends 'company-emoji)
-      (add-hook 'markdown-mode-hook 'company-mode)
-      (add-hook 'git-commit-mode-hook 'company-mode)
-      (cond
-       ((string-equal system-type "darwin")
-       (set-fontset-font
-         t 'symbol
-         (font-spec :family "Apple Color Emoji") nil 'prepend))))
+      (add-to-list 'company-backends 'company-emoji))
 
     (use-package emojify
-      :config
-      (defvar my-emoji-hooks '(
-                               markdown-mode-hook
-                               git-commit-mode-hook
-                               magit-status-mode-hook
-                               magit-log-mode-hook
-                               )
-        "Modes to enable emojify-mode for")
-        (dolist (e my-emoji-hooks)
-          (add-hook e 'emojify-mode)))
+      :hook
+      ((markdown-mode . emojify-mode)
+       (git-commit-mode . emojify-mode)
+       (magit-status-mode . emojify-mode)
+       (magit-log-mode . emojify-mode)))
     #+end_src
 
 * Language Config
@@ -1078,23 +1056,24 @@
 
 #+Begin_src emacs-lisp
 (use-package go-mode
+  :init
+  ;; Ensure all linting passes, then use 'go build' to compile, then test/vet
+  (defun setup-go-mode-compile ()
+    (if (not (string-match "go" compile-command))
+        (set (make-local-variable 'compile-command)
+             "gometalinter --deadline 10s && go build -v && go test -v && go vet")))
+  :hook
+  ((before-save . gofmt-before-save)
+   (go-mode . setup-go-mode-compile)
+   (go-mode . (lambda ()
+                (set (make-local-variable 'company-backends) '(company-go))
+                  (company-mode))))
   :config
   ; Use goimports instead of go-fmt
   (setq gofmt-command "goimports")
   (add-to-list 'exec-path "~/code/go/bin")
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  (add-hook 'go-mode-hook 'setup-go-mode-compile)
   (setenv "GOROOT" (shell-command-to-string ". /etc/zshrc; echo -n $GOROOT"))
-  (setenv "GOPATH" (shell-command-to-string ". /etc/zshrc; echo -n $GOPATH"))
-  (add-hook 'go-mode-hook (lambda ()
-                            (set (make-local-variable 'company-backends) '(company-go))
-                            (company-mode))))
-
-;; Ensure all linting passes, then use 'go build' to compile, then test/vet
-(defun setup-go-mode-compile ()
-  (if (not (string-match "go" compile-command))
-      (set (make-local-variable 'compile-command)
-           "gometalinter --deadline 10s && go build -v && go test -v && go vet")))
+  (setenv "GOPATH" (shell-command-to-string ". /etc/zshrc; echo -n $GOPATH")))
 
 ;; Completion integration
 (use-package company-go
@@ -1104,8 +1083,8 @@
 
 ;; ElDoc integration
 (use-package go-eldoc
-  :config
-  (add-hook 'go-mode-hook 'go-eldoc-setup))
+  :hook
+  (go-mode . go-eldoc-setup))
 
 ;; Linting
 (use-package flycheck-gometalinter
@@ -1124,7 +1103,7 @@
 
 ;; Go REPL
 (use-package gorepl-mode
-  :config (add-hook 'go-mode-hook #'gorepl-mode))
+  :hook go-mode)
 #+end_src
 
 ** Markdown
@@ -1132,8 +1111,9 @@
    #+begin_src emacs-lisp
    (use-package markdown-mode
      :mode "\\.md\\'"
+     :hook
+     (markdown-mode . flyspell-mode)
      :config
-     (add-hook 'markdown-mode-hook 'flyspell-mode)
      (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
    #+end_src
 
@@ -1159,8 +1139,8 @@
      :mode "\\.nomad\\'")
 
    (use-package terraform-mode
-     :config
-      (add-hook 'terraform-mode-hook 'company-mode))
+     :hook
+     (terraform-mode . company-mode))
    #+end_src
 
 * Org Config
@@ -1194,6 +1174,6 @@
    Make Org headings look a bit fancier
    #+begin_src emacs-lisp
    (use-package org-bullets
-     :config
-     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+     :hook
+     (org-mode . (lambda () (org-bullets-mode 1))))
    #+end_src
