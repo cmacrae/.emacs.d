@@ -540,8 +540,8 @@
      :bind ("C-c M-p" . ivy-pass))
    #+end_src
 
-** Nix/NixOS
-   Various packages for working with [[https://nixos.org/nix/manual/#ch-expression-language][Nix]]/[[https://nixos.org/][NixOS]]
+** Nix
+   Various packages for working with [[https://nixos.org/nix/manual/#ch-expression-language][Nix]]
 
    Turn off ~aggressive-indent-mode~ as it doesn't play nice.
    #+begin_src emacs-lisp
