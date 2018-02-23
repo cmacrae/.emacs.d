@@ -531,13 +531,19 @@
      (global-undo-tree-mode))
    #+end_src
 
-** [[https://github.com/ecraven/ivy-pass/][ivy-pass]]
+** [[https://github.com/ecraven/ivy-pass/][ivy-pass]] & [[https://github.com/DamienCassou/auth-password-store][auth-password-store]]
    I use [[https://www.passwordstore.org/][pass]] to manage my passwords.
    This is a handy little package for interfacing with it.
    #+begin_src emacs-lisp
    (use-package ivy-pass
      :init (setq password-store-password-length 30)
      :bind ("C-c M-p" . ivy-pass))
+   #+end_src
+
+   And this package allows it to act as an ~auth-source~
+   #+begin_src emacs-lisp
+   (use-package auth-password-store
+     :config (auth-pass-enable))
    #+end_src
 
 ** Nix
