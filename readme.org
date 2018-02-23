@@ -149,6 +149,24 @@
    (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
    #+end_src
 
+** IRC
+   Emacs comes with a great builtin IRC client: ERC.
+   These are some general settings that're all pretty self explanatory: hide particular activity, autojoin channels for particular servers.
+   The bottom line means when Emacs launches, I'll auto-connect to Freenode.
+   #+begin_src emacs-lisp
+   (use-package erc
+     :ensure nil
+     :config
+     (setq erc-hide-list '("PART" "QUIT" "JOIN"))
+     (setq erc-autojoin-channels-alist '(("freenode.net"
+       "#lobsters"
+       "#nixos"
+       "#emacs"))
+       erc-server "irc.freenode.net"
+       erc-nick "cmacrae"))
+   (erc-tls :server "irc.freenode.net" :port 6697 :nick "cmacrae")
+   #+end_src
+
 * Packages
   This section covers external packages I use and their configuration, in no particular order
 
