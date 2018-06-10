@@ -562,8 +562,8 @@
 
    And this package allows it to act as an ~auth-source~
    #+begin_src emacs-lisp
-   (use-package auth-password-store
-     :config (auth-pass-enable))
+   (use-package auth-source-pass
+     :config (auth-source-pass-enable))
    #+end_src
 
 ** Nix
