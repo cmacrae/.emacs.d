@@ -164,7 +164,9 @@
        "#emacs"))
        erc-server "irc.freenode.net"
        erc-nick "cmacrae"))
-   (erc-tls :server "irc.freenode.net" :port 6697 :nick "cmacrae")
+   (defun erc-conn ()
+     (interactive)
+     (erc-tls :server "irc.freenode.net" :port 6697 :nick "cmacrae"))
    #+end_src
 
 * Packages
