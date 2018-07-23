@@ -868,7 +868,7 @@
    If I'm working on something that only needs one buffer, I'll usually centre it.
    I have this bound to a key in my ~toggle-mode~ hydra so I can switch it on/off easily.
    #+begin_src emacs-lisp
-   (use-package centered-window-mode)
+   (use-package centered-window)
    #+end_src
 
 ** Current line highlighting
