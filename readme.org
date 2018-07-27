@@ -1074,11 +1074,12 @@
      I use declarative configuration in Nix for my workstations, so this will inherit the right values for these variables.
    - Set up ~company-mode~ with a Go backend for completion
    - Custom compilation operation:
-     - Use ~gometalinter~ to check for issues
      - Build
      - Test/Vet
    - ElDoc integration
    - Use ~gometalinter~ for live linting
+   - Plug into ~gore~ for a REPL
+   - Use ~web-mode~ for ~.tmpl~ files (Go templating)
 
 #+Begin_src emacs-lisp
 (use-package go-mode
@@ -1087,7 +1088,7 @@
   (defun setup-go-mode-compile ()
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
-             "gometalinter --deadline 10s && go build -v && go test -v && go vet")))
+             "go build -v && go test -v && go vet")))
   :hook
   ((before-save . gofmt-before-save)
    (go-mode . setup-go-mode-compile)
@@ -1130,6 +1131,13 @@
 ;; Go REPL
 (use-package gorepl-mode
   :hook go-mode)
+
+;; Template syntax
+(use-package web-mode
+  :mode "\\.tmpl\\'"
+  :config
+  (setq web-mode-engines-alist
+      '(("go"    . "\\.tmpl\\'"))))
 #+end_src
 
 ** Markdown
