@@ -269,12 +269,15 @@
     This then masks ~counsel-projectile-switch-project~ and integrates Perspective when switching projects.
     #+begin_src emacs-lisp
     (use-package counsel-projectile
-        :bind
-        ("C-c p s r" . counsel-projectile-rg)
-          (:map counsel-projectile-mode-map
-          ("C-c p p" . projectile-persp-switch-project))
-        :init
-        (counsel-projectile-mode))
+      :bind
+      ("C-c p s r" . counsel-projectile-rg)
+      (:map counsel-projectile-mode-map
+        ("C-c p p" . projectile-persp-switch-project))
+      ;; FIXME: Workaround for https://github.com/ericdanan/counsel-projectile/issues/93
+      ;;:config
+      ;;(setq counsel-projectile-mode t))
+      :preface (setq projectile-keymap-prefix (kbd "C-c p"))
+      :hook (after-init . counsel-projectile-mode))
     #+end_src
 
 ** [[https://github.com/nex3/perspective-el][Perspective]]
