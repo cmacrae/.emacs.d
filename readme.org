@@ -331,11 +331,11 @@
    This will spawn a little terminal buffer at the top of my Emacs frame. Then, when I'm done with it and I exit the process/kill the buffer, the space is automatically reclaimed.
    #+begin_src emacs-lisp
    (use-package popwin
+     :defer 1
      :bind
      ("C-x t" . popwin-term:term)
      :config
-     (popwin-mode 1)
-
+     (setq display-buffer-function 'popwin:display-buffer)
      (defun popwin-term:term ()
      (interactive)
      (popwin:display-buffer-1
@@ -343,7 +343,11 @@
           (save-window-excursion
             (call-interactively 'term)))
         :default-config-keywords '(:position :top))
-        (provide 'popwin-term)))
+        (provide 'popwin-term))
+
+     ;; Go direx
+     (push '("^\*go-direx:" :regexp t :position right :width 0.4 :dedicated t :stick t)
+        popwin:special-display-config))
    #+end_src
 
 ** [[https://github.com/flycheck/flycheck][Flycheck]]
@@ -1083,11 +1087,11 @@
    - Use ~gometalinter~ for live linting
    - Plug into ~gore~ for a REPL
    - Use ~web-mode~ for ~.tmpl~ files (Go templating)
+   - Tree style view of code using ~go-direx~
 
 #+Begin_src emacs-lisp
 (use-package go-mode
   :init
-  ;; Ensure all linting passes, then use 'go build' to compile, then test/vet
   (defun setup-go-mode-compile ()
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
@@ -1099,7 +1103,6 @@
                 (set (make-local-variable 'company-backends) '(company-go))
                   (company-mode))))
   :config
-  ; Use goimports instead of go-fmt
   (setq gofmt-command "goimports")
   (add-to-list 'exec-path "~/code/go/bin")
   (setenv "GOROOT" (shell-command-to-string ". /etc/zshrc; echo -n $GOROOT"))
@@ -1141,6 +1144,12 @@
   :config
   (setq web-mode-engines-alist
       '(("go"    . "\\.tmpl\\'"))))
+
+;; Go direx
+(use-package go-direx
+  :hook go-mode
+  :bind (:map go-mode-map
+          ("C-c C-t" . go-direx-pop-to-buffer )))
 #+end_src
 
 ** Markdown
