@@ -1158,6 +1158,9 @@
   :hook go-mode
   :bind (:map go-mode-map
           ("C-c C-t" . go-direx-pop-to-buffer )))
+
+;; Go add-tags
+(use-package go-add-tags)
 #+end_src
 
 ** Markdown
