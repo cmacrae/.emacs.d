@@ -355,6 +355,13 @@
      (after-init . global-flycheck-mode))
    #+end_src
 
+** [[http://company-mode.github.io/][company-mode]]
+   Slick auto-complete framework
+   #+begin_src emacs-lisp
+   (use-package company
+     :hook (prog-mode . company-mode))
+   #+end_src
+
 ** [[https://github.com/abo-abo/ace-window][ace-window]]
    Jump around Emacs windows & frames using character prefixes.
    I use this constantly - it even works across multiple frames.
@@ -1107,9 +1114,13 @@
 
 ;; Completion integration
 (use-package company-go
-  :after go
+  :hook go-mode
   :config
-  (setq tab-width 4))
+  (setq tab-width 4)
+  (setq company-tooltip-limit 20)
+  (setq company-idle-delay .3)
+  (setq company-echo-delay 0)
+  (setq company-begin-commands '(self-insert-command)))
 
 ;; ElDoc integration
 (use-package go-eldoc
@@ -1133,7 +1144,7 @@
 
 ;; Go REPL
 (use-package gorepl-mode
-  :hook go-mode)
+  :after go-mode)
 
 ;; Template syntax
 (use-package web-mode
