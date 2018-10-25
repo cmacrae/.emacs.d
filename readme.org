@@ -1009,46 +1009,6 @@
 
 ** Font
    Some configuration for fonts
-*** Use [[https://github.com/tonsky/FiraCode][Fira Code]] as the default font
-    #+begin_src emacs-lisp
-    (when (window-system)
-       (set-default-font "Fira Code Retina"))
-    #+end_src
-
-*** Configure ligatures
-    Ligatures are nice to have. They make things easier to read and ever so slightly more compact
-    #+begin_src emacs-lisp
-    (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-                   (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-                   (36 . ".\\(?:>\\)")
-                   (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-                   (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-                   (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-                   (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-                   (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-                   (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-                   (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-                   (48 . ".\\(?:x[a-zA-Z]\\)")
-                   (58 . ".\\(?:::\\|[:=]\\)")
-                   (59 . ".\\(?:;;\\|;\\)")
-                   (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-                   (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-                   (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-                   (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-                   (91 . ".\\(?:]\\)")
-                   (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-                   (94 . ".\\(?:=\\)")
-                   (119 . ".\\(?:ww\\)")
-                   (123 . ".\\(?:-\\)")
-                   (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-                   (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-                   )
-                 ))
-      (dolist (char-regexp alist)
-        (set-char-table-range composition-function-table (car char-regexp)
-                              `([,(cdr char-regexp) 0 font-shape-gstring]))))
-    #+end_src
-
 *** Emoji
     Because this is the world we live in: don't hate, appreciate!
     Emojis can be fun in READMEs (and maybe Git commits where machine readability doesn't matter all that much)
