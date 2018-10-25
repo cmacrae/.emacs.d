@@ -224,22 +224,6 @@
      (setq magit-completing-read-function 'ivy-completing-read))
    #+end_src
 
-** [[https://github.com/sigma/magit-gh-pulls][GitHub integration]]
-   This package integrates Magit with GitHub to allow the user to perform pull request actions.
-   As mentioned previously, I'm usually using a British keyboard, so I've mapped the popup to the press of "£".
-   I've added an argument so that when raising a new PR, it's automatically opened in my web-browser.
-   If my web-browser is already running, this'll simply open a new tab - if not, it'll spawn a new instance.
-   Another handy functionality here is that the URL of the PR is automatically copied to the kill ring, so you can
-   paste it wherever necessary.
-   #+begin_src emacs-lisp
-   (use-package magit-gh-pulls
-     :hook (magit-mode . turn-on-magit-gh-pulls)
-     :bind (:map magit-gh-pulls-mode-map
-     ("£" . magit-gh-pulls-popup))
-     :init
-     (setq magit-gh-pulls-arguments (quote ("--open-new-in-browser"))))
-   #+end_src
-
 ** [[https://github.com/bbatsov/projectile][Projectile]]
    Project management based on version control repositories.
    Absolutely essential package for me. This makes hopping around and between various projects really easy.
