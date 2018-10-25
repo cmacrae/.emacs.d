@@ -497,6 +497,26 @@
        ("q" nil "Quit")))
    #+end_src
 
+** Kubernetes Integration
+   Integrates general purpose Kubernetes operations as a porcelain
+   #+begin_src emacs-lisp
+   (use-package kubernetes
+     :bind ("C-c k" . hydra-kube/body)
+     :commands (kubernetes-overview)
+     :config
+     (defhydra hydra-kube (:columns 5 :color blue)
+       "Kubernetes"
+       ("o" kubernetes-overview "Overview")
+       ("c" kubernetes-config-popup "Config")
+       ("e" kubernetes-exec-popup "Exec")
+       ("l" kubernetes-logs-popup "Logs")
+       ("L" kubernetes-labels-popup "Labels")
+       ("d" kubernetes-describe-popup "Describe")))
+
+   (use-package kubernetes-evil
+     :after kubernetes)
+   #+end_src
+ 
 ** [[https://github.com/nivekuil/corral][Corral]]
    Quickly surround text with delimiters, along with a hydra
    #+begin_src emacs-lisp
