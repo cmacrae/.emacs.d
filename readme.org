@@ -154,8 +154,10 @@
      :config
      (setq erc-hide-list '("PART" "QUIT" "JOIN"))
      (setq erc-autojoin-channels-alist '(("freenode.net"
+       "#smartos"
        "#lobsters"
        "#nixos"
+       "#nix-darwin"
        "#emacs"))
        erc-server "irc.freenode.net"
        erc-nick "cmacrae"))
