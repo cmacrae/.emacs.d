@@ -1164,9 +1164,7 @@
    (use-package markdown-mode
      :mode "\\.md\\'"
      :hook
-     (markdown-mode . flyspell-mode)
-     :config
-     (remove-hook 'before-save-hook 'delete-trailing-whitespace t))
+     (markdown-mode . flyspell-mode))
    #+end_src
 
 ** Jinja2
