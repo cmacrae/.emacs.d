@@ -843,6 +843,20 @@
                    'sensible-move-beginning-of-line)
    #+end_src
 
+** Yank filename
+   Simple little function to copy the current filename to the clipboard.
+   #+begin_src emacs-lisp
+   (defun yank-filename ()
+	  "Copy the current buffer file name to the clipboard."
+	  (interactive)
+	  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+	  (when filename
+	  (kill-new filename)
+	  (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+   #+end_src
 * Appearance
   Configuration related to the appearance of Emacs
 ** Hide stuff
