@@ -147,7 +147,7 @@
 ** IRC
    Emacs comes with a great builtin IRC client: ERC.
    These are some general settings that're all pretty self explanatory: hide particular activity, autojoin channels for particular servers.
-   The bottom line means when Emacs launches, I'll auto-connect to Freenode.
+   For convenience, I've also defined a ~erc-conn~ function for my usual connection parameters.
    #+begin_src emacs-lisp
    (use-package erc
      :ensure nil
