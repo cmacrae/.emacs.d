@@ -998,12 +998,14 @@
 
    I did build a custom modeline from scratch before, but since trying out [[https://github.com/TheBB/spaceline][Spaceline]], taken from [[http://spacemacs.org/][Spacemacs]], I've not gone back.
    There are a few things I turn off, and I also stuff some more ~all-the-icons~ love in - so all in all, it's very clean and clear.
+   I've specifically set the ~spaceline-highlight-face~ background to match the light blue used in the ~doom-one~ theme.
    #+begin_src emacs-lisp
    (use-package spaceline
      :pin melpa-stable
      :init
      (require 'spaceline-config)
-     (spaceline-emacs-theme))
+     (spaceline-emacs-theme)
+     (set-face-background 'spaceline-highlight-face "#51afef"))
    (use-package spaceline-all-the-icons
      :pin melpa-stable
      :after spaceline
