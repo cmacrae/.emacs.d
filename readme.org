@@ -1000,10 +1000,12 @@
    There are a few things I turn off, and I also stuff some more ~all-the-icons~ love in - so all in all, it's very clean and clear.
    #+begin_src emacs-lisp
    (use-package spaceline
+     :pin melpa-stable
      :init
      (require 'spaceline-config)
      (spaceline-emacs-theme))
    (use-package spaceline-all-the-icons
+     :pin melpa-stable
      :after spaceline
      :config
      (spaceline-all-the-icons-theme)

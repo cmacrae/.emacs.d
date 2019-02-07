@@ -9,6 +9,8 @@
 (setq package-enable-at-startup nil)
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+(unless (assoc-default "melpa-stable" package-archives)
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t))
 (package-initialize)
 
 ;; Bootstrap use-package
