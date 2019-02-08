@@ -938,6 +938,7 @@
    #+begin_src emacs-lisp
    (use-package indent-guide
      :config
+     (set-face-foreground 'indent-guide-face "dimgray")
      (indent-guide-global-mode))
    #+end_src
 
