@@ -263,7 +263,7 @@
    It's a means of namespacing a group of tangible buffers.
    When [[https://github.com/bbatsov/persp-projectile][combined with Projectile]], this becomes a really nice combination as projects then seemlessly translate to workspaces.
 
-   Here, I've defined a ~persp-neo~ function for use with ~persp-switch-hook~. This makes NeoTree follow the perspective when switching.
+   Here, I've defined a ~my/persp-neo~ function for use with ~persp-switch-hook~. This makes NeoTree follow the perspective when switching.
    I've also added a hydra for various Perspective actions.
    #+begin_src emacs-lisp
    (use-package perspective
