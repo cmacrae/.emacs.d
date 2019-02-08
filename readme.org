@@ -161,7 +161,7 @@
        "#emacs"))
        erc-server "irc.freenode.net"
        erc-nick "cmacrae"))
-   (defun erc-conn ()
+   (defun my/erc-conn ()
      (interactive)
      (erc-tls :server "irc.freenode.net" :port 6697 :nick "cmacrae"))
    #+end_src
@@ -269,7 +269,7 @@
    (use-package perspective
      :init (persp-mode)
      :config
-     (defun persp-neo ()
+     (defun my/persp-neo ()
        "Make NeoTree follow the perspective"
        (interactive)
        (let ((cw (selected-window))
@@ -283,7 +283,7 @@
 	       (select-window cw)))
 
      :hook
-     (persp-switch . persp-neo))
+     (persp-switch . my/persp-neo))
 
    (use-package persp-projectile
      :after (perspective)
@@ -328,10 +328,10 @@
    (use-package popwin
      :defer 1
      :bind
-     ("C-x t" . popwin-term:term)
+     ("C-x t" . my/popwin-term)
      :config
      (setq display-buffer-function 'popwin:display-buffer)
-     (defun popwin-term:term ()
+     (defun my/popwin-term ()
      (interactive)
      (popwin:display-buffer-1
       (or (get-buffer "*terminal*")
@@ -815,7 +815,7 @@
 ** Sort words
    Taken from [[https://www.emacswiki.org/emacs/SortWords][here]]; just a handy little function to sort words in a region alphabetically
    #+begin_src emacs-lisp
-   (defun sort-words (reverse beg end)
+   (defun my/sort-words (reverse beg end)
      "Sort words in region alphabetically, in REVERSE if negative.
        Prefixed with negative \\[universal-argument], sorts in reverse.
 
@@ -833,7 +833,7 @@
    A second press will then take your point back to the very beginning of the line.
    Pressing again will take you back to the indented column.
    #+begin_src emacs-lisp
-   (defun sensible-move-beginning-of-line (arg)
+   (defun my/sensible-move-beginning-of-line (arg)
      "Move point back to indentation of beginning of line.
 
      Move point to the first non-whitespace character on this line.
@@ -857,13 +857,13 @@
          (move-beginning-of-line 1))))
 
    (global-set-key [remap move-beginning-of-line]
-                   'sensible-move-beginning-of-line)
+                   'my/sensible-move-beginning-of-line)
    #+end_src
 
 ** Yank filename
    Simple little function to copy the current filename to the clipboard.
    #+begin_src emacs-lisp
-   (defun yank-filename ()
+   (defun my/yank-filename ()
 	  "Copy the current buffer file name to the clipboard."
 	  (interactive)
 	  (let ((filename (if (equal major-mode 'dired-mode)
@@ -899,10 +899,10 @@
    #+begin_src emacs-lisp
    (fringe-mode '(4 . 0))
 
-   (defun hide-fringes ()
+   (defun my/hide-fringes ()
      (set-window-fringes (selected-window) 0 0))
 
-   (add-hook 'eshell-mode 'hide-fringes)
+   (add-hook 'eshell-mode 'my/hide-fringes)
    #+end_src
 
 ** Centered buffers
@@ -1093,13 +1093,13 @@
 #+Begin_src emacs-lisp
 (use-package go-mode
   :init
-  (defun setup-go-mode-compile ()
+  (defun my/setup-go-mode-compile ()
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet")))
   :hook
   ((before-save . gofmt-before-save)
-   (go-mode . setup-go-mode-compile)
+   (go-mode . my/setup-go-mode-compile)
    (go-mode . (lambda ()
                 (set (make-local-variable 'company-backends) '(company-go))
                   (company-mode))))
