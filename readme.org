@@ -883,6 +883,8 @@
    - scrollbar
    - menubar
    - blinking cursor
+   - macOS titlebar (transparent)
+   - frame title
    #+begin_src emacs-lisp
    (dolist (mode
      '(tool-bar-mode
@@ -891,6 +893,11 @@
        menu-bar-mode
        blink-cursor-mode))
      (funcall mode 0))
+
+   (cond
+     ((string-equal system-type "darwin")
+         (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))))
+   (setq frame-title-format '(""))
    #+end_src
 
 ** Fringes
