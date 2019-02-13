@@ -280,7 +280,7 @@
                           (fboundp 'projectile-project-root))
                  (neotree-dir (projectile-project-root)))
                (neotree-find path))
-	       (select-window cw)))
+             (select-window cw)))
 
      :hook
      (persp-switch . my/persp-neo))
@@ -864,15 +864,14 @@
    Simple little function to copy the current filename to the clipboard.
    #+begin_src emacs-lisp
    (defun my/yank-filename ()
-	  "Copy the current buffer file name to the clipboard."
-	  (interactive)
-	  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-	  (when filename
-	  (kill-new filename)
-	  (message "Copied buffer file name '%s' to the clipboard." filename))))
-
+     "Copy the current buffer file name to the clipboard."
+     (interactive)
+     (let ((filename (if (equal major-mode 'dired-mode)
+                        default-directory
+                      (buffer-file-name))))
+       (when filename
+         (kill-new filename)
+         (message "Copied buffer file name '%s' to the clipboard." filename))))
    #+end_src
 * Appearance
   Configuration related to the appearance of Emacs
