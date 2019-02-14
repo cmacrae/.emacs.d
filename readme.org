@@ -365,7 +365,7 @@
    I use this constantly - it even works across multiple frames.
    #+begin_src emacs-lisp
    (use-package ace-window
-     :bind ("M-p" . ace-window)
+     :bind ("M-o" . ace-window)
      :config
      (setq aw-dispatch-always t)
      (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
