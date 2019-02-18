@@ -177,6 +177,7 @@
 *** Ivy
    - Suppress count visibility for ~ivy-read~
    - Set initial input chars to ~nil~
+   - Provide ~insert~ and ~yank~ options for candidates
 
    #+begin_src emacs-lisp
    (use-package ivy
@@ -188,6 +189,18 @@
      ("M-x" . counsel-M-x)
      ("C-x C-f" . counsel-find-file)
      :config
+     (defun ivy-yank-action (x)
+       (kill-new x))
+
+     (defun ivy-copy-to-buffer-action (x)
+       (with-ivy-window
+         (insert x)))
+
+     (ivy-set-actions
+      t
+      '(("i" ivy-copy-to-buffer-action "insert")
+        ("y" ivy-yank-action "yank")))
+
      (ivy-mode 1))
    #+end_src
 
