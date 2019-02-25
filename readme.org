@@ -376,12 +376,23 @@
 ** [[https://github.com/abo-abo/ace-window][ace-window]]
    Jump around Emacs windows & frames using character prefixes.
    I use this constantly - it even works across multiple frames.
+   Also added a hydra borrowed from [[https://oremacs.com/2015/01/29/more-hydra-goodness/][here]] for some really convenient movement/manipulation!
    #+begin_src emacs-lisp
    (use-package ace-window
-     :bind ("M-o" . ace-window)
+     :bind ("M-o" . hydra-window/body)
      :config
      (setq aw-dispatch-always t)
-     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+     (defhydra hydra-window (:color blue)
+       "window"
+       ("h" windmove-left "left")
+       ("j" windmove-down "down")
+       ("k" windmove-up "up")
+       ("l" windmove-right "right")
+       ("a" ace-window "ace")
+       ("s" (lambda () (interactive) (ace-window 4)) "swap")
+       ("d" (lambda () (interactive) (ace-window 16)) "delete")
+       ("q" nil "Quit")))
    #+end_src
 
 ** [[https://github.com/Fuco1/smartparens][Smartparens]]
