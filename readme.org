@@ -461,7 +461,9 @@
    (use-package exec-path-from-shell
      :config
      (setq exec-path-from-shell-check-startup-files nil)
-     (exec-path-from-shell-initialize))
+     (exec-path-from-shell-initialize)
+     (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+     (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
    #+end_src
 
 ** [[https://github.com/magnars/expand-region.el][Expand region]]
