@@ -266,7 +266,8 @@
       :bind
       ("C-c p s r" . counsel-projectile-rg)
       (:map projectile-mode-map
-        ("C-c p p" . projectile-persp-switch-project))
+        ("C-c p p" . projectile-persp-switch-project)
+	("C-c p f" . projectile-find-file))
       :init
       (counsel-projectile-mode))
     #+end_src
