@@ -1107,19 +1107,17 @@
    - Add ~\~/code/go/bin~ to the executable path, so built binaries can be found
    - Format before saving (adhering to ~go fmt~)
    - Use compilation to determine problems
-   - ~GOROOT~ & ~GOPATH~ interpretation based on ~/etc/zshrc~:
-     I use declarative configuration in Nix for my workstations, so this will inherit the right values for these variables.
+   - ~GOROOT~ & ~GOPATH~ interpretation based on shell environment
    - Set up ~company-mode~ with a Go backend for completion
    - Custom compilation operation:
      - Build
      - Test/Vet
    - ElDoc integration
-   - Use ~gometalinter~ for live linting
+   - Use ~golangci-lint~ for live linting
    - Plug into ~gore~ for a REPL
    - Use ~web-mode~ for ~.tmpl~ files (Go templating)
-   - Tree style view of code using ~go-direx~
 
-#+Begin_src emacs-lisp
+#+begin_src emacs-lisp
 (use-package go-mode
   :init
   (defun my/setup-go-mode-compile ()
@@ -1135,8 +1133,8 @@
   :config
   (setq gofmt-command "goimports")
   (add-to-list 'exec-path "~/code/go/bin")
-  (setenv "GOROOT" (shell-command-to-string ". /etc/zshrc; echo -n $GOROOT"))
-  (setenv "GOPATH" (shell-command-to-string ". /etc/zshrc; echo -n $GOPATH")))
+  (exec-path-from-shell-copy-env "GOROOT")
+  (exec-path-from-shell-copy-env "GOPATH"))
 
 ;; Completion integration
 (use-package company-go
@@ -1154,17 +1152,9 @@
   (go-mode . go-eldoc-setup))
 
 ;; Linting
-(use-package flycheck-gometalinter
-  :init
-  ;; skip linting for vendor dirs
-  (setq flycheck-gometalinter-vendor t)
-  ;; use in test files
-  (setq flycheck-gometalinter-test t)
-  ;; only use fast linters
-  (setq flycheck-gometalinter-fast t)
-  :config
-  (progn
-    (flycheck-gometalinter-setup)))
+(use-package flycheck-golangci-lint
+  :hook (flycheck-mode . flycheck-golangci-lint-setup)
+  :config (setenv "GO111MODULE" "on"))
 
 ;; Go REPL
 (use-package gorepl-mode
@@ -1176,12 +1166,6 @@
   :config
   (setq web-mode-engines-alist
       '(("go"    . "\\.tmpl\\'"))))
-
-;; Go direx
-(use-package go-direx
-  :hook go-mode
-  :bind (:map go-mode-map
-          ("C-c C-t" . go-direx-pop-to-buffer )))
 
 ;; Go add-tags
 (use-package go-add-tags)
