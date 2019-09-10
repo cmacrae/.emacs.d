@@ -1129,10 +1129,7 @@
                 (set (make-local-variable 'company-backends) '(company-go))
                   (company-mode))))
   :config
-  (setq gofmt-command "goimports")
-  (add-to-list 'exec-path "~/code/go/bin")
-  (exec-path-from-shell-copy-env "GOROOT")
-  (exec-path-from-shell-copy-env "GOPATH"))
+  (setq gofmt-command "goimports"))
 
 ;; Completion integration
 (use-package company-go
