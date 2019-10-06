@@ -326,7 +326,8 @@
    (use-package neotree
      :bind ("C-;" . neotree-toggle)
      :config
-     (setq neo-theme (if window-system 'icons 'arrows)))
+     (setq neo-theme (if window-system 'icons 'arrows))
+     (setq neo-show-hidden-files t))
    #+end_src
 
 ** [[https://github.com/m2ym/popwin-el][popwin]]
