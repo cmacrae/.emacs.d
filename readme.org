@@ -650,6 +650,13 @@
      (yaml-mode . hl-todo-mode))
    #+end_src
 
+   And a nice summary in ~magit~
+   #+begin_src emacs-lisp
+   (use-package magit-todos
+     :config (magit-todos-mode))
+   #+end_src
+
+
 ** [[https://github.com/julienXX/ivy-lobsters][ivy-lobsters]]
    That's right, I'm a crustacean :crab:
    #+begin_src emacs-lisp
