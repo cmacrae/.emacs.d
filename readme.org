@@ -441,19 +441,6 @@
        ("C-c h a" . ansible-doc)))
    #+end_src
 
-** [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
-   Having multiple cursors can be very powerful.
-   This allows you to perform simultaneous actions at multiple positions within the buffer.
-   This can be based on arbitrary regions (n amount of lines, as chosen manually), for each ocurrance of a pattern/selection, etc.
-   #+begin_src emacs-lisp
-   (use-package multiple-cursors
-     :bind
-     ("C-S-c C-S-c" . mc/edit-lines)
-     ("C->" . mc/mark-next-like-this)
-     ("C-<" . mc/mark-previous-like-this)
-     ("C-c C->" . mc/mark-all-like-this))
-   #+end_src
-
 ** [[https://github.com/purcell/exec-path-from-shell][Set exec/man PATH from shell]]
    When looking for executables/man-pages, Emacs will inherit these properties from the OS environment.
    This package provides the ability to do so from the user's shell, where they may have some more complex logic to determine such paths.
@@ -545,7 +532,7 @@
    (use-package kubernetes-evil
      :after kubernetes)
    #+end_src
- 
+
 ** [[https://github.com/nivekuil/corral][Corral]]
    Quickly surround text with delimiters, along with a hydra
    #+begin_src emacs-lisp
@@ -834,6 +821,35 @@
    (use-package evil-exchange
      :config
      (evil-exchange-install))
+   #+end_src
+
+** [[https://github.com/hlissner/evil-multiedit][Multiple Cursors]]
+   Having multiple cursors can be very powerful.
+   This allows you to perform simultaneous actions at multiple positions within the buffer.
+   #+begin_src emacs-lisp
+   (use-package evil-multiedit
+     :bind
+       (:map evil-normal-state-map
+         ("M-d" . evil-multiedit-match-and-next)
+         ("M-D" . evil-multiedit-match-and-prev))
+       (:map evil-visual-state-map
+         ("R" . evil-multiedit-match-all)
+         ("M-d" . evil-multiedit-and-next)
+         ("M-D" . evil-multiedit-and-prev)
+         ("C-M-D" . evil-multiedit-restore))
+       (:map evil-insert-state-map
+         ("C-n" . evil-multiedit-next)
+         ("C-p" . evil-multiedit-prev)
+         ("M-d" . evil-multiedit-toggle-marker-here))
+       (:map evil-multiedit-state-map
+         ("C-n" . evil-multiedit-next)
+         ("C-p" . evil-multiedit-prev)
+         ("RET" . evil-multiedit-toggle-or-restrict-region))
+       (:map evil-motion-state-map
+         ("RET" . evil-multiedit-toggle-or-restrict-region))
+     :config
+       (evil-multiedit-default-keybinds)
+       (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
    #+end_src
 
 * Custom functions
