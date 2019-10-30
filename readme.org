@@ -835,28 +835,9 @@
    This allows you to perform simultaneous actions at multiple positions within the buffer.
    #+begin_src emacs-lisp
    (use-package evil-multiedit
-     :bind
-       (:map evil-normal-state-map
-         ("M-d" . evil-multiedit-match-and-next)
-         ("M-D" . evil-multiedit-match-and-prev))
-       (:map evil-visual-state-map
-         ("R" . evil-multiedit-match-all)
-         ("M-d" . evil-multiedit-and-next)
-         ("M-D" . evil-multiedit-and-prev)
-         ("C-M-D" . evil-multiedit-restore))
-       (:map evil-insert-state-map
-         ("C-n" . evil-multiedit-next)
-         ("C-p" . evil-multiedit-prev)
-         ("M-d" . evil-multiedit-toggle-marker-here))
-       (:map evil-multiedit-state-map
-         ("C-n" . evil-multiedit-next)
-         ("C-p" . evil-multiedit-prev)
-         ("RET" . evil-multiedit-toggle-or-restrict-region))
-       (:map evil-motion-state-map
-         ("RET" . evil-multiedit-toggle-or-restrict-region))
      :config
-       (evil-multiedit-default-keybinds)
-       (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
+     (evil-multiedit-default-keybinds)
+     (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
    #+end_src
 
 * Custom functions
