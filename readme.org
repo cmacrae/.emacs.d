@@ -1055,7 +1055,8 @@
      :init
      (require 'spaceline-config)
      (spaceline-emacs-theme)
-     (set-face-background 'spaceline-highlight-face "#51afef"))
+     (set-face-background 'spaceline-highlight-face "#51afef")
+     (set-face-foreground 'spaceline-highlight-face "#282c34"))
    (use-package spaceline-all-the-icons
      :pin melpa-stable
      :after spaceline
