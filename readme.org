@@ -1128,6 +1128,8 @@
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet")))
+    (cond
+     ((string-equal system-type "darwin") (setenv "CGO_ENABLED" "0")))
   :hook
   ((before-save . gofmt-before-save)
    (go-mode . my/setup-go-mode-compile)
