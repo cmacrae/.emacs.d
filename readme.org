@@ -1108,10 +1108,8 @@
 ** Go ❤
    This configuration for Go does a few things:
    - Use ~goimports~ instead of ~go-fmt~ for formatting buffers
-   - Add ~\~/code/go/bin~ to the executable path, so built binaries can be found
    - Format before saving (adhering to ~go fmt~)
    - Use compilation to determine problems
-   - ~GOROOT~ & ~GOPATH~ interpretation based on shell environment
    - Set up ~company-mode~ with a Go backend for completion
    - Custom compilation operation:
      - Build
