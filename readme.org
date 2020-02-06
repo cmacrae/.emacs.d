@@ -1030,44 +1030,24 @@
    It's also got some nice hinting for textual faces and NeoTree icons.
    #+begin_src emacs-lisp
    (use-package doom-themes
-     :after (spaceline)
      :init
-     (setq
-         doom-themes-enable-bold t
-         doom-themes-enable-italic t
-         doom-one-brighter-comments t
-         doom-neotree-file-icons t)
-     (load-theme 'doom-one t)
-     :config
-     (doom-themes-neotree-config))
+     (setq doom-themes-enable-bold    t
+           doom-themes-enable-italic  t
+           doom-one-brighter-comments t)
+     (load-theme 'doom-one t))
    #+end_src
 
 ** Modeline
    The ever important modeline! Making your modeline look good and express useful information is vital, in my opinion.
    There's a lot of info you can cram in there - but to do so tastefully and efficiently is key.
-
-   I did build a custom modeline from scratch before, but since trying out [[https://github.com/TheBB/spaceline][Spaceline]], taken from [[http://spacemacs.org/][Spacemacs]], I've not gone back.
-   There are a few things I turn off, and I also stuff some more ~all-the-icons~ love in - so all in all, it's very clean and clear.
-   I've specifically set the ~spaceline-highlight-face~ background to match the light blue used in the ~doom-one~ theme.
-   #+begin_src emacs-lisp
-   (use-package spaceline
-     :pin melpa-stable
-     :init
-     (require 'spaceline-config)
-     (spaceline-emacs-theme)
-     (set-face-background 'spaceline-highlight-face "#51afef")
-     (set-face-foreground 'spaceline-highlight-face "#282c34"))
-   (use-package spaceline-all-the-icons
-     :pin melpa-stable
-     :after spaceline
-     :config
-     (spaceline-all-the-icons-theme)
-     (spaceline-all-the-icons--setup-git-ahead)
-     (spaceline-toggle-all-the-icons-buffer-size-off)
-     (spaceline-toggle-all-the-icons-hud-off)
-     (spaceline-toggle-all-the-icons-vc-icon-off)
-     (setq spaceline-all-the-icons-separator-type 'wave))
-   #+end_src
+  #+begin_src emacs-lisp
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-mode)
+    :config
+    (setq doom-modeline-persp-name              nil
+          doom-modeline-buffer-encoding         nil
+          doom-modeline-buffer-file-name-style  'truncate-with-project))
+  #+end_src
 
 ** Make file visiting buffers stand out
    The following expression adds a little flair to buffers visiting files.
