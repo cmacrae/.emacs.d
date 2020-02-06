@@ -167,7 +167,7 @@
 * Packages
   This section covers external packages I use and their configuration, in no particular order
 
-** Ivy/Counsel/Swiper
+** Ivy|Counsel|Swiper
    Absolutely brilliant interactive interface and completion frameworks.
    These packages improve the Emacs experience so much.
    As you can see from the ~:bind~ sections, I use these to replace some of the most used actions.
@@ -176,17 +176,18 @@
    - Suppress count visibility for ~ivy-read~
    - Set initial input chars to ~nil~
    - Provide ~insert~ and ~yank~ options for candidates
-
+   - Enrich ivy with some polish
    #+begin_src emacs-lisp
    (use-package ivy
-     :init
-     (setq ivy-count-format "")
-     (setq ivy-initial-inputs-alist nil)
      :bind
      ("C-s" . swiper)
      ("M-x" . counsel-M-x)
      ("C-x C-f" . counsel-find-file)
      :config
+     (ivy-mode 1)
+     (setq ivy-count-format         ""
+           ivy-initial-inputs-alist nil)
+     
      (defun ivy-yank-action (x)
        (kill-new x))
 
@@ -197,9 +198,32 @@
      (ivy-set-actions
       t
       '(("i" ivy-copy-to-buffer-action "insert")
-        ("y" ivy-yank-action "yank")))
-
-     (ivy-mode 1))
+        ("y" ivy-yank-action "yank"))))
+     
+   (use-package ivy-rich
+    :preface
+    (defun ivy-rich-switch-buffer-icon (candidate)
+      (with-current-buffer
+          (get-buffer candidate)
+        (all-the-icons-icon-for-mode major-mode)))  
+     :init
+     (setq ivy-rich-path-style 'abbrev)
+     (setq ivy-rich-display-transformers-list
+        (plist-put ivy-rich-display-transformers-list 'ivy-switch-buffer
+                   '(:columns
+                     ((ivy-rich-switch-buffer-icon (:width 1))
+                      (ivy-rich-candidate (:width 0.25))
+                      (ivy-rich-switch-buffer-size (:width 0.05 :face font-lock-comment-face))
+                      (ivy-rich-switch-buffer-indicators (:width 0.05 :face error :align right))
+                      (ivy-rich-switch-buffer-major-mode (:width 0.1 :face font-lock-function-name-face))
+                      (ivy-rich-switch-buffer-project (:width 0.15 :face success))
+                      (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.4))) :face font-lock-keyword-face)))
+                     :predicate
+                     (lambda (cand) (get-buffer cand))
+                     :delimiter "\t")))    
+     :config
+     (ivy-rich-mode 1)
+     (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
    #+end_src
 
 *** Counsel
@@ -1016,9 +1040,17 @@
 *** Ivy
     Icons in some ~ivy~ operations (file icons in ~counsel-find-file~, etc.)
     #+begin_src emacs-lisp
-    (use-package all-the-icons-ivy
-      :init
-      (all-the-icons-ivy-setup))
+      ;; (use-package all-the-icons-ivy
+      ;;   :init
+      ;;   (setq all-the-icons-ivy-file-commands
+      ;;         '(counsel-find-file
+      ;;           counsel-file-jump
+      ;;           counsel-recentf
+      ;;           projectile-completing-read))
+
+      ;;   (setq all-the-icons-spacer " ")
+      ;;   :custom-face
+      ;;   (all-the-icons-ivy-dir-face ((t (:inherit (font-lock-doc-face bold))))))
     #+end_src
 
 ** Theme
