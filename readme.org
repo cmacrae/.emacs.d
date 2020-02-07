@@ -176,6 +176,7 @@
    - Suppress count visibility for ~ivy-read~
    - Set initial input chars to ~nil~
    - Provide ~insert~ and ~yank~ options for candidates
+   - Display the candidate menu at the current point position with ~ivy-posframe~
 
    #+begin_src emacs-lisp
    (use-package ivy
@@ -200,6 +201,15 @@
         ("y" ivy-yank-action "yank")))
 
      (ivy-mode 1))
+
+   (use-package ivy-posframe
+     :after ivy
+     :config
+     (setq ivy-posframe-parameters
+      '((left-fringe . 8)
+        (right-fringe . 8)))
+     (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-point)))
+     (ivy-posframe-mode 1))
    #+end_src
 
 *** Counsel
