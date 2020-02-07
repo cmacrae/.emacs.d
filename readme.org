@@ -394,10 +394,15 @@
 
 ** [[https://github.com/flycheck/flycheck][Flycheck]]
    Have Flycheck turned on for everything - checking stuff is always good!
+   And for convenience, add a ~posframe~.
    #+begin_src emacs-lisp
    (use-package flycheck
      :hook
      (after-init . global-flycheck-mode))
+
+   (use-package flycheck-posframe
+     :after flycheck
+     :hook (flycheck-mode . flycheck-posframe-mode))
    #+end_src
 
 ** [[http://company-mode.github.io/][company-mode]]
