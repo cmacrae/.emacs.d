@@ -694,6 +694,11 @@
   - Zoom: increase/decrease current buffer text size
   - Transpose: transpose various constructs of text
   - Toggle mode: turn frequently "toggled" modes on and off
+
+  Enhancement packages:
+  - ~hydra-posframe~: use ~posframe~ to display hydra buffers at custom positions
+    /NOTE: This package is not currently available on MELPA. There's an open issue to get it added:/
+    https://github.com/Ladicle/hydra-posframe/issues/3
   #+begin_src emacs-lisp
   (use-package hydra
     :bind
@@ -729,6 +734,11 @@
       ("s" flyspell-mode "FlySpell")
       ("S" flyspell-prog-mode "FlySpell Prog")
       ("q" nil "Quit")))
+
+  ;; TODO: [hydra/posframe] Waiting for MELPA package
+  ;;       https://github.com/Ladicle/hydra-posframe/issues/3
+  ;; (use-package hydra-posframe
+  ;;   :hook (after-init . hydra-posframe-enable))
   #+end_src
 
 * Evil
