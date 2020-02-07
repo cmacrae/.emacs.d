@@ -1046,6 +1046,7 @@
     :config
     (setq doom-modeline-persp-name              nil
           doom-modeline-buffer-encoding         nil
+	  doom-modeline-icon                    (display-graphic-p)
           doom-modeline-buffer-file-name-style  'truncate-with-project))
   #+end_src
 
