@@ -205,10 +205,10 @@
    (use-package ivy-posframe
      :after ivy
      :config
-     (setq ivy-posframe-parameters
-      '((left-fringe . 8)
-        (right-fringe . 8)))
-     (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-point)))
+     (set-face-background 'ivy-posframe-border   "#51afef")
+     (setq ivy-posframe-border-width             1
+           ivy-posframe-parameters               '((left-fringe . 8) (right-fringe . 8))
+           ivy-posframe-display-functions-alist  '((t . ivy-posframe-display-at-point)))
      (ivy-posframe-mode 1))
    #+end_src
 
@@ -275,7 +275,7 @@
       ("C-c p s r" . counsel-projectile-rg)
       (:map projectile-mode-map
         ("C-c p p" . projectile-persp-switch-project)
-	("C-c p f" . projectile-find-file))
+        ("C-c p f" . projectile-find-file))
       :init
       (counsel-projectile-mode))
     #+end_src
@@ -1066,7 +1066,7 @@
     :config
     (setq doom-modeline-persp-name              nil
           doom-modeline-buffer-encoding         nil
-	  doom-modeline-icon                    (display-graphic-p)
+          doom-modeline-icon                    (display-graphic-p)
           doom-modeline-buffer-file-name-style  'truncate-with-project))
   #+end_src
 
