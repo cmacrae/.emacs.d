@@ -1091,15 +1091,15 @@
 ** Modeline
    The ever important modeline! Making your modeline look good and express useful information is vital, in my opinion.
    There's a lot of info you can cram in there - but to do so tastefully and efficiently is key.
-  #+begin_src emacs-lisp
-  (use-package doom-modeline
-    :hook (after-init . doom-modeline-mode)
-    :config
-    (setq doom-modeline-persp-name              nil
-          doom-modeline-buffer-encoding         nil
-          doom-modeline-icon                    (display-graphic-p)
-          doom-modeline-buffer-file-name-style  'truncate-with-project))
-  #+end_src
+   #+begin_src emacs-lisp
+   (use-package doom-modeline
+     :hook (after-init . doom-modeline-mode)
+     :config
+     (setq doom-modeline-persp-name              nil
+           doom-modeline-buffer-encoding         nil
+           doom-modeline-icon                    t
+           doom-modeline-buffer-file-name-style  'truncate-with-project))
+   #+end_src
 
 ** Make file visiting buffers stand out
    The following expression adds a little flair to buffers visiting files.
