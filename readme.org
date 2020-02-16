@@ -89,6 +89,12 @@
    (setq confirm-kill-emacs 'yes-or-no-p)
    #+End_src
 
+** Set meta for Darwin systems
+   #+begin_src emacs-lisp
+   (cond
+     ((string-equal system-type "darwin")
+       (setq mac-option-modifier 'meta)))
+   #+end_src
 ** Follow symlinks in version control
    If there are any symlinks in version controlled repositories, follow them
    #+begin_src emacs-lisp
