@@ -187,14 +187,8 @@
 
    #+begin_src emacs-lisp
    (use-package ivy
-     :init
-     (setq ivy-count-format "")
-     (setq ivy-initial-inputs-alist nil)
-     :bind
-     ("C-s" . swiper)
-     ("M-x" . counsel-M-x)
-     ("C-x C-f" . counsel-find-file)
-     :config
+     :hook (after-init . ivy-mode)
+     :preface
      (defun ivy-yank-action (x)
        (kill-new x))
 
@@ -202,12 +196,17 @@
        (with-ivy-window
          (insert x)))
 
-     (ivy-set-actions
-      t
-      '(("i" ivy-copy-to-buffer-action "insert")
-        ("y" ivy-yank-action "yank")))
+     :bind
+     ("C-s"     . swiper)
+     ("M-x"     . counsel-M-x)
+     ("C-x C-f" . counsel-find-file)
 
-     (ivy-mode 1))
+     :config
+     (setq ivy-count-format          ""
+           ivy-initial-inputs-alist  nil)
+     (ivy-set-actions t
+      '(("i" ivy-copy-to-buffer-action "insert")
+        ("y" ivy-yank-action "yank"))))
 
    (use-package ivy-posframe
      :after ivy
@@ -215,7 +214,8 @@
      (set-face-background 'ivy-posframe-border   "#51afef")
      (setq ivy-posframe-border-width             1
            ivy-posframe-parameters               '((left-fringe . 8) (right-fringe . 8))
-           ivy-posframe-display-functions-alist  '((t . ivy-posframe-display-at-point)))
+           ivy-posframe-display-functions-alist  '((t      . ivy-posframe-display-at-point)
+                                                   (swiper . nil)))
      (ivy-posframe-mode 1))
 
    (use-package ivy-rich
