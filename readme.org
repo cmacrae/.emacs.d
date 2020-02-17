@@ -278,10 +278,12 @@
 
    Some configuration I use:
    - Setting the completion system to ~ivy~
+   - Adding an action to invoke ~neotree~ upon switching projects
    #+begin_src emacs-lisp
    (use-package projectile
      :init
      (setq projectile-completion-system 'ivy)
+     (setq projectile-switch-project-action 'neotree-projectile-action)
      :config
      (projectile-global-mode))
    #+end_src
@@ -307,13 +309,30 @@
    It's a means of namespacing a group of tangible buffers.
    When [[https://github.com/bbatsov/persp-projectile][combined with Projectile]], this becomes a really nice combination as projects then seemlessly translate to workspaces.
 
+   Here, I've defined a ~my/persp-neo~ function for use with ~persp-switch-hook~. This makes NeoTree follow the perspective when switching.
    I've also added a hydra for various Perspective actions.
    #+begin_src emacs-lisp
    (use-package perspective
-     :init (persp-mode))
+     :init (persp-mode)
+     :config
+     (defun my/persp-neo ()
+       "Make NeoTree follow the perspective"
+       (interactive)
+       (let ((cw (selected-window))
+             (path (buffer-file-name))) ;; save current window and buffer
+             (progn
+               (when (and (fboundp 'projectile-project-p)
+                          (projectile-project-p)
+                          (fboundp 'projectile-project-root))
+                 (neotree-dir (projectile-project-root)))
+               (neotree-find path))
+             (select-window cw)))
+
+     :hook
+     (persp-switch . my/persp-neo))
 
    (use-package persp-projectile
-     :after perspective
+     :after (perspective)
      :bind
      ("C-c x" . hydra-persp/body)
      :config
@@ -335,32 +354,16 @@
        ("q" nil "Quit")))
    #+end_src
 
-** [[https://github.com/Alexander-Miller/treemacs][Treemacs]]
-   A tree layout file explorer with lots of fancy integrations and features. Makes navigation of the filesystem
-   a pleasure to experience.
+** [[https://github.com/jaypei/emacs-neotree][NeoTree]]
+   Awesome little filetree as a sidebar, ầ la NerdTree for Vim
    #+begin_src emacs-lisp
-   (use-package treemacs
-     :bind
-     (:map global-map
-       ("C-;"       . treemacs-select-window)
-       ("C-x t t"   . treemacs)
-       ("C-x t C-t" . treemacs-find-file)
-       ("C-x t M-t" . treemacs-find-tag))
+   (use-package neotree
+     :bind ("C-;" . neotree-toggle)
      :config
-     (setq treemacs-show-hidden-files t))
-
-   (use-package treemacs-evil
-     :after treemacs evil)
-
-   (use-package treemacs-projectile
-     :after treemacs projectile)
-
-   (use-package treemacs-magit
-     :after treemacs magit)
-   (use-package treemacs-persp
-     :after treemacs persp-mode
-     :config (treemacs-set-scope-type 'Perspectives))
+     (setq neo-theme (if window-system 'icons 'arrows))
+     (setq neo-show-hidden-files t))
    #+end_src
+
 ** [[https://github.com/m2ym/popwin-el][popwin]]
    Some windows in Emacs can be quite obtrusive. ~popwin~ aims to manage this.
    By using ~popwin~ windows that could be deemed "temporary" only take up a small amount of realestate, which is reclaimed upon said window closing.
@@ -371,8 +374,22 @@
    #+begin_src emacs-lisp
    (use-package popwin
      :defer 1
+     :bind
+     ("C-x t" . my/popwin-term)
      :config
-     (setq display-buffer-function 'popwin:display-buffer))
+     (setq display-buffer-function 'popwin:display-buffer)
+     (defun my/popwin-term ()
+     (interactive)
+     (popwin:display-buffer-1
+      (or (get-buffer "*terminal*")
+          (save-window-excursion
+            (call-interactively 'term)))
+        :default-config-keywords '(:position :top))
+        (provide 'popwin-term))
+
+     ;; Go direx
+     (push '("^\*go-direx:" :regexp t :position right :width 0.4 :dedicated t :stick t)
+        popwin:special-display-config))
    #+end_src
 
 ** [[https://github.com/flycheck/flycheck][Flycheck]]
@@ -678,6 +695,7 @@
      :config (magit-todos-mode))
    #+end_src
 
+
 ** [[https://github.com/julienXX/ivy-lobsters][ivy-lobsters]]
    That's right, I'm a crustacean :crab:
    #+begin_src emacs-lisp
@@ -756,11 +774,17 @@
   Vim emulation in Emacs. Because: yes, you can have the best of both worlds!
 
   Below you'll find various extensions to my Evil layer that generally improve the quality of life.
+  This first configuration block is simply to turn Evil on at start and add some NeoTree bindings for compatability.
   #+begin_src emacs-lisp
   (use-package evil
     :init
     (setq evil-want-C-u-scroll t)
-    (evil-mode))
+    (evil-mode)
+    :config
+    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter))
   #+end_src
 
 ** Compatibility
@@ -1059,15 +1083,14 @@
    Right now, I'm using the beautiful ~doom-one~ theme from [[https://github.com/hlissner][hlissner]]'s [[https://github.com/hlissner/emacs-doom-themes][doom-themes]].
    It's inspired by Atom's "One Dark" themes. It's high contrast, and easy on the eyes.
    Bright enough to easily distinguish between different constructs, but not sickening.
+   It's also got some nice hinting for textual faces and NeoTree icons.
    #+begin_src emacs-lisp
    (use-package doom-themes
      :init
      (setq doom-themes-enable-bold    t
            doom-themes-enable-italic  t
-           doom-one-brighter-comments t
-           doom-themes-treemacs-theme "doom-colors")
-     (load-theme 'doom-one t)
-     (doom-themes-treemacs-config))
+           doom-one-brighter-comments t)
+     (load-theme 'doom-one t))
    #+end_src
 
 ** Modeline
