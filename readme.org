@@ -688,7 +688,6 @@
      :config (magit-todos-mode))
    #+end_src
 
-
 ** [[https://github.com/julienXX/ivy-lobsters][ivy-lobsters]]
    That's right, I'm a crustacean :crab:
    #+begin_src emacs-lisp
@@ -708,6 +707,11 @@
        ("q" nil "Quit" :color blue)))
    #+end_src
 
+** [[https://github.com/abo-abo/define-word][define-word]]
+   Display the definition of word at the point, nice!
+   #+begin_src emacs-lisp
+   (use-package define-word)
+   #+end_src
 * [[https://github.com/abo-abo/hydra][Hydras]]
   Great package to tie tangible actions together into convenient keybinding landscapes.
   Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
