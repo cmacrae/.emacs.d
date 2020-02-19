@@ -89,12 +89,17 @@
    (setq confirm-kill-emacs 'yes-or-no-p)
    #+End_src
 
-** Set meta for Darwin systems
+** Set meta for Darwin systems & turn on menu-bar mode
+   I use the Emacs "Mac port" package, as it has much better GUI support on Darwin systems.
+   As such, it's necessary to tell it to use the meta key as the option modifier.
+   Also, to make it play a little nicer with window management, enable menu-bar-mode.
    #+begin_src emacs-lisp
    (cond
      ((string-equal system-type "darwin")
-       (setq mac-option-modifier 'meta)))
+       (setq mac-option-modifier 'meta))
+       (menu-bar-mode t))
    #+end_src
+
 ** Follow symlinks in version control
    If there are any symlinks in version controlled repositories, follow them
    #+begin_src emacs-lisp
@@ -965,7 +970,6 @@
      '(tool-bar-mode
        tooltip-mode
        scroll-bar-mode
-       menu-bar-mode
        blink-cursor-mode))
      (funcall mode 0))
 
