@@ -723,6 +723,7 @@
    #+begin_src emacs-lisp
    (use-package define-word)
    #+end_src
+
 * [[https://github.com/abo-abo/hydra][Hydras]]
   Great package to tie tangible actions together into convenient keybinding landscapes.
   Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
@@ -1118,8 +1119,8 @@
            doom-modeline-buffer-file-name-style  'truncate-with-project))
    #+end_src
 
-** Make file visiting buffers stand out
-   The following expression adds a little flair to buffers visiting files.
+** Make focussed & file visiting buffers stand out
+   The following expression adds a little flair to focussed buffers and those visiting files.
    I have it activate upon visiting files and after switching perspectives.
    #+begin_src emacs-lisp
    (use-package solaire-mode
@@ -1129,6 +1130,14 @@
      (after-change-major-mode . turn-on-solaire-mode)
      :config
      (solaire-mode-swap-bg))
+
+   (use-package dimmer
+     :hook (after-init . dimmer-mode)
+     :config
+     (dimmer-configure-hydra)
+     (dimmer-configure-magit)
+     (dimmer-configure-org)
+     (dimmer-configure-posframe))
    #+end_src
 
 ** Font
