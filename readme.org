@@ -478,6 +478,12 @@
        ("C-c h a" . ansible-doc)))
    #+end_src
 
+** TOML mode
+   Simply to support TOML configurations
+   #+begin_src emacs-lisp
+   (use-package toml-mode)
+   #+end_src
+
 ** [[https://github.com/purcell/exec-path-from-shell][Set exec/man PATH from shell]]
    When looking for executables/man-pages, Emacs will inherit these properties from the OS environment.
    This package provides the ability to do so from the user's shell, where they may have some more complex logic to determine such paths.
