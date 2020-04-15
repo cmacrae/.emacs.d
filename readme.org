@@ -89,15 +89,15 @@
    (setq confirm-kill-emacs 'yes-or-no-p)
    #+End_src
 
-** Set meta for Darwin systems & turn on menu-bar mode
-   I use the Emacs "Mac port" package, as it has much better GUI support on Darwin systems.
-   As such, it's necessary to tell it to use the meta key as the option modifier.
-   Also, to make it play a little nicer with window management, enable menu-bar-mode.
+** A few Darwin specific configurations
+   To make Emacs play a little nicer with window management, enable menu-bar-mode.
+   Also, set the frame's dimensions based on pixels - this makes Emacs play nicer with tiling
+   window managers, where no title bar is displayed.
    #+begin_src emacs-lisp
    (cond
      ((string-equal system-type "darwin")
-       (setq mac-option-modifier 'meta))
-       (menu-bar-mode t))
+       (menu-bar-mode t)
+       (setq frame-resize-pixelwise t)))
    #+end_src
 
 ** Follow symlinks in version control
