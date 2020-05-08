@@ -1030,10 +1030,15 @@
    Cool little package to provide indentation guides.
    This will display a line of ~|~ characters with a comment face to indicate the indentation of the current block.
    #+begin_src emacs-lisp
-   (use-package indent-guide
+   (use-package highlight-indent-guides
+     :hook
+     (prog-mode . highlight-indent-guides-mode)
      :config
-     (set-face-foreground 'indent-guide-face "dimgray")
-     (indent-guide-global-mode))
+     (setq highlight-indent-guides-auto-odd-face-perc        15
+           highlight-indent-guides-auto-even-face-perc       15
+           highlight-indent-guides-auto-character-face-perc  20
+	   highlight-indent-guides-responsive                'stack
+           highlight-indent-guides-method                    'character))
    #+end_src
 
 ** Rainbow Delimiters
