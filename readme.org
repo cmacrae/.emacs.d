@@ -1097,10 +1097,10 @@
 ** Theme
    /Fashion First!/
 
-   Right now, I'm using the beautiful ~doom-one~ theme from [[https://github.com/hlissner][hlissner]]'s [[https://github.com/hlissner/emacs-doom-themes][doom-themes]].
-   It's inspired by Atom's "One Dark" themes. It's high contrast, and easy on the eyes.
-   Bright enough to easily distinguish between different constructs, but not sickening.
-   It's also got some nice hinting for textual faces and NeoTree icons.
+   Right now, I'm using the beautiful ~doom-one~ & ~doom-solarized-light~ themes from
+   [[https://github.com/hlissner][hlissner]]'s [[https://github.com/hlissner/emacs-doom-themes][doom-themes]].
+   They're high contrast, and easy on the eyes, and right enough to easily distinguish
+   between different constructs, but not sickening.
    #+begin_src emacs-lisp
    (use-package doom-themes
      :init
@@ -1108,7 +1108,7 @@
            doom-themes-enable-italic      t
 	   doom-themes-neotree-file-icons t
            doom-one-brighter-comments     t)
-     (load-theme 'doom-one t)
+     (load-theme 'doom-solarized-light t)
      (doom-themes-neotree-config))
    #+end_src
 
