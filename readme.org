@@ -170,7 +170,7 @@
        "#nix-darwin"))
        erc-server "irc.freenode.net"
        erc-nick "cmacrae"))
-   (defun my/erc-conn ()
+   (defun cm/erc-conn ()
      (interactive)
      (erc-tls :server "irc.freenode.net" :port 6697 :nick "cmacrae"))
    #+end_src
@@ -302,13 +302,13 @@
    It's a means of namespacing a group of tangible buffers.
    When [[https://github.com/bbatsov/persp-projectile][combined with Projectile]], this becomes a really nice combination as projects then seemlessly translate to workspaces.
 
-   Here, I've defined a ~my/persp-neo~ function for use with ~persp-switch-hook~. This makes NeoTree follow the perspective when switching.
+   Here, I've defined a ~cm/persp-neo~ function for use with ~persp-switch-hook~. This makes NeoTree follow the perspective when switching.
    I've also added a hydra for various Perspective actions.
    #+begin_src emacs-lisp
    (use-package perspective
      :init (persp-mode)
      :config
-     (defun my/persp-neo ()
+     (defun cm/persp-neo ()
        "Make NeoTree follow the perspective"
        (interactive)
        (let ((cw (selected-window))
@@ -322,7 +322,7 @@
              (select-window cw)))
 
      :hook
-     (persp-switch . my/persp-neo))
+     (persp-switch . cm/persp-neo))
 
    (use-package persp-projectile
      :after (perspective)
@@ -374,10 +374,10 @@
    (use-package popwin
      :defer 1
      :bind
-     ("C-x t" . my/popwin-term)
+     ("C-x t" . cm/popwin-term)
      :config
      (setq display-buffer-function 'popwin:display-buffer)
-     (defun my/popwin-term ()
+     (defun cm/popwin-term ()
      (interactive)
      (popwin:display-buffer-1
       (or (get-buffer "*terminal*")
@@ -904,7 +904,7 @@
 ** Sort words
    Taken from [[https://www.emacswiki.org/emacs/SortWords][here]]; just a handy little function to sort words in a region alphabetically
    #+begin_src emacs-lisp
-   (defun my/sort-words (reverse beg end)
+   (defun cm/sort-words (reverse beg end)
      "Sort words in region alphabetically, in REVERSE if negative.
        Prefixed with negative \\[universal-argument], sorts in reverse.
 
@@ -922,7 +922,7 @@
    A second press will then take your point back to the very beginning of the line.
    Pressing again will take you back to the indented column.
    #+begin_src emacs-lisp
-   (defun my/sensible-move-beginning-of-line (arg)
+   (defun cm/sensible-move-beginning-of-line (arg)
      "Move point back to indentation of beginning of line.
 
      Move point to the first non-whitespace character on this line.
@@ -946,13 +946,13 @@
          (move-beginning-of-line 1))))
 
    (global-set-key [remap move-beginning-of-line]
-                   'my/sensible-move-beginning-of-line)
+                   'cm/sensible-move-beginning-of-line)
    #+end_src
 
 ** Yank filename
    Simple little function to copy the current filename to the clipboard.
    #+begin_src emacs-lisp
-   (defun my/yank-filename ()
+   (defun cm/yank-filename ()
      "Copy the current buffer file name to the clipboard."
      (interactive)
      (let ((filename (if (equal major-mode 'dired-mode)
@@ -993,10 +993,10 @@
    #+begin_src emacs-lisp
    (fringe-mode '(4 . 0))
 
-   (defun my/hide-fringes ()
+   (defun cm/hide-fringes ()
      (set-window-fringes (selected-window) 0 0))
 
-   (add-hook 'eshell-mode 'my/hide-fringes)
+   (add-hook 'eshell-mode 'cm/hide-fringes)
    #+end_src
 
 ** Centered buffers
