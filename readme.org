@@ -1288,13 +1288,13 @@
    (setq org-src-fontify-natively t)
    (setq org-agenda-files '("~/org"))
    (setq org-capture-templates
-         '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+         '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
             "* TODO %^{Brief Description} %^g\n%?\tAdded: %U")
-           ("r" "ToRead" entry (file+headline "~/org/gtd.org" "Tasks")
+           ("r" "ToRead" entry (file+headline "~/org/inbox.org" "Tasks")
             "* TOREAD %^{Title} %^g\n%?\tLink: %c")
-           ("p" "Project" entry (file+headline "~/org/gtd.org" "Projects")
+           ("p" "Project" entry (file+headline "~/org/inbox.org" "Projects")
             "* %^{Brief Description} %^g\n%?\tAdded: %U")
-           ("m" "Maybe" entry (file+headline "~/org/gtd.org" "Maybe/Some Day")
+           ("m" "Maybe" entry (file+headline "~/org/inbox.org" "Maybe/Some Day")
             "* %^{Brief Description} %^g\n%?\tAdded: %U")))
    #+end_src
 
