@@ -962,6 +962,57 @@
          (kill-new filename)
          (message "Copied buffer file name '%s' to the clipboard." filename))))
    #+end_src
+
+** Load theme
+   Fully unloads the current theme and loads the new one of choice.
+   This is handy to have as loading a theme over another can leave behind bad faces.
+   #+begin_src emacs-lisp
+   (defun cm/switch-theme (theme)
+     "Disable active themes and load THEME."
+     (interactive (list (intern (completing-read "Theme: "
+                                  (->> (custom-available-themes)
+                                    (-map #'symbol-name))))))
+     (mapc #'disable-theme custom-enabled-themes)
+     (load-theme theme 'no-confirm))
+   #+end_src
+
+** New blog post
+   A convenience function to create a new Org file suited to blogging with Hugo.
+   #+begin_src emacs-lisp
+   (defvar cm/blog-location)
+   (defvar cm/blog-project)
+   (setq cm/blog-location (concat (getenv "HOME") "/dev/cmacr.ae/content/post"))
+   (setq cm/blog-project "~/dev/cmacr.ae")
+   (defun cm/new-blog-post  ()
+     "Set up a new blog post file & buffer."
+     (interactive)
+     (setq today (format-time-string "%Y-%m-%d")
+           title (read-string "Title: ")
+           filename (replace-regexp-in-string " " "-" (downcase title)))
+     (write-region
+       (format "#+date: %s\n#+title: %s\n#+tags[]: %s\n\n"
+         today
+         title
+         (read-string "Tags: "))
+        nil
+        (format "%s/%s"
+          cm/blog-location
+           (concat
+             (format "%s-" today)
+             (format "%s.org" filename)))
+       ;; Don't automatically overwrite existing file
+       nil nil nil t)
+     (projectile-persp-switch-project cm/blog-project)
+     (find-file (format "%s/%s-%s.org" cm/blog-location today filename))
+     (cm/persp-neo)
+     (company-mode)
+     (company-emoji-init)
+     (emojify-mode)
+     (end-of-buffer)
+     (centered-window-mode)
+					(delete-other-windows))
+   #+end_src
+
 * Appearance
   Configuration related to the appearance of Emacs
 ** Hide stuff
