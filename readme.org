@@ -1292,7 +1292,8 @@
   Configuration for the brilliant Org mode!
 
 ** General
-   - A few keybindings for captures, agenda, etc.
+   - A few global keybindings for captures, agenda, etc.
+   - Turn on flyspell mode
    - Follow filesystem links for Org files
    - Agenda files directory
    - Custom capture templates
@@ -1301,18 +1302,22 @@
    (global-set-key "\C-cc" 'org-capture)
    (global-set-key "\C-ca" 'org-agenda)
    (global-set-key "\C-cb" 'org-iswitchb)
-   (setq org-return-follows-link t)
-   (setq org-src-fontify-natively t)
-   (setq org-agenda-files '("~/org"))
-   (setq org-capture-templates
-         '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
-            "* TODO %^{Brief Description} %^g\n%?\tAdded: %U")
-           ("r" "ToRead" entry (file+headline "~/org/inbox.org" "Tasks")
-            "* TOREAD %^{Title} %^g\n%?\tLink: %c")
-           ("p" "Project" entry (file+headline "~/org/inbox.org" "Projects")
-            "* %^{Brief Description} %^g\n%?\tAdded: %U")
-           ("m" "Maybe" entry (file+headline "~/org/inbox.org" "Maybe/Some Day")
-            "* %^{Brief Description} %^g\n%?\tAdded: %U")))
+   (use-package org-mode
+     :ensure nil
+     :hook (org-mode . flyspell-mode)
+     :config
+       (setq org-return-follows-link t
+             org-src-fontify-natively t
+             org-agenda-files '("~/org")
+             org-capture-templates
+             '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
+                "* TODO %^{Brief Description} %^g\n%?\tAdded: %U")
+               ("r" "ToRead" entry (file+headline "~/org/inbox.org" "Tasks")
+                "* TOREAD %^{Title} %^g\n%?\tLink: %c")
+               ("p" "Project" entry (file+headline "~/org/inbox.org" "Projects")
+                "* %^{Brief Description} %^g\n%?\tAdded: %U")
+               ("m" "Maybe" entry (file+headline "~/org/inbox.org" "Maybe/Some Day")
+                "* %^{Brief Description} %^g\n%?\tAdded: %U"))))
    #+end_src
 
 ** ~org-bullets~
