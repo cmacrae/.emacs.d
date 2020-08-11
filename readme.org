@@ -76,6 +76,13 @@
    (fset 'yes-or-no-p 'y-or-n-p)
    #+end_src
 
+** Set meta for Darwin systems
+   #+begin_src emacs-lisp
+   (cond
+     ((string-equal system-type "darwin")
+       (setq mac-option-modifier 'meta)))
+   #+end_src
+
 ** Set the scratch buffer string
    Set the scratch buffer's initial contents to include a comment with a timestamp of creation.
    Not really all that useful, but cleaner than the default comment, and I like having something there.
