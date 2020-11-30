@@ -1248,6 +1248,11 @@
    (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
    #+end_src
 
+** Rego
+   #+begin_src emacs-lisp
+   (use-package rego-mode)
+   #+end_src
+
 ** Markdown
    Markdown compatability. Activate ~markdown-mode~ for ~.md~ files and turn on ~flyspell~
    #+begin_src emacs-lisp
