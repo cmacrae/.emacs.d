@@ -23,7 +23,7 @@
    Pretty self explanatory: just setting some personal details about who's using Emacs.
    #+begin_src emacs-lisp
    (setq user-full-name "Calum MacRae"
-         user-mail-address "calum0macrae@gmail.com")
+         user-mail-address "hi@cmacr.ae")
    #+end_src
 
 ** Deactivation
