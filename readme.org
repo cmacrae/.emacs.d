@@ -271,6 +271,15 @@
      (setq magit-completing-read-function 'ivy-completing-read))
    #+end_src
 
+** [[https://github.com/sshaw/git-link][git-link]]
+   Create & yank URLs for popular git forges based on current file/buffer location.
+   Handy for collaborating.
+   #+begin_src emacs-lisp
+   (use-package git-link
+     :bind
+     ("C-c g l" . git-link))
+   #+end_src
+
 ** [[https://github.com/bbatsov/projectile][Projectile]]
    Project management based on version control repositories.
    Absolutely essential package for me. This makes hopping around and between various projects really easy.
