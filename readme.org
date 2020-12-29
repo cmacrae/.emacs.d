@@ -735,6 +735,13 @@
    (use-package define-word)
    #+end_src
 
+** [[https://github.com/akermu/emacs-libvterm][vterm]]
+   Fully-fledged terminal emulator based on [[https://github.com/neovim/libvterm][libvterm]]!
+   I manage the module and elisp as a Nix overlay in [[https://github.com/cmacrae/config][my system configuration]], so no need to install it
+   #+begin_src emacs-lisp
+   (use-package vterm :ensure nil)
+   #+end_src
+
 * [[https://github.com/abo-abo/hydra][Hydras]]
   Great package to tie tangible actions together into convenient keybinding landscapes.
   Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
