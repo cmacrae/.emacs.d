@@ -773,6 +773,38 @@
      (evil-define-key 'normal vterm-mode-map (kbd "<return>") #'evil-insert-resume))
    #+end_src
 
+** [[https://github.com/ema2159/centaur-tabs/][centaur-tabs]]
+   Fancy buffer tabs :sparkles:
+   - Activate after init
+   - Disable for a few modes
+   - Set the header face to fit better
+   - Set tab grouping to work with Projectile
+   - Bottom bar style tab indicator
+   - Turn on icons
+   - Set the cycle scope to current project tabs
+   - Bind "K"/"J" in normal Evil state to move forward/backward
+   #+begin_src emacs-lisp
+   (use-package centaur-tabs
+     :hook
+     (after-init . centaur-tabs-mode)
+     (vterm-mode . centaur-tabs-local-mode)
+     (calendar-mode . centaur-tabs-local-mode)
+     (org-agenda-mode . centaur-tabs-local-mode)
+     (helpful . centaur-tabs-local-mode)
+     :config
+     (centaur-tabs-headline-match)
+     (centaur-tabs-group-by-projectile-project)
+     :custom
+     (centaur-tabs-style "bar")
+     (centaur-tabs-set-bar 'under)
+     (centaur-tabs-set-icons t)
+     (centaur-tabs-cycle-scope 'tabs)
+     :bind
+     (:map evil-normal-state-map
+        ("K" . centaur-tabs-forward)
+        ("J" . centaur-tabs-backward)))
+   #+end_src
+
 * [[https://github.com/abo-abo/hydra][Hydras]]
   Great package to tie tangible actions together into convenient keybinding landscapes.
   Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
