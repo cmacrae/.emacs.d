@@ -30,6 +30,97 @@
         (setq frame-resize-pixelwise t)))
     #+END_SRC
 
+*** Deactivation of functionality I don't tend to use
+    - Backup files
+    - Autosaving
+    - Start-up message
+    - Audible bell
+    - Toolbar, tooltip, scrollbar, blinking cursor
+    #+BEGIN_SRC emacs-lisp
+    (setq make-backup-files       nil
+          auto-save-default       nil
+          inhibit-startup-message t
+          ring-bell-function      'ignore)
+    (dolist (mode
+      '(tool-bar-mode
+        tooltip-mode
+        scroll-bar-mode
+        blink-cursor-mode))
+      (funcall mode 0))
+    #+END_SRC
+
+*** Discard customizations
+    Emacs has a comprehensive customization system that allows configuration changes interactively.
+    Personally, I opt to ensure all the configuration I use for my environment is declarative.
+    As such, the following configuration sets the ~custom-file~ to be a random temporary file created each time Emacs starts.
+    This means any customizations made interactively are discarded entirely.
+    #+BEGIN_SRC emacs-lisp
+    (setq custom-file (make-temp-file ""))
+    #+END_SRC
+
+*** Just use 'y' or 'n' instead of 'yes' or 'no'
+    You'll find =yes-or-no= prompts coming up in Emacs a lot.
+    I'd much rather just type =y= or =n= than =yes= or =no= every time...
+    #+BEGIN_SRC emacs-lisp
+    (fset 'yes-or-no-p 'y-or-n-p)
+    #+END_SRC
+
+*** Confirm quit
+    This adds a confirmation prompt when quitting Emacs - because I'm only human.
+    #+BEGIN_SRC emacs-lisp
+    (setq confirm-kill-emacs 'yes-or-no-p)
+    #+END_SRC
+
+*** Set the scratch buffer string
+    Set the scratch buffer's initial contents to include a comment with a timestamp of creation.
+    Not really all that useful, but cleaner than the default comment, and I like having something there.
+    #+BEGIN_SRC emacs-lisp
+    (setq initial-scratch-message (format ";; Scratch buffer - started on %s\n\n" (current-time-string)))
+    #+END_SRC
+
+*** Use M-3 to insert an octothorp
+    I'm usually on a British keyboard, so when doing =M-3=: insert an octothorp, not a GBP sign
+    #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+    #+END_SRC
+
+*** Configure FlySpell to use aspell
+    I use =aspell=, so this simply sets [[https://www.emacswiki.org/emacs/FlySpell][Flyspell]] to use it and passes a couple extra arguments
+    #+BEGIN_SRC emacs-lisp
+    (setq ispell-program-name "aspell")
+    (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_GB"))
+    #+END_SRC
+
+*** Calendar/Diary
+    Set the start of the week for the calendar to be Monday.
+    Sort entries when viewing diary items.
+    #+BEGIN_SRC emacs-lisp
+    (setq calendar-week-start-day 1)
+    (setq diary-file "~/org/diary")
+    (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
+    #+END_SRC
+
+*** IRC
+    Emacs comes with a great builtin IRC client: ERC.
+    These are some general settings that're all pretty self explanatory: hide particular activity, autojoin channels for some servers.
+    For convenience, I've also defined a =erc-conn= function for my usual connection parameters.
+    #+begin_src emacs-lisp
+    (use-package erc
+      :ensure nil
+      :custom
+      (erc-server "irc.freenode.net" )
+      (erc-nick "cmacrae")
+      (erc-hide-list '("PART" "QUIT" "JOIN"))
+      (erc-autojoin-channels-alist '(("freenode.net"
+        "#lobsters"
+        "#nixos"
+        "#nix-darwin")))
+      :config
+      (defun cm/erc-conn ()
+        (interactive)
+        (erc-tls :server "irc.freenode.net" :port 6697 :nick "cmacrae")))
+    #+end_src
+
 ** Meta Configurations
    This section includes the use of any "meta" collection of Emacs configurations provided by others.
    I'm using [[https://github.com/rougier/nano-emacs/issues/37][rougier/nano-emacs]] as a base. The configuration is shaped around principles that I agree with.
@@ -44,7 +135,7 @@
      (require 'nano-theme-dark)
      (require 'nano-theme-light)
      (require 'nano-modeline)
-     ;; (require 'nano-writer)
+     (require 'nano-writer)
      ;; Seems there's a bug with this: Wrong type argument: char-table-p, nil
      ;; Returned from this in nano-layout.el
      ;;
@@ -115,7 +206,7 @@
       :custom
       (counsel-yank-pop-separator (concat "\n\n"
           (concat (apply 'concat (make-list 50 "---")) "\n")))
-	
+        
       :bind
       (("M-y"   . counsel-yank-pop)
        ("C-h f" . counsel-describe-function)
@@ -168,7 +259,9 @@
     Anyone using Git and Emacs *needs* Magit in their life!
     #+BEGIN_SRC emacs-lisp
     (use-package magit
-      :bind ("C-c m" . magit-status))
+      :bind ("C-c m" . magit-status)
+      :config
+      (use-package evil-magit :ensure t))
     #+END_SRC
 
 *** Flycheck
