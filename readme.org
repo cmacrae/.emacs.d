@@ -649,3 +649,37 @@
       (use-package company-lsp :ensure t :commands company-lsp)
       (use-package lsp-ivy     :ensure t :commands lsp-ivy-workspace-symbol))
     #+END_SRC
+
+** Custom functions
+   Useful functions gathered that don’t quite require an entire package.
+
+*** Sensible beginning of line
+    Taken from [[http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/][here]], I use this to replace move-beginning-of-line (C-a). It will take your point back to the first column of the line you’re on,
+    as per the indentation. A second press will then take your point back to the very beginning of the line.
+    Pressing again will take you back to the indented column.
+    #+BEGIN_SRC emacs-lisp
+    (defun cm/sensible-move-beginning-of-line (arg)
+      "Move point back to indentation of beginning of line.
+
+      Move point to the first non-whitespace character on this line.
+      If point is already there, move to the beginning of the line.
+      Effectively toggle between the first non-whitespace character and
+      the beginning of the line.
+
+      If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+      point reaches the beginning or end of the buffer, stop there."
+      (interactive "^p")
+      (setq arg (or arg 1))
+
+      ;; Move lines first
+      (when (/= arg 1)
+        (let ((line-move-visual nil))
+          (forward-line (1- arg))))
+
+      (let ((orig-point (point)))
+        (back-to-indentation)
+        (when (= orig-point (point))
+          (move-beginning-of-line 1))))
+
+    (global-set-key (kbd "C-a") 'cm/sensible-move-beginning-of-line)
+    #+END_SRC
