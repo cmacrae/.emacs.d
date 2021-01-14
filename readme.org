@@ -209,7 +209,7 @@
      - Bind common functions
      - Bind common org functions
      - Ensure `smex` is installed for better candidate matching
-    #+begin_src emacs-lisp
+    #+BEGIN_SRC emacs-lisp
     (use-package counsel
       :custom
       (counsel-yank-pop-separator (concat "\n\n"
@@ -226,7 +226,21 @@
 
       :config
       (use-package smex :ensure t))
-    #+end_src
+    #+END_SRC
+
+*** ivy-pass & auth-password-store
+    I use [[https://www.passwordstore.org/][pass]] to manage my passwords. This is a handy little package for interfacing with it.
+    #+BEGIN_SRC emacs-lisp
+    (use-package ivy-pass
+      :bind ("C-c M-p" . ivy-pass)
+      :custom (password-store-password-length 30))
+    #+END_SRC
+
+    And this package allows it to act as an auth-source
+    #+BEGIN_SRC emacs-lisp
+    (use-package auth-source-pass
+      :hook (after-init . auth-source-pass-enable))
+    #+END_SRC
 
 *** Evil
     Vim emulation in Emacs. Because: yes, you can have the best of both worlds!
@@ -477,6 +491,7 @@
      (company-idle-delay 0)
      (company-minimum-prefix-length 1))
    #+END_SRC
+
 *** hydra
     Great package to tie tangible actions together into convenient keybinding landscapes.
     Here, you'll find some "general" hydras - other hydras that are centric around packages will be found with that package's configuration.
